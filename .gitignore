@@ -1,4 +1,6 @@
-*.o
-*.mod
-*.a
-prms/prms
+/#*#
+/*~
+/.#*
+/.config.status
+/autom4te.cache/
+/config.log
