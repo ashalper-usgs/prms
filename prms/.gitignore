@@ -1,0 +1,12 @@
+/#*#
+/*.mod
+/*.o
+/*~
+/.deps/
+/autom4te.cache/
+/autoscan.log
+/config.log
+/config.status
+/configure.scan
+/libprmsiv.a
+/prms
