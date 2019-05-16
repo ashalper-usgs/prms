@@ -1,1 +1,2 @@
 SUBDIRS = mmf prms
+CLEANFILES = *~
