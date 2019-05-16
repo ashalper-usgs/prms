@@ -2283,7 +2283,7 @@ am__tar='$${TAR-tar} chof - "$$tardir"' am__untar='$${TAR-tar} xf -'
 
 # Checks for library functions.
 
-ac_config_files="$ac_config_files Makefile prms/Makefile"
+ac_config_files="$ac_config_files Makefile"
 
 
 
@@ -3007,7 +3007,6 @@ for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "prms/Makefile") CONFIG_FILES="$CONFIG_FILES prms/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
