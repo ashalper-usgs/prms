@@ -4,5 +4,6 @@
 /.project
 /Makefile
 /autom4te.cache/
+/confdefs.h
 /config.log
 /config.status
