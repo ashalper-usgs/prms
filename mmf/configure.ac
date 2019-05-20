@@ -9,6 +9,9 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 # Checks for programs.
 AC_PROG_CC
+# See
+# https://www.gnu.org/software/automake/manual/html_node/Public-Macros.html
+AM_PROG_CC_C_O
 AC_PROG_RANLIB
 AM_PROG_AR
 
