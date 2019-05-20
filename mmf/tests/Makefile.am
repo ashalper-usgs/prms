@@ -3,6 +3,6 @@
 
 TESTS = alloc_space
 check_PROGRAMS = alloc_space
-alloc_space_SOURCES = $(top_builddir)/mmf/alloc_space.c $(top_builddir)/mmf/mms.h
+alloc_space_SOURCES = ../alloc_space.c ../alloc_space.h
 alloc_space_CFLAGS = @CHECK_CFLAGS@
-alloc_space_LDADD = $(top_builddir)/mmf/libmmf.a @CHECK_LIBS@
+alloc_space_LDADD = ../libmmf.a @CHECK_LIBS@
