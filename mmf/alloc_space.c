@@ -1,33 +1,23 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : alloc_space
- * COMMENT  : allocates space for variables
- *
- * $Id$
- *
--*/
+ * COMMENT  : Allocates space for variables.
+ */
 
-/**1************************ INCLUDE FILES ****************************/
 #define ALLOC_SPACE_C
 #include <string.h>
-#include "mms.h"
+#include "structs.h"
+#include "globals.h"
+#include "alloc_space.h"
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : alloc_space
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
 void alloc_space (void) {
 	static DATETIME start, end, now, next;
 
 	cont_db = ALLOC_list ("Control Data Base", 0, 100);
 
   /*
-   * space for the dimension pointer  array
+   * space for the dimension pointer array
    */
 
 /*
