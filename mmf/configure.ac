@@ -26,5 +26,5 @@ AC_FUNC_REALLOC
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([floor memset modf strchr strdup strrchr strstr strtol])
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile tests/Makefile])
 AC_OUTPUT
