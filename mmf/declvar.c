@@ -1,21 +1,18 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : declvar() to be called from C
  *            declvar_() to be called from Fortran
  *            Returns 0 if successful, 1 otherwise.
  * COMMENT  : initializes a module variable entry in the memory database
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define DECLVAR_C
 #include <stdio.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
+#include "globals.h"
 
 #define LONG 1
 #define FLOAT 2
@@ -23,10 +20,7 @@
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declvar_
- | COMMENT		: called from Fortran, sorts out args and calls declvar()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from Fortran, sorts out args and calls declvar()
 \*--------------------------------------------------------------------*/
 long declvar_ (char *mname, char *vname, char *vdimen, ftnint *maxsizeptr,
 	char *vtype, char *hstr, char *ustr, char *value, ftnlen mnamelen,
@@ -266,10 +260,7 @@ long declvar (char *module, char *name, char *dimen, long maxsize, char *type,
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declpri_
- | COMMENT		: called from Fortran, sorts out args and calls declpri()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from Fortran, sorts out args and calls declpri()
 \*--------------------------------------------------------------------*/
 long declpri_ (char *vname, ftnint *maxsizeptr,
 	char *vtype, char *value,
@@ -312,10 +303,7 @@ long declpri_ (char *vname, ftnint *maxsizeptr,
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declpri()
- | COMMENT		: is called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: is called from C
 \*--------------------------------------------------------------------*/
 long declpri (char *name, long size, char *type, char *value) {
   int var_type;
@@ -415,4 +403,3 @@ long declpri (char *name, long size, char *type, char *value) {
 
    return(0);
 }
-

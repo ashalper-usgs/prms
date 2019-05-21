@@ -1,26 +1,19 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : write_vstats
  * COMMENT  : saves values of stat variables into a temporary file.
  *            The temporary file was open in user_input
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define WRITE_VSTATS_C
 #include <stdio.h>
-#include "mms.h"
+#include "structs.h"
+#include "globals.h"
+#include "defs.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : write_vstats
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : void
- | RESTRICTIONS :
+ | RETURN VALUE : None.
 \*--------------------------------------------------------------------*/
 void write_vstats (FILE *statvar_file) { 
 
@@ -64,8 +57,6 @@ void write_vstats (FILE *statvar_file) {
       break;
 
     case M_LONG:
-	// markstro test
-    //  (void)fprintf(statvar_file,"%ld ", *(long *)stat_list->value);
 	(void)fprintf(statvar_file,"%d ", *(int *)stat_list->value);
       break;
 

@@ -1,26 +1,15 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : umalloc_etc
  * COMMENT  : memory allocation routines with error handling
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define UMALLOC_ETC_C
 #include <stdlib.h>
 #include <stdio.h>
-#include "mms.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : umalloc
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 char *umalloc (unsigned size) {
   char *ptr;
@@ -38,10 +27,6 @@ char *umalloc (unsigned size) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : urealloc
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 char *urealloc (char *ptr, unsigned size) {
   if (ptr == NULL) return(umalloc(size));
@@ -55,10 +40,6 @@ char *urealloc (char *ptr, unsigned size) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : ucalloc
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 char *ucalloc (unsigned num, unsigned size) {
   char *ptr;
@@ -71,14 +52,7 @@ char *ucalloc (unsigned num, unsigned size) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : ufree
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 void ufree (char *ptr) {
-/*
-   if (ptr != NULL) free(ptr);
-*/
 }
 

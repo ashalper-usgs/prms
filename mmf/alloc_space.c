@@ -5,10 +5,11 @@
  * COMMENT  : Allocates space for variables.
  */
 
-#define ALLOC_SPACE_C
 #include <string.h>
 #include "structs.h"
 #include "globals.h"
+#include "defs.h"
+#include "protos.h"
 #include "alloc_space.h"
 
 void alloc_space (void) {

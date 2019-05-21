@@ -1,26 +1,18 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : xmms
  * COMMENT  : main driver for xmms
- *
- * $Id$
- *
--*/
-
-/**1************************ INCLUDE FILES ****************************/
-#define MAIN
-#define MMF_C
+ */
 
 #include <stdlib.h>
-#include <stdio.h>
-#include <sys/stat.h>
 #include <string.h>
-#include "mms.h"
+#include <sys/stat.h>
+#include "structs.h"
+#include "defs.h"
+#include "globals.h"
+#include "protos.h"
 
-
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 extern int call_modules(char *);
 extern int call_setdims(void);
 
@@ -48,7 +40,7 @@ int main (int argc, char *argv[]) {
    char	*err;
    static int      num_param_files = 0;
    char   **fname;
-   char pathname[MAXPATHLEN];
+   char pathname[FILENAME_MAX];
    int set_size;
 
 
@@ -150,7 +142,6 @@ int main (int argc, char *argv[]) {
     
     err = read_dims (*control_svar("param_file"));
     if (err) {
-//		(void)fprintf (stderr,"\nERROR: reading dimensions from Parameter File\n");
 		fprintf (stderr,"\n%s\n", err);
         exit (1);
 	}
@@ -225,7 +216,7 @@ int main (int argc, char *argv[]) {
       print_params();
       print_vars();
       print_model_info();
-	  (void)snprintf (pathname, MAXPATHLEN, "%s.param", MAltContFile);
+	  (void)snprintf (pathname, FILENAME_MAX, "%s.param", MAltContFile);
 	  save_params (pathname);
 
     } else {

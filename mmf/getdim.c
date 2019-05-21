@@ -1,28 +1,20 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : getdim() to be called from C
  *            getdim_() to be called from Fortran
  *            returns it as a long int. Returns -1 if error.
  * COMMENT  : gets the dimension associated with a name, and
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define GETDIM_C
-#include <stdio.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getdim_
- | COMMENT		: called from Fortran, sorts out args and calls getdim()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from Fortran, sorts out args and calls getdim()
 \*--------------------------------------------------------------------*/
 long getdim_ (char *dname, ftnlen namelen) {
   char *name;
@@ -47,10 +39,7 @@ long getdim_ (char *dname, ftnlen namelen) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getdim
- | COMMENT		: is called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: is called from C
 \*--------------------------------------------------------------------*/
 long getdim (char *name) {
 
@@ -76,4 +65,3 @@ long getdim (char *name) {
   dim->got = TRUE;
   return dim->value;
 }
-

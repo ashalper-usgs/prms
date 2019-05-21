@@ -1,40 +1,29 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : declparam() to be called from C
  *            declparam_() to be called from Fortran
  *            Returns 0 if successful, 1 otherwise.
  * COMMENT  : initializes a module variable entry in the memory database
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define DECLPARAM_C
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
-static int CHECK_param_in_db (char *, char *, char *, int,
- 	char *, char *, char *, char *, char *, char *);
+static int CHECK_param_in_db (char *, char *, char *, int, char *, char *, char *, char *, char *, char *);
 static int VAR_type (char *);
 
-/**5*********************** LOCAL VARIABLES ***************************/
 static char *types[] = {"long (or integer)", "real (or float)", "double", "string"};
-
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declparam_
- | COMMENT		: declparam_() is called from Fortran, sorts out args
- |                 and calls declparam()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: declparam_() is called from Fortran, sorts out args
+ |                and calls declparam()
 \*--------------------------------------------------------------------*/
 long declparam_u_ (char *mname, char *pname, char *pdimen, char *ptype,
 	char *pvalstr, char *minstr, char *maxstr, char *dstr, char *hstr,
@@ -103,10 +92,7 @@ long declparam_u_ (char *mname, char *pname, char *pdimen, char *ptype,
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declparam_u
- | COMMENT		: declparam is called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: declparam is called from C
 \*--------------------------------------------------------------------*/
 long declparam_u (char *module, char *name, char *dimen, char *type, char *value,
 	char *minimum, char *maximum, char *descr, char *help, char *units, char *var,
@@ -145,11 +131,8 @@ long declparam_u (char *module, char *name, char *dimen, char *type, char *value
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declparam_
- | COMMENT		: declparam_() is called from Fortran, sorts out args
- |                 and calls declparam()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: declparam_() is called from Fortran, sorts out args
+ |                and calls declparam()
 \*--------------------------------------------------------------------*/
 long declparam_ (char *mname, char *pname, char *pdimen, char *ptype,
 	char *pvalstr, char *minstr, char *maxstr, char *dstr, char *hstr,
@@ -216,10 +199,7 @@ long declparam_ (char *mname, char *pname, char *pdimen, char *ptype,
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declparam
- | COMMENT		: declparam is called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: declparam is called from C
 \*--------------------------------------------------------------------*/
 long declparam (char *module, char *name, char *dimen, char *type, char *value,
 	char *minimum, char *maximum, char *descr, char *help, char *units) {
@@ -402,11 +382,8 @@ long declparam (char *module, char *name, char *dimen, char *type, char *value,
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declparam_p_
- | COMMENT		: declparam_p() is called from Fortran, sorts out args
- |                 and calls declparam()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: declparam_p() is called from Fortran, sorts out args
+ |                and calls declparam()
 \*--------------------------------------------------------------------*/
 long declparam_p_ (char *mname, char *pname, char *pdimen, char *ptype,
 	char *pvalstr, char *minstr, char *maxstr, char *dstr, char *hstr,
@@ -474,10 +451,7 @@ long declparam_p_ (char *mname, char *pname, char *pdimen, char *ptype,
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declparam_p
- | COMMENT		: declparam is called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: declparam is called from C
 \*--------------------------------------------------------------------*/
 long declparam_p (char *module, char *name, char *dimen, char *type, char *value,
 	char *minimum, char *maximum, char *descr, char *help, char *units, char *var) {
@@ -518,7 +492,6 @@ long declparam_p (char *module, char *name, char *dimen, char *type, char *value
 	return 0;
 }
 
-/**7****************** LOCAL FUNCTION DEFINITIONS *********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : CHECK_param_in_db
  | COMMENT      : Check if this parameter is already in the parameter DB.
@@ -603,10 +576,6 @@ static int CHECK_param_in_db (char *pkey, char *module, char *dimen, int var_typ
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : VAR_type
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 static int VAR_type (char *type) {
 	if (!strcmp (type, "integer") || !strcmp (type, "long")) {

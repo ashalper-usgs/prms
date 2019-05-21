@@ -1,27 +1,20 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : getdimname
  * COMMENT  : The following are two routines to obtain the "ith" index name 
  *            of a dimension variable from either Fortran or C modules.
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define GETDIMNAME_C
-#include <string.h>
 #include <stdlib.h>
-#include "mms.h"
+#include <string.h>
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getdimname_
  | COMMENT		: called from fortran
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 void getdimname_ (char *name, ftnint *i, char *idxname, ftnlen namelen, ftnlen idxlen) {
   /*
@@ -45,10 +38,7 @@ void getdimname_ (char *name, ftnint *i, char *idxname, ftnlen namelen, ftnlen i
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getdimdesc_
- | COMMENT		: called from fortran
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from Fortran
 \*--------------------------------------------------------------------*/
 void getdimdesc_ (char *name, ftnint *i, char *desc, ftnlen namelen, ftnlen desclen) {
   /*
@@ -70,10 +60,7 @@ void getdimdesc_ (char *name, ftnint *i, char *desc, ftnlen namelen, ftnlen desc
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getdimnameint_
- | COMMENT		: called from fortran
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from Fortran
 \*--------------------------------------------------------------------*/
 void getdimnameint_ (char *name, ftnint *i, ftnint *idx, ftnlen namelen) {
   /*
@@ -88,7 +75,7 @@ void getdimnameint_ (char *name, ftnint *i, ftnint *idx, ftnlen namelen) {
   lname[namelen] = '\0';
 
   /*
-   * call c version
+   * call C version
    */
  getdimname(lname, (*i) - 1, idxname, 80);
   
@@ -98,10 +85,6 @@ void getdimnameint_ (char *name, ftnint *i, ftnint *idx, ftnlen namelen) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getdimname
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 void getdimname (char *name, long i, char *idxname, int idxlen) {
   DIMEN *dim;
@@ -121,10 +104,6 @@ void getdimname (char *name, long i, char *idxname, int idxlen) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getdimdesc
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 void getdimdesc (char *name, long i, char *descname, int deslen) {
 	DIMEN *dim;

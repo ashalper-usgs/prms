@@ -52,23 +52,6 @@ EXTERN char *CHECK_map_vars (void);
 
 EXTERN void create_vstats (void);
 
-///***  dprint.c  **************************************************/
-//#undef EXTERN
-//#ifdef DPRINT_C
-//#define EXTERN
-//#else
-//#define EXTERN extern
-//#endif
-//
-//EXTERN void dpstr_ (char *, ftnint *, ftnlen);
-//EXTERN void dpstr (char *, long);
-//EXTERN void dpint4_ (char *, ftnint *, ftnint *, ftnint *, ftnlen);
-//EXTERN void dplong (char *, long *, long, long);
-//EXTERN void dpreal_ (char *, float *, ftnint *, ftnint *, ftnlen);
-//EXTERN void dpfloat (char *, float *, long, long);
-//EXTERN void dpdble_ (char *, double *, ftnint *, ftnint *, ftnlen);
-//EXTERN void dpdble (char *, double *, long, long);
-
 /***  free_vstats.c  **************************************************/
 #undef EXTERN
 #ifdef FREE_VSTATS_C
@@ -110,32 +93,6 @@ EXTERN char *GetElemAddress (char *, char *, int);
 
 EXTERN void opstr_ (char *, ftnlen);
 EXTERN void opstr (char *);
-//EXTERN void opint4_ (char *, ftnint *, ftnint *, ftnlen);
-//EXTERN void oplong (char *, long *, long);
-//EXTERN void opreal_ (char *, float *, ftnint *, ftnlen);
-//EXTERN void opfloat (char *, float *, long);
-//EXTERN void opdble_ (char *, double *, ftnint *, ftnlen);
-//EXTERN void opdble (char *, double *, long);
-
-///***  rosopt.c  **************************************************/
-//#undef EXTERN
-//#ifdef ROSOPT_C
-//#define EXTERN
-//#else
-//#define EXTERN extern
-//#endif
-//
-//EXTERN char *rosopt (ROSEN_DATA *, float[], float[]);
-
-///***  opinit.c  **************************************************/
-//#undef EXTERN
-//#ifdef OPINIT_C
-//#define EXTERN
-//#else
-//#define EXTERN extern
-//#endif
-//
-//EXTERN char *opinit (float *, float *, int *, ROSEN_DATA *);
 
 /***  bdry.c  **************************************************/
 #undef EXTERN
@@ -147,16 +104,6 @@ EXTERN void opstr (char *);
 
 EXTERN int bdry (float *, int *, float *, float *, int *, int *, float *);
 
-///***  param.c  **************************************************/
-//#undef EXTERN
-//#ifdef PARAM_C
-//#define EXTERN
-//#else
-//#define EXTERN extern
-//#endif
-//
-//EXTERN int param (int *, ROSEN_DATA *);
-
 /***  coropt.c  **************************************************/
 #undef EXTERN
 #ifdef COROPT_C
@@ -166,18 +113,6 @@ EXTERN int bdry (float *, int *, float *, float *, int *, int *, float *);
 #endif
 
 EXTERN int coropt (int *, float *, float *, int *);
-
-///***  sub1.c  **************************************************/
-//#undef EXTERN
-//#ifdef SUB1_C
-//#define EXTERN
-//#else
-//#define EXTERN extern
-//#endif
-//
-//EXTERN int sub1 (int *, float *, int *, float *, float *, float *,
-//      float *, float *, int *, int *, float *,
-//      int *, float *, float *, int *, int *, ROSEN_DATA *);
 
 /***  tcale.c  **************************************************/
 #undef EXTERN
@@ -198,16 +133,6 @@ EXTERN int tcale (int *, float *, float *, float *, float *, int *);
 #endif
 
 EXTERN int unscal (int *, float *, float *, float *, float *, int *);
-
-///***  sub3.c  **************************************************/
-//#undef EXTERN
-//#ifdef SUB3_C
-//#define EXTERN
-//#else
-//#define EXTERN extern
-//#endif
-//
-//EXTERN int sub3 (int *, float *, float *, float *, int *, float *, ROSEN_DATA *);
 
 /***  parse_args.c  **************************************************/
 #undef EXTERN
@@ -289,25 +214,6 @@ EXTERN int closeRuntimeGraphs (void);
 #endif
 
 EXTERN int stats (void);
-
-///***  uprint.c  **************************************************/
-//#undef EXTERN
-//#ifdef UPRINT_C
-//#define EXTERN
-//#else
-//#define EXTERN extern
-//#endif
-//
-//EXTERN FILE *GetUserFile (char *, long);
-//EXTERN void closeUserFiles (void);
-//EXTERN void upstr_ (char *, ftnint *, char *, ftnlen, ftnlen);
-//EXTERN void upstr (char *, long, char *);
-//EXTERN void upint4_ (char *, ftnint *, char *, ftnint *, ftnint *, ftnlen, ftnlen);
-//EXTERN void uplong (char *, long, char *, long *, long);
-//EXTERN void upreal_ (char *, ftnint *, char *, float *, ftnint *, ftnlen, ftnlen);
-//EXTERN void upfloat (char *, long, char *, float *, long);
-//EXTERN void updble_ (char *, ftnint *, char *, double *, ftnint *, ftnlen, ftnlen);
-//EXTERN void updble (char *, long, char *, double *, long);
 
 /***  write_vstats.c  **************************************************/
 #undef EXTERN

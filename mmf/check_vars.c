@@ -1,23 +1,18 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : check_vars
- * COMMENT  :
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define CHECK_VARS_C
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : CHECK_stat_vars
- | COMMENT		: Makes sure that the selected statistic variables
- |                  are valid.
+ | COMMENT	: Makes sure that the selected statistic variables
+ |                are valid.
  | PARAMETERS   :
  | RETURN VALUE : 0 - no bad ones are found
  |              : 1 - at least one bad one found

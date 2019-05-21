@@ -1,26 +1,17 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : get_times
- * COMMENT  : get start and end times from control data base
- *
- * $Id$
- *
--*/
+ * COMMENT  : get start and end times from control database
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define GET_TIMES_C
-#include <stdio.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
+#include "globals.h"
 
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : get_times
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 void get_times (void) {
   long *datetime;

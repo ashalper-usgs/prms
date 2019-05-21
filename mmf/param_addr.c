@@ -1,27 +1,16 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : param_addr
- *            returns a pointer to a PARAM struct which contains the given key
- *            returns NULL if key not found
- * COMMENT  :
- *
- * $Id$
- *
--*/
+ *            Returns a pointer to a PARAM struct which contains the given key;
+ *            Returns NULL if key not found.
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define PARAM_ADDR_C
-#include <string.h>
-#include "mms.h"
+#include "structs.h"
+#include "globals.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : param_addr
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 PARAM * param_addr (char *key) { 
   PARAM **params;

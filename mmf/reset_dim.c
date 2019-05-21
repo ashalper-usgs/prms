@@ -1,34 +1,26 @@
-/*+
- * United States Geological Survey
+/*
+ * United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : reset_dim
- * COMMENT  :
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
+#include <stdlib.h>
+#include "structs.h"
+#include "globals.h"
+#include "defs.h"
+#include "protos.h"
+
 #define RESET_DIM_C 0
 #define VALUE_CASE 0
 #define MIN_CASE 1
 #define MAX_CASE 2
 #define NCASES 3
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "mms.h"
-
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static void resize_param (PARAM *, long, long, long, long);
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : reset_dim
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 void reset_dim (DIMEN *dim, long nnew) {
 	int dimen_used;
@@ -187,11 +179,8 @@ void reset_dim (DIMEN *dim, long nnew) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : resize_param
- | COMMENT		: resizes and repacks param array to take account of
- |                  a change in the value of a dimension
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: resizes and repacks param array to take account of
+ |                a change in the value of a dimension
 \*--------------------------------------------------------------------*/
 static void resize_param (PARAM *param, long dimen_num, long nold, long nnew, long size_new) {
 
@@ -232,16 +221,6 @@ static void resize_param (PARAM *param, long dimen_num, long nold, long nnew, lo
 
 	old_framesize = blocksize * nold;
 	new_framesize = blocksize * nnew;
-
-/*
-**	resize the value_desc
-*/
-//	if (size_new)
-//		param->value_desc = (char **) realloc (param->value_desc,
-//			size_new * sizeof (char *));
-//
-//	for (i = param->size; i < size_new; i++)
-//		param->value_desc[i] = NULL;
 
 /*
 * copy the data

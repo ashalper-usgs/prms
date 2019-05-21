@@ -1,5 +1,4 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : getvar() to be called from C
@@ -7,23 +6,16 @@
  *            Returns 0 if successful, 1 otherwise.
  * COMMENT  : gets the value associated with a module and name, and copies
  *            it into the variable provided by the calling routine.
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION		: getvar_
  | COMMENT		: called from Fortran, sorts out args and calls getvar()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 long getvar_ (char *mname, char *vname, ftnint *vmaxsize, char *vtype, double *value, ftnlen mnamelen, ftnlen vnamelen, ftnlen vtypelen) {
 	char module[80], name[80], type[80];
@@ -54,16 +46,12 @@ long getvar_ (char *mname, char *vname, ftnint *vmaxsize, char *vtype, double *v
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getvar
- | COMMENT		: called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from C
 \*--------------------------------------------------------------------*/
 long getvar (char *module, char *name, long maxsize, char *type, double *value) {
 
 	int var_type;
 	PUBVAR *var;
-//	char *vkey;
 	char vkey[128];
 	long i;
 	long n1, n2;
@@ -74,16 +62,10 @@ long getvar (char *module, char *name, long maxsize, char *type, double *value) 
 * compute the key
 */
   
-/*
-  vkey = (char *) umalloc(strlen(module) + strlen(name) + 2);
-  (void)strncpy(vkey, module, strlen(module) + strlen(name) + 2);
-  strcat(strcat(vkey, "."), name);
-*/
-//  vkey = strdup (name);
    strncpy (vkey, name, 128);
   
 /*
-* convert fortran types to C types
+* convert Fortran types to C types
 */
 
 	var_type = M_LONG;
@@ -202,9 +184,6 @@ long getvar (char *module, char *name, long maxsize, char *type, double *value) 
 /*--------------------------------------------------------------------*\
  | FUNCTION		: getvartype_
  | COMMENT		: called from Fortran, sorts out args and returns the type()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 long getvartype_ (char *vname, ftnlen vnamelen) {
 	char vkey[128];
@@ -226,7 +205,6 @@ long getvartype_ (char *vname, ftnlen vnamelen) {
 /*--------------------------------------------------------------------*\
  | FUNCTION		: getvarsize_
  | COMMENT		: called from Fortran, sorts out args and returns the variable size()
- | PARAMETERS   :
  | RETURN VALUE : size of the array for input variable
  | RESTRICTIONS : variable must be declared
 \*--------------------------------------------------------------------*/

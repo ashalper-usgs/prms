@@ -1,31 +1,18 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : setup_cont
- * COMMENT  :
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define SETUP_CONT_C
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
 
-#include <stdio.h>
-#include <math.h>
-#include <errno.h>
-#include <string.h>
-#include <stdlib.h>
-#include "mms.h"
-
-/**5*********************** LOCAL VARIABLES ***************************/
 extern void decl_control_string (char *key, char *valstr);
 extern void decl_control_int_array (char *key, long size, long *valstr);
 extern void decl_control_float_array (char *key, long size, float *valstr);
 extern void decl_control_string_array (char *key, long size, char *valstr);
 
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : setup_cont
  | COMMENT		:
@@ -58,12 +45,6 @@ void setup_cont (void) {
         decl_control_string ("gsflow_output_file", "gsflow.out");
         decl_control_string ("gsflow_csv_file", "gsflow.csv");
 		decl_control_string ("creator_email", "unknown");
-
-/*
-        cval = (char *)umalloc (sizeof (long));
-        cval[0] = "recharge";
-        decl_control_string_array ("mapOutVar_names", 20, cval);
-*/
 
         lval = (long *)umalloc (sizeof (long));
 		lval[0] = 7;

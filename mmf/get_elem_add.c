@@ -1,36 +1,27 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : get_elem_add
  * COMMENT  : This file contains utility routines for multiple index arrays.
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define GET_ELEM_ADD_C
 #include <string.h>
-#include <ctype.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "structs.h"
+#include "defs.h"
+#include "protos.h"
 
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : CheckIndices
- | COMMENT		: Verifies that the number of indices
- |                 passed as an argument is compatible with the indices
- |                 declared for a parameter or a variable.
+ | COMMENT	: Verifies that the number of indices
+ |                passed as an argument is compatible with the indices
+ |                declared for a parameter or a variable.
  | PARAMETERS   :
- |     
  |      key:        is the name of the parameter or variable
  |      elemString: is the string that contains the elements
  |                  separated by commas
  |      type:       = M_PARAMETER for parameters, 
  |                  = M_VARIABLE for variables.
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 int CheckIndices (char *key, char *elemString, int type) {
 	PARAM	*paddr;
@@ -154,7 +145,7 @@ int CheckIndices (char *key, char *elemString, int type) {
   
 /*--------------------------------------------------------------------*\
  | FUNCTION     : GetElemAddress
- | COMMENT		: This function returns a pointer to the memory location
+ | COMMENT	: This function returns a pointer to the memory location
  |    corresponding to elemString. The format of the string should each
  |    such that each component is separated by a comma. For example:
  |
@@ -168,147 +159,145 @@ int CheckIndices (char *key, char *elemString, int type) {
  |                  separated by commas
  |      type:       = M_PARAMETER for parameters, 
  |                  = M_VARIABLE for variables.
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 char *GetElemAddress (char *key, char *elemString, int type) {
-	PARAM	*paddr;
-	PUBVAR	*vaddr;
-	DIMEN	*dim;
-	char	*addr;
-	char	*temp, *t, tkey[80], elmstr[80], *ptr;
-	char	**strindx;
-	DIMEN	**dimname;
-	long     offset;
-	long     prod;
-	int      nindex;
-	int      vtype;
-	int      i;
-	int		list_size, list_count;
+  PARAM	*paddr;
+  PUBVAR	*vaddr;
+  DIMEN	*dim;
+  char	*addr;
+  char	*temp, *t, tkey[80], elmstr[80], *ptr;
+  char	**strindx;
+  DIMEN	**dimname;
+  long     offset;
+  long     prod;
+  int      nindex;
+  int      vtype;
+  int      i;
+  int		list_size, list_count;
 
-/*
-**	first, make a temporary copy of the key
-*/
-	(void)strncpy (tkey, key, 80);
+  /*
+  **	first, make a temporary copy of the key
+  */
+  (void)strncpy (tkey, key, 80);
 
-/*
-**	strips leading blanks
-*/
-	ptr = tkey;
-	while (*ptr == ' ')
-		ptr++;
-/*
-**	strips trailing blanks
-*/
-	if ((temp = strchr (ptr, ' ')))
-		*temp = '\0';
-	if ((temp = strchr (ptr, '.')))
-		*temp = '\0';
+  /*
+  **	strips leading blanks
+  */
+  ptr = tkey;
+  while (*ptr == ' ')
+    ptr++;
+  /*
+  **	strips trailing blanks
+  */
+  if ((temp = strchr (ptr, ' ')))
+    *temp = '\0';
+  if ((temp = strchr (ptr, '.')))
+    *temp = '\0';
 
-	if (type == M_PARAMETER) {
-		paddr = param_addr (ptr);
-/*
-**	check number of dimensions
-*/
-		vtype = paddr->type;
-		dimname = paddr->dimen;
-		addr = paddr->value;
-	} else {
-		vaddr = var_addr(tkey);
-/*
-**	check number of dimensions
-*/
-		if (vaddr) {
-			dimname = vaddr->dimen;
-			vtype = vaddr->type;
-			addr = vaddr->value;
-		} else {
-			(void)fprintf (stderr,"GetElemAddress: %s does not exist\n", ptr);
-			return (NULL);
-		}
-	}
+  if (type == M_PARAMETER) {
+    paddr = param_addr (ptr);
+    /*
+    **	check number of dimensions
+    */
+    vtype = paddr->type;
+    dimname = paddr->dimen;
+    addr = paddr->value;
+  } else {
+    vaddr = var_addr(tkey);
+    /*
+    **	check number of dimensions
+    */
+    if (vaddr) {
+      dimname = vaddr->dimen;
+      vtype = vaddr->type;
+      addr = vaddr->value;
+    } else {
+      (void)fprintf (stderr,"GetElemAddress: %s does not exist\n", ptr);
+      return (NULL);
+    }
+  }
 
-/*
-**	parse the string. First make a local copy
-*/
-	(void)strncpy (elmstr, elemString, 80);
-	temp = elmstr; 
+  /*
+  **	parse the string. First make a local copy
+  */
+  (void)strncpy (elmstr, elemString, 80);
+  temp = elmstr; 
 
-/*
-**	check for '(' and ')', and delete them
-*/
-	t = strchr (temp, '(');
-	if (t) temp = t;
+  /*
+  **	check for '(' and ')', and delete them
+  */
+  t = strchr (temp, '(');
+  if (t) temp = t;
   
-	t = strchr (temp, ')');
-	if (t) *t = '\0';
-/*
-**	parse the string
-*/
-	t = temp;
-	nindex = 0;
+  t = strchr (temp, ')');
+  if (t) *t = '\0';
+  /*
+  **	parse the string
+  */
+  t = temp;
+  nindex = 0;
 
-	list_size = 100;
-	list_count = 0;
-	strindx = (char **)malloc (list_size * sizeof (char *));
+  list_size = 100;
+  list_count = 0;
+  strindx = (char **)malloc (list_size * sizeof (char *));
 
-	while (t) {
-		if (list_count >= list_size) {
-			list_size += 100;
-			strindx = (char **)realloc (strindx, list_size * sizeof (char *));
-		}
-		ptr = strchr (t, ',');
+  while (t) {
+    if (list_count >= list_size) {
+      list_size += 100;
+      strindx = (char **)realloc (strindx, list_size * sizeof (char *));
+    }
+    ptr = strchr (t, ',');
 
-		if (ptr)
-			*ptr = '\0';
+    if (ptr)
+      *ptr = '\0';
 
-		strindx[list_count] = (char *)malloc (20 * sizeof (char));
+    strindx[list_count] = (char *)malloc (20 * sizeof (char));
 
-		(void)strncpy (strindx[list_count], t, 20);
-		list_count++;
+    (void)strncpy (strindx[list_count], t, 20);
+    list_count++;
 
-		if (ptr)
-			t = ptr + 1;
-		else
-			t = NULL;
-	} 
+    if (ptr)
+      t = ptr + 1;
+    else
+      t = NULL;
+  } 
 
-	nindex = list_count;
-	offset = 0;
-	prod   = 1;
+  nindex = list_count;
+  offset = 0;
+  prod   = 1;
 
-	for (i = 0; i < nindex; i++) {
-		dim = dimname[i];
-		offset += (atol(strindx[i]) - 1) * prod;
+  for (i = 0; i < nindex; i++) {
+    dim = dimname[i];
+    offset += (atol(strindx[i]) - 1) * prod;
 
-		switch (type) {
-			case M_PARAMETER:
-				prod *= dim->value;
-				break;
+    switch (type) {
+    case M_PARAMETER:
+      prod *= dim->value;
+      break;
 
-			case M_VARIABLE:
-/*rsr changed next line */
-/*				prod *= dim->max; */
-				prod *= dim->value;
-				break;
-		}
-	}
+    case M_VARIABLE:
+      /*rsr changed next line */
+      /*				prod *= dim->max; */
+      prod *= dim->value;
+      break;
+    }
+  }
 
-	switch (vtype) {
-		case M_LONG:
-			return (addr += offset * sizeof(long));
-/*NOTREACHED*/
-			break;
+  switch (vtype) {
+  case M_LONG:
+    return (addr += offset * sizeof(long));
+    /*NOTREACHED*/
+    break;
 
-		case M_FLOAT:
-			return(addr += offset * sizeof(float));
-/*NOTREACHED*/
-			break;
+  case M_FLOAT:
+    return(addr += offset * sizeof(float));
+    /*NOTREACHED*/
+    break;
 
-		case M_DOUBLE:
-			return(addr += offset * sizeof(double));
-/*NOTREACHED*/
-			break;
-	}
-    return NULL;
+  case M_DOUBLE:
+    return(addr += offset * sizeof(double));
+    /*NOTREACHED*/
+    break;
+  }
+  return NULL;
 }

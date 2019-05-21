@@ -1,33 +1,25 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : print_vars
- * COMMENT  : prints the var data base to a file
- *
- * $Id$
- *
--*/
+ * COMMENT  : prints the var database to a file
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define PRINT_VARS_C
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "mms.h"
+#include "structs.h"
+#include "globals.h"
+#include "defs.h"
+#include "protos.h"
 
 #define PRINTLEN 77
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : print_vars
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 int print_vars (void) {
 
-  char pathname[MAXPATHLEN], *infostr;
+  char pathname[FILENAME_MAX], *infostr;
   FILE *var_file;
   PUBVAR *var;
   long i, j;
@@ -36,7 +28,7 @@ int print_vars (void) {
    * get var file path name, open file
    */
 
-  (void)snprintf (pathname, MAXPATHLEN, "%s.var_name", MAltContFile);
+  (void)snprintf (pathname, FILENAME_MAX, "%s.var_name", MAltContFile);
 
 
   if ((var_file = fopen (pathname, "w")) == NULL) {
@@ -119,68 +111,6 @@ int print_vars (void) {
        (void)fprintf(var_file, "Units: %s\n", var->units);
        if (var->private)
           (void)fprintf(var_file, "Private \n");
-/*
-    (void)fprintf(var_file, "Value(s):\n");
-    
-    if (var->ndimen >= 3) {
-
-      for (j = 0; j < var->dimen[2]->value; j++) {
-
-	(void)fprintf(var_file, "[%ld]\n", j + 1);
-
-	nk = var->dimen[1]->value;
-	
-	for (k = 0; k < nk; k++) {
-
-	  (void)fprintf(var_file, "%5ld:", k + 1);
-
-	  nl = var->dimen[0]->value;
-
-	  for (l = 0; l < nl; l++) {
-
-	    print_var(var_file, var, l, nl, k, nk, j);
-
-	  }
-
-	  (void)fprintf(var_file, "\n");
-
-	}
-
-      }
-
-    } else if (var->ndimen == 2) {
-
-      nk = var->dimen[1]->value;
-	
-      for (k = 0; k < nk; k++) {
-
-	(void)fprintf(var_file, "%5ld:", k + 1);
-
-	nl = var->dimen[0]->value;
-
-	for (l = 0; l < nl; l++) {
-
-	  print_var(var_file, var, l, nl, k,0,0);
-
-	}
-
-	(void)fprintf(var_file, "\n");
-
-      }
-
-    } else {
-
-      nl = var->dimen[0]->value;
-
-      for (l = 0; l < nl; l++) {
-	print_var(var_file, var, l,0,0,0,0);
-
-      }
-
-      (void)fprintf(var_file, "\n");
-
-    }
-*/
      }
     
   } /* i */
@@ -193,10 +123,6 @@ int print_vars (void) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : print_var
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 void print_var (FILE *var_file, PUBVAR *var, long l, long nl, long k, long nk,
 	long j) {

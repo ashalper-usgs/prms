@@ -1,22 +1,14 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : build_lists
- * COMMENT  :
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define BUILD_LISTS_C
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "mms.h"
-
-/**2************************* LOCAL MACROS ****************************/
+#include "structs.h"
+#include "defs.h"
 
 #define INPUT  1
 #define OUTPUT  2

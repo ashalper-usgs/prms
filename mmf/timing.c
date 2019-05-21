@@ -1,22 +1,18 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : timing
  * COMMENT  : timing functions
  *            The routines with a _ suffix are called from Fortran
  *            The routines without the suffix are called from C
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define TIMING_C
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
+#include "globals.h"
 
 /**************************************************************************
  * dattim and dattim_ : get start, end or current data date and time
@@ -29,15 +25,11 @@
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : dattim_
- | COMMENT		: called from Fortran, sorts out args and calls dattim()
- |                 get start, end or current data date and time
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from Fortran, sorts out args and calls dattim()
+ |                get start, end or current data date and time
 \*--------------------------------------------------------------------*/
 void dattim_ (char *dwhen, ftnint *timearray, ftnlen dwhenlen) {
 
-//  char *when;
   char when[80];
   long ta[6];
 
@@ -45,13 +37,8 @@ void dattim_ (char *dwhen, ftnint *timearray, ftnlen dwhenlen) {
    * copy when and terminate
    */
 
-//  when = (char *) umalloc(dwhenlen + 1);
-//  strncpy(when, dwhen, dwhenlen);
-//  when[dwhenlen] = '\0';
-
     strncpy (when, dwhen, dwhenlen);
     *(when + dwhenlen) = '\0';
-
 
   /*
    * call C version of dattim()
@@ -67,16 +54,9 @@ void dattim_ (char *dwhen, ftnint *timearray, ftnlen dwhenlen) {
 
 }
 
-/**************************************************************************
- */
-
-
 /*--------------------------------------------------------------------*\
  | FUNCTION     : dattim
- | COMMENT		: called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from C
 \*--------------------------------------------------------------------*/
 void dattim (char *when, long *timearray) {
 
@@ -113,10 +93,6 @@ void dattim (char *when, long *timearray) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : nowjt_
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 double nowjt_ () {
    return Mnowtime->jt;
@@ -135,14 +111,9 @@ double nowjt_ () {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : julian_
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 long julian_ (char *jwhen, char *jtype, ftnlen jwhenlen, ftnlen jtypelen) {
 
-//  char *when, *type;
   char when[80], type[80];
   long retval;
 
@@ -150,15 +121,9 @@ long julian_ (char *jwhen, char *jtype, ftnlen jwhenlen, ftnlen jtypelen) {
    * copy strings and terminate
    */
 
-//  when = (char *) umalloc(jwhenlen + 1);
-//  strncpy(when, jwhen, jwhenlen);
-//  when[jwhenlen] = '\0';
     strncpy (when, jwhen, jwhenlen);
     *(when + jwhenlen) = '\0';
 
-//  type = (char *) umalloc(jtypelen + 1);
-//  strncpy(type, jtype, jtypelen);
-//  type[jtypelen] = '\0';
     strncpy (type, jtype, jtypelen);
     *(type + jtypelen) = '\0';
 
@@ -178,10 +143,6 @@ long julian_ (char *jwhen, char *jtype, ftnlen jwhenlen, ftnlen jtypelen) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : julian
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 long julian (char *when, char *type) {
 
@@ -273,10 +234,6 @@ double deltim_(void) {
  */
 /*--------------------------------------------------------------------*\
  | FUNCTION     : deltim
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 double deltim (void) {
   return (double) Mdeltat * 24.0;
@@ -288,10 +245,6 @@ double deltim (void) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getstep_
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 long getstep_ (void) {
   return getstep();
@@ -302,10 +255,6 @@ long getstep_ (void) {
  */
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getstep
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 long getstep (void) {
   return Mnsteps;
@@ -324,10 +273,6 @@ long getstep (void) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : djulian_
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 double djulian_ (char *jwhen, char *jtype, ftnlen jwhenlen, ftnlen jtypelen) {
 
@@ -356,9 +301,6 @@ double djulian_ (char *jwhen, char *jtype, ftnlen jwhenlen, ftnlen jtypelen) {
    * free up arrays
    */
 
-//ufree(when);
-//ufree(type);
-
   return retval;
 
 }
@@ -369,10 +311,6 @@ double djulian_ (char *jwhen, char *jtype, ftnlen jwhenlen, ftnlen jtypelen) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : djulian
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 double djulian (char *when, char *type) {
 
@@ -456,12 +394,7 @@ double delnex_(void) {
  */
 /*--------------------------------------------------------------------*\
  | FUNCTION     : delnex
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 double delnex (void) {
   return (double) Mdeltanext * 24.0;
 }
-

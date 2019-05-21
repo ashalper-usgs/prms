@@ -1,5 +1,4 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : control_array - generic, returns (char *) as a generic pointer
@@ -9,15 +8,12 @@
  *            control_sarray - returns char ** - string
  *            These return pointers to particular elements in a control array.
  * COMMENT  : control_array routines
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define CONTROL_ARRAY_C
 #include <stdlib.h>
-#include "mms.h"
+#include "structs.h"
+#include "defs.h"
+#include "protos.h"
 
 /**************************************************************************
  * control_array.c: 
@@ -30,10 +26,6 @@
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_array
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 char *control_array (char *key, long ind) {
  
@@ -65,7 +57,6 @@ char *control_array (char *key, long ind) {
 
 		case M_STRING:
 			printf ("control_array: key = %s ind = %ld val = %s\n", key, ind, *((char **)control->start_ptr + ind));
-//			return (char *) (((char **)(control->start_ptr)) + (ind * sizeof(char *)));
 			return *((char **)control->start_ptr + ind);
 	}
 

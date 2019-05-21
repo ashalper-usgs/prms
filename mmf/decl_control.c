@@ -1,30 +1,22 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : decl_control
  * COMMENT  : initializes a module variable entry in the memory database
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define DECL_CONTROL_C
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "mms.h"
-
-/**************************************************************************/
+#include "structs.h"
+#include "globals.h"
+#include "defs.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : add_control
- | COMMENT		: This allocates a control structure and adds it to the
- |                control DB.  It also allocates the space for the variables.
- | PARAMETERS   :
+ | COMMENT	: This allocates a control structure and adds it to the
+ |                control DB. It also allocates the space for the variables.
  | RETURN VALUE : None
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 CONTROL *add_control (char *key, long type, long size) {
    CONTROL *cp;
@@ -38,7 +30,6 @@ CONTROL *add_control (char *key, long type, long size) {
          "ERROR - add_control - key '%s' already exists.\n", key);
       exit(1);
    }
-// printf ("adding control parameter - key: %s type: %ld size: %ld\n", key, type, size);
 
 /*
 **  allocate space for a structure, and store pointer in controls
@@ -165,29 +156,26 @@ void decl_control_double_array (char *key, long size, double *valstr) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : decl_control_
- | COMMENT		: decl_control_() is called from Fortran, sorts out args
- |                 and calls decl_control()
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
+ | COMMENT	: decl_control_() is called from Fortran, sorts out args
+ |                and calls decl_control().
 \*--------------------------------------------------------------------*/
 void decl_control_ (char *ckey, ftnint *ctype, ftnint *csize, void *value, ftnlen klen) {
-	char *key;
-	long type, size;
+  char *key;
+  long type, size;
 
   /*
    * copy ctype and csize to local long int
    */
-	type = *ctype;
-	size = *csize;
+  type = *ctype;
+  size = *csize;
 
   /*
    * copy args to new strings, and terminate correctly
    */
-	key = (char *) umalloc((unsigned int)(klen + 1));
-	strncpy(key, ckey, (int)klen);
-	key[klen] = '\0';
+  key = (char *) umalloc((unsigned int)(klen + 1));
+  strncpy(key, ckey, (int)klen);
+  key[klen] = '\0';
 
-	decl_control(key, type, size, value);
-	return;
+  decl_control(key, type, size, value);
+  return;
 }

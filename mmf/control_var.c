@@ -1,5 +1,4 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : control_var - generic, returns (char *) as a generic pointer
@@ -8,18 +7,15 @@
  *            control_dvar - returns double *
  *            control_svar - returns char ** - string
  *            returns pointers to various control array entries
- * COMMENT  :
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define CONTROL_VAR_C
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
+#include "globals.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_var

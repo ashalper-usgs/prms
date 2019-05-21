@@ -1,33 +1,23 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : read_vars
  * COMMENT  : reads the vars data base from a file.
  *            File name is passed in as an argument
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define READ_VARS_C
 #include <stdio.h>
-#include <errno.h>
-#include <stdlib.h>
 #include <string.h>
-#include "mms.h"
+#include <errno.h>
+#include "structs.h"
+#include "defs.h"
+#include "globals.h"
+#include "protos.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static int read_var_line (char *, char *, FILE *, char *);
 
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : read_vars
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 int read_vars (char *var_file_name) {
 
@@ -80,12 +70,6 @@ int read_vars (char *var_file_name) {
       fclose(var_file);
       return(0);
    }
-
-/*
-   (void)fprintf (stderr,"read_vars Mnowtime->jt stirng = %s\n", &(line[17]));
-   Mnowtime->jt = strtod(&(line[17]), &endptr);
-   (void)fprintf (stderr,"read_vars Mnowtime->jt = %d\n", Mnowtime->jt);
-*/
 
 /*
 * read in last delta time
@@ -332,25 +316,18 @@ variables:
    return(0);
 }
 
-/**7****************** LOCAL FUNCTION DEFINITIONS *********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : read_var_line
- | COMMENT		: gets a line from the variable file
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: gets a line from the variable file
 \*--------------------------------------------------------------------*/
 static int read_var_line (char *key, char *line, FILE *var_file, char *var_file_name) {
 
-	if (fgets(line, MAXVARLEN, var_file) == NULL) {
-		(void)fprintf(stderr,
-		    "ERROR - read_var, reading data.\n");
-		(void)fprintf(stderr,
-		    "Early end-of-file, file '%s'\n", var_file_name);
-		(void)fprintf(stderr, "Key is '%s'\n", key);
-		return(1);
-	}
+  if (fgets(line, MAXVARLEN, var_file) == NULL) {
+    (void)fprintf(stderr, "ERROR - read_var, reading data.\n");
+    (void)fprintf(stderr, "Early end-of-file, file '%s'\n", var_file_name);
+    (void)fprintf(stderr, "Key is '%s'\n", key);
+    return(1);
+  }
 
-	return(0);
-
+  return(0);
 }

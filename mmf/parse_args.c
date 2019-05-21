@@ -1,27 +1,19 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : parse_args
  * COMMENT  : parses the command line arguments
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define PARSE_ARGS_C
-#include <math.h> 
-#include <string.h> 
-#include <stdlib.h> 
-#include "mms.h" 
+#include <string.h>
+#include <stdlib.h>
+#include "structs.h"
+#include "globals.h"
+#include "defs.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : parse_args
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : void
- | RESTRICTIONS :
+ | RETURN VALUE : None.
 \*--------------------------------------------------------------------*/
 void parse_args (int argc, char **argv, int *set_count, char **set_name, char **set_value, int set_size) {
 

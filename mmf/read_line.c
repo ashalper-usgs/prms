@@ -1,5 +1,4 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : read_line
@@ -10,37 +9,21 @@
  *            is within start and end limits.
  *            Otherwise reads lines until within limits or the
  *            end of file is encountered.
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define READ_LINE_C
-
-#include <sys/stat.h>
-#include <stdio.h>
-#include <math.h>
-#include <errno.h>
 #include <string.h>
-#include <stdlib.h>
-#include "mms.h"
+#include <errno.h>
+#include <sys/stat.h>
+#include "structs.h"
+#include "globals.h"
+#include "defs.h"
+#include "protos.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static void INSERT_time (char *, DATETIME *);
 
-/**5*********************** LOCAL VARIABLES ***************************/
-/*
-static double   prevjt = -1.0;
-*/
-
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : read_line
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE : void
- | RESTRICTIONS :
+ | RETURN VALUE : None.
 \*--------------------------------------------------------------------*/
 long read_line (void) {
 
@@ -300,10 +283,7 @@ cur_fd->time = {year = 1956, month = 2, day = 19, hour = 0, min = 0, sec = 0,
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : DATA_read_init
- | COMMENT      :
- | PARAMETERS   :
  | RETURN VALUE : char *
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 char *DATA_read_init (void) {
 
@@ -377,10 +357,7 @@ char *DATA_read_init (void) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : READ_data_info
- | COMMENT      :
- | PARAMETERS   :
  | RETURN VALUE : char *
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 char *READ_data_info (void) {
 
@@ -432,10 +409,7 @@ char *READ_data_info (void) {
 /*--------------------------------------------------------------------*\
  | FUNCTION     : DATA_check_start
  | COMMENT      : Check if start time of model is more than a day before
- |                 the start time of the data.
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ |                the start time of the data.
 \*--------------------------------------------------------------------*/
 char *DATA_check_start (void) {
 
@@ -455,10 +429,7 @@ char *DATA_check_start (void) {
 }
 /*--------------------------------------------------------------------*\
  | FUNCTION     : DATA_close
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE : void 
- | RESTRICTIONS :
+ | RETURN VALUE : None.
 \*--------------------------------------------------------------------*/
 void DATA_close (void) {
    int      i, num_data_files;
@@ -478,9 +449,7 @@ void DATA_close (void) {
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_var_size
  | COMMENT      : returns the size of the array
- | PARAMETERS   :
  | RETURN VALUE : int - returns the size of the array
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 int control_var_size (char *key) {
    CONTROL *control;
@@ -572,10 +541,6 @@ FILE_DATA * FILE_with_next_ts (void) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : EXTRACT_time
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 char * EXTRACT_time (FILE_DATA *data) {
    char   *start_point, *end_point;
@@ -700,7 +665,6 @@ char * EXTRACT_time (FILE_DATA *data) {
 /*--------------------------------------------------------------------*\
  | FUNCTION     : CHECK_data
  | COMMENT      : See if there is an error with the data value.
- | PARAMETERS   :
  | RETURN VALUE : Error code
  | RESTRICTIONS : None
 \*--------------------------------------------------------------------*/
@@ -716,10 +680,6 @@ int CHECK_data (int en, FILE_DATA *cur_fd) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : DATA_find_end
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 void DATA_find_end (DATETIME *start_of_data, DATETIME *end_of_data) {
   FILE   *f_ptr;
@@ -795,10 +755,6 @@ void DATA_find_end (DATETIME *start_of_data, DATETIME *end_of_data) {
 /**7****************** LOCAL FUNCTION DEFINITIONS *********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : INSERT_time
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 static void INSERT_time (char *line, DATETIME *ptr) {
    char   *start_point, *end_point;

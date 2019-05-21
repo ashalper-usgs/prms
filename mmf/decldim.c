@@ -1,5 +1,4 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : decldim() to be called from C
@@ -7,24 +6,18 @@
  *            declfix() to be called from C
  *            declfix_() to be called from Fortran
  * COMMENT  : initializes an entry in the dimension database
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define DECLDIM_C
 #include <stdio.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
+#include "globals.h"
 
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : decldim_
- | COMMENT		: called from Fortran, sorts out args and calls decldim()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from Fortran, sorts out args and calls decldim()
 \*--------------------------------------------------------------------*/
 long decldim_ (char *dname, ftnint *dval, ftnint *dmax, char *ddescr, ftnlen namelen, ftnlen descrlen) {
 	long value, max;
@@ -61,10 +54,7 @@ long decldim_ (char *dname, ftnint *dval, ftnint *dmax, char *ddescr, ftnlen nam
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : decldim
- | COMMENT		: called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from C
 \*--------------------------------------------------------------------*/
 long decldim (char *name, long value, long max, char *descr) {
 	DIMEN *dim;
@@ -138,10 +128,7 @@ long decldim (char *name, long value, long max, char *descr) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declfix
- | COMMENT		: Called from C to declare a fixed dimension.
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: Called from C to declare a fixed dimension.
 \*--------------------------------------------------------------------*/
 long declfix (char *name, long value, long max, char *descr) {
    long ret;
@@ -151,39 +138,16 @@ long declfix (char *name, long value, long max, char *descr) {
 
    return (ret);
 }
+
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declfix_
- | COMMENT		: called from Fortran to declare a fixed dimension.
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from Fortran to declare a fixed dimension.
 \*--------------------------------------------------------------------*/
 long declfix_ (char *dname, ftnint *dval, ftnint *dmax, char *ddescr, ftnlen namelen, ftnlen descrlen) {
-	long	ret;
+  long	ret;
 
-	ret = decldim_ (dname, dval, dmax, ddescr, namelen, descrlen);
-	((DIMEN *)(dim_db->itm[dim_db->count - 1]))->fixed = TRUE;
+  ret = decldim_ (dname, dval, dmax, ddescr, namelen, descrlen);
+  ((DIMEN *)(dim_db->itm[dim_db->count - 1]))->fixed = TRUE;
 
-	return (ret);
+  return (ret);
 }
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getmodule
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-//MODULE_DATA * getmodule (char *key) { 
-//	MODULE_DATA *module;
-//	long i;
-//
-//	for (i = 0; i < module_db->count; i++) {
-//		module = (MODULE_DATA *)(module_db->itm[i]);
-//	   printf ("comparing %s to %s\n", key, module->name);
-//		if (!strcmp(module->name, key))
-//		return module;
-//	}
-//
-//	/* if no match found, return null */
-//	return NULL;
-//}

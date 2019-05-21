@@ -1,63 +1,45 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : graph_single_run
  * COMMENT  : graph routines for mms run
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define GRAPH_SINGLE_RUN_C
-#include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
-#include "mms.h"
+#include "structs.h"
+#include "globals.h"
+#include "defs.h"
+#include "protos.h"
 
 #define         MAXNUMBEROFGRAPHS               4
 
-/**5*********************** LOCAL VARIABLES ***************************/
 long NdispGraphs;
 static double zero_time;
 PUBVAR **disp_var;
 int *disp_ele;
 int numDispVars;
 
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : initializeRuntimeGraphs
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : int
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 int initializeRuntimeGraphs (void) {
-   CONTROL *control;
-   int i;
-   //long datetime[6];
-   DATETIME starttime_copy;
-   char *cptr, *cptr2;
+  CONTROL *control;
+  int i;
+  DATETIME starttime_copy;
+  char *cptr, *cptr2;
 
-   if (!runtime_graph_on) return (FALSE);
+  if (!runtime_graph_on) return (FALSE);
 
-   //dattim("start", datetime);
-   //zero_time = getjulday((int)datetime[1],(int)datetime[2],(int)datetime[0],
-			//(int)datetime[3], (int)datetime[4],(double)datetime[5]);
+  starttime_copy.year =Mstrttime->year;
+  starttime_copy.month =Mstrttime->month;
+  starttime_copy.day = Mstrttime->day;
+  starttime_copy.hour =Mstrttime->hour;
+  starttime_copy.min =Mstrttime->min;
+  starttime_copy.sec =Mstrttime->sec;
 
-      starttime_copy.year =Mstrttime->year;
-   starttime_copy.month =Mstrttime->month;
-   starttime_copy.day = Mstrttime->day;
-   starttime_copy.hour =Mstrttime->hour;
-   starttime_copy.min =Mstrttime->min;
-   starttime_copy.sec =Mstrttime->sec;
+  julday(&starttime_copy);
 
-   julday(&starttime_copy);
-
-   //zero_time = zero_time - 1.0;
-
-   zero_time = starttime_copy.jt;
+  zero_time = starttime_copy.jt;
 
 /*
 ** Get the number of display vars
@@ -83,7 +65,6 @@ int initializeRuntimeGraphs (void) {
          disp_var[i] = var_addr (cptr2);
 
          cptr = strdup ("dispVar_element");
-//         disp_ele[i] =  atoi (*control_sarray(cptr,i)) - 1;
          disp_ele[i] =  atoi (control_sarray(cptr,i)) - 1;
       }
    } else {
@@ -97,22 +78,15 @@ int initializeRuntimeGraphs (void) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : plotRuntimeGraphValue
- | COMMENT	:
- | PARAMETERS   :
- | RETURN VALUE : int
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 int plotRuntimeGraphValue (void) {
    double xval;
    float yval;
    int i;
-   //long datetime[6];
    DATETIME nowtime_copy;
 
    if (!runtime_graph_on) return (FALSE);
 
-
-   //dattim("now", datetime);
    nowtime_copy.year =Mnowtime->year;
    nowtime_copy.month =Mnowtime->month;
    nowtime_copy.day = Mnowtime->day;
@@ -121,8 +95,6 @@ int plotRuntimeGraphValue (void) {
    nowtime_copy.sec =Mnowtime->sec;
 
    julday(&nowtime_copy);
-   //xval = getjulday(datetime[1],datetime[2],datetime[0],
-	  //               datetime[3], datetime[4],(double)datetime[5]);
 
    xval = nowtime_copy.jt - zero_time;
 
@@ -153,10 +125,6 @@ int plotRuntimeGraphValue (void) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : closeRuntimeGraphs
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : int
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 int closeRuntimeGraphs (void) {
    if (!runtime_graph_on) return (FALSE);
