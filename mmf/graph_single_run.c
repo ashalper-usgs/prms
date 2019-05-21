@@ -6,6 +6,7 @@
  */
 
 #include <string.h>
+#include <stdlib.h>
 #include "structs.h"
 #include "globals.h"
 #include "defs.h"

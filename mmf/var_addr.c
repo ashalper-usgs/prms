@@ -6,6 +6,7 @@
  *            returns NULL if key not found
  */
 
+#include <string.h>
 #include "structs.h"
 #include "globals.h"
 

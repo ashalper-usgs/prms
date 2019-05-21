@@ -7,6 +7,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "structs.h"
 #include "defs.h"
 #include "protos.h"

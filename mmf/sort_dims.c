@@ -6,6 +6,7 @@
  *            structure is in increasing alphabetical order
  */
 
+#include <string.h>
 #include "structs.h"
 #include "globals.h"
 
