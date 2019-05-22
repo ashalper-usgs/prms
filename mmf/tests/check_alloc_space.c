@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <check.h>
-#include "../mms.h"
+#include "alloc_space.h"
 
 // Money *five_dollars;
 
