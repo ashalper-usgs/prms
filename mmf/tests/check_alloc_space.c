@@ -15,14 +15,15 @@ void setup(void)
 
 void teardown(void)
 {
-  // money_free(five_dollars);
+  free(cont_db);
 }
 
-START_TEST(test_default)
+START_TEST(test_cont_db)
 {
-  // ck_assert_int_eq(1, 1);
-  // ck_assert_str_eq(money_currency(five_dollars), "USD");
-  ck_abort_msg(cont_db);
+  ck_assert(0 < sizeof(*cont_db));
+  ck_assert_str_eq(cont_db->name, "Control Data Base");
+  ck_assert_int_eq(cont_db->size, 100);
+  ck_assert_int_eq(cont_db->count, 0);
 }
 END_TEST
 
@@ -39,7 +40,7 @@ Suite * alloc_space_suite(void)
     tc_core = tcase_create("Core");
 
     tcase_add_checked_fixture(tc_core, setup, teardown);
-    tcase_add_test(tc_core, test_default);
+    tcase_add_test(tc_core, test_cont_db);
     suite_add_tcase(s, tc_core);
 
     return s;
