@@ -75,8 +75,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-TESTS = alloc_space$(EXEEXT)
-check_PROGRAMS = alloc_space$(EXEEXT)
+TESTS = check_alloc_space$(EXEEXT)
+check_PROGRAMS = check_alloc_space$(EXEEXT)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/../depcomp $(top_srcdir)/../test-driver
@@ -88,10 +88,11 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am_alloc_space_OBJECTS = alloc_space-alloc_space.$(OBJEXT)
-alloc_space_OBJECTS = $(am_alloc_space_OBJECTS)
-alloc_space_DEPENDENCIES = ../libmmf.a
-alloc_space_LINK = $(CCLD) $(alloc_space_CFLAGS) $(CFLAGS) \
+am_check_alloc_space_OBJECTS =  \
+	check_alloc_space-check_alloc_space.$(OBJEXT)
+check_alloc_space_OBJECTS = $(am_check_alloc_space_OBJECTS)
+check_alloc_space_DEPENDENCIES = ../libmmf.a
+check_alloc_space_LINK = $(CCLD) $(check_alloc_space_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -125,8 +126,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(alloc_space_SOURCES)
-DIST_SOURCES = $(alloc_space_SOURCES)
+SOURCES = $(check_alloc_space_SOURCES)
+DIST_SOURCES = $(check_alloc_space_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -452,9 +453,9 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-alloc_space_SOURCES = ../alloc_space.c ../alloc_space.h
-alloc_space_CFLAGS = @CHECK_CFLAGS@
-alloc_space_LDADD = ../libmmf.a @CHECK_LIBS@
+check_alloc_space_SOURCES = check_alloc_space.c ../alloc_space.h
+check_alloc_space_CFLAGS = @CHECK_CFLAGS@
+check_alloc_space_LDADD = ../libmmf.a @CHECK_LIBS@
 all: all-am
 
 .SUFFIXES:
@@ -493,9 +494,9 @@ $(am__aclocal_m4_deps):
 clean-checkPROGRAMS:
 	-test -z "$(check_PROGRAMS)" || rm -f $(check_PROGRAMS)
 
-alloc_space$(EXEEXT): $(alloc_space_OBJECTS) $(alloc_space_DEPENDENCIES) $(EXTRA_alloc_space_DEPENDENCIES) 
-	@rm -f alloc_space$(EXEEXT)
-	$(AM_V_CCLD)$(alloc_space_LINK) $(alloc_space_OBJECTS) $(alloc_space_LDADD) $(LIBS)
+check_alloc_space$(EXEEXT): $(check_alloc_space_OBJECTS) $(check_alloc_space_DEPENDENCIES) $(EXTRA_check_alloc_space_DEPENDENCIES) 
+	@rm -f check_alloc_space$(EXEEXT)
+	$(AM_V_CCLD)$(check_alloc_space_LINK) $(check_alloc_space_OBJECTS) $(check_alloc_space_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -503,7 +504,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/alloc_space-alloc_space.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/check_alloc_space-check_alloc_space.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -519,19 +520,19 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c `$(CYGPATH_W) '$<'`
 
-alloc_space-alloc_space.o: ../alloc_space.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(alloc_space_CFLAGS) $(CFLAGS) -MT alloc_space-alloc_space.o -MD -MP -MF $(DEPDIR)/alloc_space-alloc_space.Tpo -c -o alloc_space-alloc_space.o `test -f '../alloc_space.c' || echo '$(srcdir)/'`../alloc_space.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/alloc_space-alloc_space.Tpo $(DEPDIR)/alloc_space-alloc_space.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='../alloc_space.c' object='alloc_space-alloc_space.o' libtool=no @AMDEPBACKSLASH@
+check_alloc_space-check_alloc_space.o: check_alloc_space.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_alloc_space_CFLAGS) $(CFLAGS) -MT check_alloc_space-check_alloc_space.o -MD -MP -MF $(DEPDIR)/check_alloc_space-check_alloc_space.Tpo -c -o check_alloc_space-check_alloc_space.o `test -f 'check_alloc_space.c' || echo '$(srcdir)/'`check_alloc_space.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/check_alloc_space-check_alloc_space.Tpo $(DEPDIR)/check_alloc_space-check_alloc_space.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='check_alloc_space.c' object='check_alloc_space-check_alloc_space.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(alloc_space_CFLAGS) $(CFLAGS) -c -o alloc_space-alloc_space.o `test -f '../alloc_space.c' || echo '$(srcdir)/'`../alloc_space.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_alloc_space_CFLAGS) $(CFLAGS) -c -o check_alloc_space-check_alloc_space.o `test -f 'check_alloc_space.c' || echo '$(srcdir)/'`check_alloc_space.c
 
-alloc_space-alloc_space.obj: ../alloc_space.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(alloc_space_CFLAGS) $(CFLAGS) -MT alloc_space-alloc_space.obj -MD -MP -MF $(DEPDIR)/alloc_space-alloc_space.Tpo -c -o alloc_space-alloc_space.obj `if test -f '../alloc_space.c'; then $(CYGPATH_W) '../alloc_space.c'; else $(CYGPATH_W) '$(srcdir)/../alloc_space.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/alloc_space-alloc_space.Tpo $(DEPDIR)/alloc_space-alloc_space.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='../alloc_space.c' object='alloc_space-alloc_space.obj' libtool=no @AMDEPBACKSLASH@
+check_alloc_space-check_alloc_space.obj: check_alloc_space.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_alloc_space_CFLAGS) $(CFLAGS) -MT check_alloc_space-check_alloc_space.obj -MD -MP -MF $(DEPDIR)/check_alloc_space-check_alloc_space.Tpo -c -o check_alloc_space-check_alloc_space.obj `if test -f 'check_alloc_space.c'; then $(CYGPATH_W) 'check_alloc_space.c'; else $(CYGPATH_W) '$(srcdir)/check_alloc_space.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/check_alloc_space-check_alloc_space.Tpo $(DEPDIR)/check_alloc_space-check_alloc_space.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='check_alloc_space.c' object='check_alloc_space-check_alloc_space.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(alloc_space_CFLAGS) $(CFLAGS) -c -o alloc_space-alloc_space.obj `if test -f '../alloc_space.c'; then $(CYGPATH_W) '../alloc_space.c'; else $(CYGPATH_W) '$(srcdir)/../alloc_space.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(check_alloc_space_CFLAGS) $(CFLAGS) -c -o check_alloc_space-check_alloc_space.obj `if test -f 'check_alloc_space.c'; then $(CYGPATH_W) 'check_alloc_space.c'; else $(CYGPATH_W) '$(srcdir)/check_alloc_space.c'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -726,9 +727,9 @@ recheck: all $(check_PROGRAMS)
 	        am__force_recheck=am--force-recheck \
 	        TEST_LOGS="$$log_list"; \
 	exit $$?
-alloc_space.log: alloc_space$(EXEEXT)
-	@p='alloc_space$(EXEEXT)'; \
-	b='alloc_space'; \
+check_alloc_space.log: check_alloc_space$(EXEEXT)
+	@p='check_alloc_space$(EXEEXT)'; \
+	b='check_alloc_space'; \
 	$(am__check_pre) $(LOG_DRIVER) --test-name "$$f" \
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_LOG_DRIVER_FLAGS) $(LOG_DRIVER_FLAGS) -- $(LOG_COMPILE) \
