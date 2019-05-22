@@ -20,7 +20,7 @@ void teardown(void)
 
 START_TEST(test_cont_db)
 {
-  ck_assert(0 < sizeof(*cont_db));
+  ck_assert_msg(0 < sizeof(*cont_db), "Expected sizeof(*cont_db) to be greater than zero");
   ck_assert_str_eq(cont_db->name, "Control Data Base");
   ck_assert_int_eq(cont_db->size, 100);
   ck_assert_int_eq(cont_db->count, 0);
