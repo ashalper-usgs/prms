@@ -20,6 +20,14 @@
 #include "defs.h"
 #include "protos.h"
 
+/* in alloc_space.c */
+extern READCHECK **Mcheckbase;
+extern long Mnreads;
+extern DATETIME *Mstrttime;
+extern DATETIME *Mendtime;
+extern DATETIME *Mnowtime;
+extern DATETIME *Mnexttime;
+
 static void INSERT_time (char *, DATETIME *);
 
 /*--------------------------------------------------------------------*\

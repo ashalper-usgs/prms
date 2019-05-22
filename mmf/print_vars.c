@@ -12,6 +12,16 @@
 #include "defs.h"
 #include "protos.h"
 
+/* in alloc_space.c */
+extern PUBVAR **Mvarbase;
+extern long Mnvars;
+extern DATETIME *Mstrttime;
+extern DATETIME *Mendtime;
+extern DATETIME *Mnowtime;
+
+/* in parse_args.c */
+extern char *MAltContFile;
+
 #define PRINTLEN 77
 
 /*--------------------------------------------------------------------*\

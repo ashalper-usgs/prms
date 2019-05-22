@@ -4,7 +4,6 @@
  * FUNCTION : batch_run_functions
  */
 
-/**1************************ INCLUDE FILES ****************************/
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -15,6 +14,14 @@
 #include "defs.h"
 #include "protos.h"
 #include "globals.h"
+
+/* in alloc_space.c */
+extern DATETIME *Mstrttime;
+extern DATETIME *Mendtime;
+extern DATETIME *Mnowtime;
+
+/* in parse_args.c */
+extern int preprocess_on;
 
 static FILE *statvar_file;
 static FILE **ani_out_files;

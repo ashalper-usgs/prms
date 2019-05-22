@@ -15,6 +15,9 @@
 #include "globals.h"
 #include "protos.h"
 
+/* in alloc_space.c */
+extern char *Mparaminfo;
+
 static int read_var_line (char *, char *, FILE *, char *);
 
 /*--------------------------------------------------------------------*\

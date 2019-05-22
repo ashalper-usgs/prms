@@ -8,6 +8,9 @@
 #include "structs.h"
 #include "protos.h"
 
+/* in parse_args.c */
+extern char *executable_model;
+
 extern void decl_control_string (char *key, char *valstr);
 extern void decl_control_int_array (char *key, long size, long *valstr);
 extern void decl_control_float_array (char *key, long size, float *valstr);

@@ -11,6 +11,11 @@
 #include "defs.h"
 #include "protos.h"
 
+/* in alloc_space.c */
+extern PUBVAR **Mvarbase;
+extern long Mnvars;
+extern long Mnparams;
+
 #define RESET_DIM_C 0
 #define VALUE_CASE 0
 #define MIN_CASE 1

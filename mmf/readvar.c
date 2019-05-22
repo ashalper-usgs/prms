@@ -14,6 +14,10 @@
 #include "protos.h"
 #include "globals.h"
 
+/* in alloc_space.c */
+extern READCHECK **Mcheckbase;
+extern long Mnreads;
+
 #define MISSING_VAR -999
 
 /**6**************** EXPORTED FUNCTION DEFINITIONS ********************/

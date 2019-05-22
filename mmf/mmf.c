@@ -14,19 +14,21 @@
 #include "protos.h"
 #include "mmf.h"
 
+/* in parse_args.c */
+extern char *MAltContFile;
+
+/* in parse_args.c */
+extern char *model_name;
+extern char *executable_model;
+extern batch_run_mode;
+extern int print_mode;
+extern int run_period_of_record;
+extern int runtime_graph_on;
+extern int preprocess_on;
+
 extern int call_modules(char *);
 extern int call_setdims(void);
 
-int max_data_ln_len;	/* now possible to set this on command line */
-char *MAltContFile = NULL;	/* Alt. name of control file */
-char *model_name = NULL;
-char *executable_model = NULL;
-int batch_run_mode = FALSE;	/* flag for running in batch mode  */
-int run_period_of_record = FALSE; /* flag for running entire period of
-				     record in batch mode  */
-int print_mode = FALSE;
-int runtime_graph_on = FALSE;
-int preprocess_on = FALSE;   /* flag for running in preprocess mode */
 LIST *module_db;
 MODULE_DATA *current_module;
 PARAM **unsort_params = NULL;	/* pointer to unsorted parameters */

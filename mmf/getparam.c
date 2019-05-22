@@ -14,6 +14,9 @@
 #include "protos.h"
 #include "globals.h"
 
+/* in alloc_space.c */
+extern char *Mdatainfo;
+
 static long paramcopy (PARAM *, double *, int);
 
 /*--------------------------------------------------------------------*\

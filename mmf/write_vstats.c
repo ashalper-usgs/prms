@@ -11,6 +11,9 @@
 #include "globals.h"
 #include "defs.h"
 
+/* in alloc_space.c */
+extern DATETIME *Mnowtime;
+
 /*--------------------------------------------------------------------*\
  | FUNCTION     : write_vstats
  | RETURN VALUE : None.

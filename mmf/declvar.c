@@ -14,6 +14,13 @@
 #include "protos.h"
 #include "globals.h"
 
+/* in alloc_space.c */
+extern int max_vars;
+extern PUBVAR **Mvarbase;
+extern long Mnvars;
+
+extern long Mdebuglevel;	/* in parse_args.c */
+
 #define LONG 1
 #define FLOAT 2
 #define DOUBLE 3

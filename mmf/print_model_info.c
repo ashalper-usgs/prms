@@ -8,6 +8,9 @@
 #include "structs.h"
 #include "globals.h"
 
+/* in parse_args.c */
+extern char *MAltContFile;
+
 #define PRINTLEN 77
 
 /*--------------------------------------------------------------------*\

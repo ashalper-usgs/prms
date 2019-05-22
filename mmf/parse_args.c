@@ -11,6 +11,18 @@
 #include "globals.h"
 #include "defs.h"
 
+long Mdebuglevel = 0;		/* the current debug level */
+char *MAltContFile = NULL;	/* Alt. name of control file */
+char *model_name = NULL;
+char *executable_model = NULL;
+int batch_run_mode = FALSE;	/* flag for running in batch mode  */
+int print_mode = FALSE;
+int run_period_of_record = FALSE; /* flag for running entire period of
+				     record in batch mode  */
+int runtime_graph_on = FALSE;
+int preprocess_on = FALSE;   /* flag for running in preprocess mode */
+int max_data_ln_len;	/* now possible to set this on command line */
+
 /*--------------------------------------------------------------------*\
  | FUNCTION     : parse_args
  | RETURN VALUE : None.

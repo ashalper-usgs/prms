@@ -12,6 +12,10 @@
 #include "protos.h"
 #include "globals.h"
 
+/* in alloc_space.c */
+extern LIST *dim_db;
+extern long Mnparams;
+
 static void write_parameters (FILE *, int);
 static void write_dimensions (FILE *);
 static void write_header (FILE *, char *);

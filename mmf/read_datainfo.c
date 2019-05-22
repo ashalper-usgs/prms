@@ -14,6 +14,11 @@
 #include "defs.h"
 #include "protos.h"
 
+/* in alloc_space.c */
+extern int max_read_vars;
+extern READCHECK **Mcheckbase;
+extern long Mnreads;
+
 /*--------------------------------------------------------------------*\
  | FUNCTION     : read_datainfo
 \*--------------------------------------------------------------------*/

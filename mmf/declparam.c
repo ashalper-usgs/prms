@@ -15,6 +15,14 @@
 #include "globals.h"
 #include "protos.h"
 
+/* in alloc_space.c */
+extern int max_params;
+extern PARAM **Mparambase;
+extern long Mnparams;
+
+/* in parse_args.c */
+extern int preprocess_on;
+
 static int CHECK_param_in_db (char *, char *, char *, int, char *, char *, char *, char *, char *, char *);
 static int VAR_type (char *);
 

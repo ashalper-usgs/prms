@@ -12,6 +12,10 @@
 #include "defs.h"
 #include "protos.h"
 
+/* in alloc_space.c */
+extern DATETIME *Mstrttime;
+extern DATETIME *Mnowtime;
+
 #define         MAXNUMBEROFGRAPHS               4
 
 long NdispGraphs;

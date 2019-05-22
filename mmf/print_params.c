@@ -12,6 +12,15 @@
 #include "defs.h"
 #include "protos.h"
 
+/* in alloc_space.c */
+extern LIST *dim_db;
+extern PARAM **Mparambase;
+extern long Mnparams;
+extern char *Mparaminfo;
+
+/* in parse_args.c */
+extern char *MAltContFile;
+
 /*--------------------------------------------------------------------*\
  | FUNCTION     : print_params
 \*--------------------------------------------------------------------*/

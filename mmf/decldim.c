@@ -15,6 +15,9 @@
 #include "protos.h"
 #include "globals.h"
 
+extern LIST *dim_db;		/* in alloc_space.c */
+extern long Mdebuglevel;	/* in parse_args.c */
+
 /*--------------------------------------------------------------------*\
  | FUNCTION     : decldim_
  | COMMENT	: called from Fortran, sorts out args and calls decldim()

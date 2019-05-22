@@ -11,6 +11,8 @@
 #include "structs.h"
 #include "globals.h"
 
+extern LIST *cont_db;		/* in alloc_space.c */
+
 CONTROL *control_addr (char *key) { 
   CONTROL *cp;
   int i;

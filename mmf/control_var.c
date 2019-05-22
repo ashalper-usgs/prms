@@ -17,6 +17,9 @@
 #include "protos.h"
 #include "globals.h"
 
+/* in parse_args.c */
+extern char *MAltContFile;
+
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_var
  | COMMENT		: returns a pointer to the start of the variable

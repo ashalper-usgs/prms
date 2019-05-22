@@ -14,6 +14,11 @@
 #include "protos.h"
 #include "globals.h"
 
+/* in alloc_space.c */
+extern DATETIME *Mstrttime;
+extern DATETIME *Mendtime;
+extern DATETIME *Mnowtime;
+
 /**************************************************************************
  * dattim and dattim_ : get start, end or current data date and time
  *

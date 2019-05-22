@@ -10,6 +10,10 @@
 #include "protos.h"
 #include "globals.h"
 
+/* in alloc_space.c */
+extern DATETIME *Mstrttime;
+extern DATETIME *Mendtime;
+
 /*--------------------------------------------------------------------*\
  | FUNCTION     : get_times
 \*--------------------------------------------------------------------*/

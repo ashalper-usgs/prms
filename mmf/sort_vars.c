@@ -10,6 +10,9 @@
 #include "structs.h"
 #include "globals.h"
 
+/* in alloc_space.c */
+extern PUBVAR **Mvarbase;
+
 /*--------------------------------------------------------------------*\
  | FUNCTION     : sort_vars
 \*--------------------------------------------------------------------*/

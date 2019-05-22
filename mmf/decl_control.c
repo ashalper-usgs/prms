@@ -12,6 +12,8 @@
 #include "defs.h"
 #include "protos.h"
 
+extern LIST *cont_db;		/* in alloc_space.c */
+
 /*--------------------------------------------------------------------*\
  | FUNCTION     : add_control
  | COMMENT	: This allocates a control structure and adds it to the
