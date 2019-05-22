@@ -10,6 +10,7 @@
 #include "globals.h"
 #include "defs.h"
 #include "protos.h"
+#include "mmf.h"
 #include "alloc_space.h"
 
 void alloc_space (void) {
@@ -21,11 +22,6 @@ void alloc_space (void) {
    * space for the dimension pointer array
    */
 
-/*
-  max_dims = 50;
-  Mdimbase = (DIMEN **) umalloc (max_dims * sizeof(DIMEN *));
-  Mndims = 0;
-*/
 	dim_db = ALLOC_list ("Dimension Data Base", 0, 50);
 
   /*
