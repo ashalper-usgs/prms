@@ -55,12 +55,8 @@ void alloc_space (void) {
   Mvarbase = (PUBVAR **) umalloc (max_vars * sizeof(PUBVAR *));
   Mnvars = 0;
 
-/*
-	var_db = ALLOC_list ("Variable data base", 0, 100);
-*/
-
   /*
-   * space for the parameter pointer  array
+   * space for the parameter pointer array
    */
 
   max_params = 500;
@@ -77,10 +73,6 @@ void alloc_space (void) {
   max_read_vars = 50;
   Mcheckbase = (READCHECK **) umalloc (max_read_vars * sizeof(READCHECK *));
   Mnreads = 0;
-
-/*
-	read_var_db = ALLOC_list ("Paraameter data base", 0, 100);
-*/
 
 /*
 * space for time structures
