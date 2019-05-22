@@ -21,6 +21,8 @@ prms_SOURCES = basin.f90 basin_sum.f90 basin_summary.f90		\
                water_balance.f90 water_use_read.f90			\
                write_climate_hru.f90 xyz_dist.f
 
+prms_LDADD = ../mmf/libmmf.a
+
 nodist_prms_SOURCES = prms_module.mod
 
 BUILT_SOURCES = climateflow.mod prms_basin.mod prms_cascade.mod		\
