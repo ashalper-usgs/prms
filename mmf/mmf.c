@@ -12,13 +12,13 @@
 #include "defs.h"
 #include "globals.h"
 #include "protos.h"
+#include "mmf.h"
 
 extern int call_modules(char *);
 extern int call_setdims(void);
 
 int max_data_ln_len;	/* now possible to set this on command line */
 char *MAltContFile = NULL;	/* Alt. name of control file */
-long Mdebuglevel = 0;		/* the current debug level */
 char *model_name = NULL;
 char *executable_model = NULL;
 int batch_run_mode = FALSE;	/* flag for running in batch mode  */
@@ -27,22 +27,8 @@ int run_period_of_record = FALSE; /* flag for running entire period of
 int print_mode = FALSE;
 int runtime_graph_on = FALSE;
 int preprocess_on = FALSE;   /* flag for running in preprocess mode */
-LIST *cont_db;
-LIST *dim_db;
 LIST *module_db;
 MODULE_DATA *current_module;
-PUBVAR **Mvarbase = NULL;  /* pointer to public variables data base */
-long Mnvars = 0;	   /* no of public variables in data base */
-PARAM **Mparambase = NULL; /* pointer to parameter data base */
-long Mnparams = 0;	   /* no of params in data base */
-READCHECK **Mcheckbase = NULL;	/* pointer to read check data base */
-long Mnreads = 0;	   /* max no. of calls to be made by readvar */
-DATETIME *Mstrttime = NULL;	/* pointer to start time structure */
-DATETIME *Mendtime = NULL;	/* pointer to end time structure */
-DATETIME *Mnowtime = NULL; /* pointer to current data time structure */
-DATETIME *Mnexttime = NULL;  /* pointer to next data time structure */
-char *Mparaminfo = NULL;     /* pointer to param information string */
-char *Mdatainfo = NULL;	     /* pointer to data information string */
 PARAM **unsort_params = NULL;	/* pointer to unsorted parameters */
 FILE_DATA   **fd = NULL;
 long Mnsteps = 0;      /* the number of steps so far */
@@ -55,9 +41,6 @@ STAT_LIST_TYPE *Mfirst_stat_list = NULL; /* pointer to first entry
 					    in stats link list */
 char *Mtypes[] = {"", "long", "float", "double", "string", "", "","", "", ""};
 long ParamBaseIsDirty = FALSE;
-int max_vars;
-int max_params;
-int max_read_vars;
 int max_dims;
 int max_controls;
 
