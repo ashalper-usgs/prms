@@ -1,4 +1,7 @@
+/*.log
 /*.o
+/*.trs
 /*~
 /.deps/
 /Makefile
+/check_alloc_space
