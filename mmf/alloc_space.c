@@ -9,6 +9,9 @@
 #include <string.h>
 #include "structs.h"
 #include "globals.h"
+#include "defs.h"
+#include "protos.h"
+#include "build_lists.h"
 #include "alloc_space.h"
 
 void alloc_space (void) {

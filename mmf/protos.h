@@ -340,7 +340,6 @@ EXTERN int isleap (int);
 #define EXTERN extern
 #endif
 
-EXTERN LIST *ALLOC_list (char *, int, int);
 EXTERN void RESIZE_list (LIST *, int);
 EXTERN void DELETE_list (LIST *);
 EXTERN void ADD_to_list (LIST *, void *);

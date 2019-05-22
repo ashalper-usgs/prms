@@ -1,15 +1,10 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : xmms
  * COMMENT  : main driver for xmms
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
 #define MAIN
 #define MMF_C
 
@@ -18,9 +13,8 @@
 #include <sys/stat.h>
 #include <string.h>
 #include "mms.h"
+#include "build_lists.h"
 
-
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 extern int call_modules(char *);
 extern int call_setdims(void);
 
