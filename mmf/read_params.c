@@ -1,25 +1,19 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : read_params
  * COMMENT  : reads the params data base from a file
  *            File name is passed in as an argument
- *
- * $Id$
- * Last modified 03/27/2018 RSR modified for multiple values per line separated by spaces
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define READ_PARAMS_C
-#include <stdio.h>
 #include <string.h>
-#include <math.h>
+#include <stdlib.h>
 #include <errno.h>
 #include <ctype.h>
-#include <stdlib.h>
-#include "mms.h"
+#include "structs.h"
+#include "defs.h"
+#include "protos.h"
+#include "globals.h"
 
 static char *READ_param_head (PARAM **, int);
 static char *READ_param_values (long, long, char *, char *, char[], char *, char *, int);
@@ -41,11 +35,7 @@ static void bad_param_value (double, int, char *, double, double);
 
 static char* dimNames[] = {"nhru", "nsegment", "nrain", "ntemp", "nobs", "ngw", "nssr"};
 
-//static char* mapParamNames[] = {"hru_subbasin", "segment_subbasin",
-//	"rain_subbasin", "temp_subbasin", "obs_subbasin", "gw_subbasin",
-//	"ssr_subbasin"
-static char* mapParamNames[] = { "bad", "bad1",	"bad2", "bad3", "bad4", "bad5",	"bad6"
-};
+static char* mapParamNames[] = { "bad", "bad1",	"bad2", "bad3", "bad4", "bad5",	"bad6" };
 
 int nComments;
 char **Comments;
@@ -53,14 +43,11 @@ static int lineNumber;
 static FILE *param_file;
 static char *line = NULL;
 static char *key = NULL;
-static char file_name[256];
+static char file_name[FILENAME_MAX];
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : read_params
- | COMMENT		: This is called from within a loop for each parameter file
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: This is called from within a loop for each parameter file
 \*--------------------------------------------------------------------*/
 char *read_params (char *param_file_name, int index, int mapping_flag) {
   	char *cptr;
@@ -78,9 +65,6 @@ char *read_params (char *param_file_name, int index, int mapping_flag) {
 /*--------------------------------------------------------------------*\
  | FUNCTION     : read_dims
  | COMMENT	: This is called once from MMF for the first parameter file
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 char *read_dims (char *param_file_name) {
 	DIMEN *dim;
@@ -285,10 +269,6 @@ char *read_dims (char *param_file_name) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : rp
- | COMMENT	:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 static char *rp (int index, int map_flag) {
 	PARAM *param;
@@ -624,12 +604,9 @@ static char *rp (int index, int map_flag) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : READ_param_head
- | COMMENT		: Read the preliminary stuff for the parameter.  This is
- |                 the stuff between the ####s and where the data actually
- |                 starts.
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: Read the preliminary stuff for the parameter.  This is
+ |                the stuff between the ####s and where the data actually
+ |                starts.
 \*--------------------------------------------------------------------*/
 static char *READ_param_head (PARAM **param_ptr, int map_flag) {
 	char dimen[MAXDATALNLEN];
@@ -840,10 +817,7 @@ static char *READ_param_head (PARAM **param_ptr, int map_flag) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : READ_param_values
- | COMMENT		: Read the values and comments for the parameter.
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: Read the values and comments for the parameter.
 \*--------------------------------------------------------------------*/
 static char *READ_param_values (long size, long type, char *name,
 				char *value, char *line, char *min_string, char *max_string,
@@ -995,23 +969,17 @@ static char *READ_param_values (long size, long type, char *name,
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : checkForValidDimensions
- | COMMENT		: local
- | PARAMETERS   :
+ | COMMENT	: local
  | RETURN VALUE : 0 = good;  1 = bad
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 static int checkForValidDimensions (PARAM *param_ptr) {
 	int i, badFlag;
-
-//	printf ("checkForValidDimensions name = %s\n", param_ptr->name);
-//	printf ("   pf_ndimen = %d; module_ndimen = %d\n", (int)(param_ptr->pf_ndimen), (int)(param_ptr->ndimen));
 
 	if (param_ptr->pf_ndimen > param_ptr->ndimen ) { // more dimensions in the parameter file is always invalid
 		return 1;
 
 	} else if (param_ptr->pf_ndimen == param_ptr->ndimen ) {
 		for (i = 0; i < param_ptr->pf_ndimen; i++) {  // check each dimension for compatiblilty
-//printf ("   1 comparing %s to %s\n", param_ptr->pf_dimNames[i], param_ptr->dimen[i]->name);
 			badFlag = isDimensionIncompatable (param_ptr->pf_dimNames[i], param_ptr->dimen[i]->name); // 0 = good;  1 = bad
 		}
 		if (badFlag == 1) {
@@ -1020,9 +988,7 @@ static int checkForValidDimensions (PARAM *param_ptr) {
 
 	} else { // less dimensions in the parameter file than declared in the module.
 		badFlag = 1;
-//printf ("   2 parameter file has %d dimensions\n", param_ptr->pf_ndimen);
 		for (i = 0; i < param_ptr->ndimen; i++) {  // check each dimension for compatiblilty; only need to find one that is compatable
-//printf ("   2 comparing %s to %s\n", param_ptr->pf_dimNames[0], param_ptr->dimen[i]->name);
 			if (badFlag == 1) {
 				badFlag = isDimensionIncompatable (param_ptr->pf_dimNames[0], param_ptr->dimen[i]->name); // 0 = good;  1 = bad
 			}
@@ -1032,58 +998,15 @@ static int checkForValidDimensions (PARAM *param_ptr) {
 		}
 	}
 
-	//param_ptr->ndimen
 	return 0;
 } // checkForValidDimensions
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : isDimensionIncompatable
- | COMMENT		: local
- | PARAMETERS   :
+ | COMMENT	: local
  | RETURN VALUE : 0 = good;  1 = bad
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 static int isDimensionIncompatable (char *pfDimName, char *modDimName) {
-//	char *dimNames[] ={"one",
-//		"ncascade",
-//		"ncascdgw",
-//		"nsegment",
-//		"npoigages",
-//		"nsub",
-//		"nhrucell",
-//		"ngw",
-//		"nhru",
-//		"nssr",
-//		"nsfres",
-//		"nlake",
-//		"nrain",
-//		"nsol",
-//		"ntemp",
-//		"nratetbl",
-//		"nwateruse",
-//		"ndepl",
-//		"ndeplval",
-//		"ndays",
-//		"nmonths",
-//		"nlapse",
-//		"nobs",
-//		"nsnow",
-//		"nform",
-//		"nevap",
-//		"nsfelev",
-//		"nlakeelev",
-//		"nwind",
-//		"nhumid",
-//		"ngate",
-//		"nstage",
-//		"ngate2",
-//		"nstage2",
-//		"ngate3",
-//		"nstage3",
-//		"ngate4",
-//		"nstage4",
-//		"mxnsos",
-//	};
 
 	if (!strncmp (pfDimName, modDimName, 10)) {  // a dimension is compatable with itself
 		return 0; 
@@ -1095,12 +1018,12 @@ static int isDimensionIncompatable (char *pfDimName, char *modDimName) {
 
 	// Subbasin (nsub) can be mapped to these dimensions with mapping parameter
 	// "nhru" "hru_subbasin";
-    // "nsegment" "segment_subbasin";
-    // "nrain" "rain_subbasin";
-    // "ntemp" "temp_subbasin";
-    // "nobs"  "obs_subbasin";
-    // "ngw" "gw_subbasin";
-    // "nssr" "ssr_subbasin";
+	// "nsegment" "segment_subbasin";
+	// "nrain" "rain_subbasin";
+	// "ntemp" "temp_subbasin";
+	// "nobs"  "obs_subbasin";
+	// "ngw" "gw_subbasin";
+	// "nssr" "ssr_subbasin";
 	if (!strncmp (pfDimName, "nsub", 4)) {
 		if (!strncmp (modDimName, "nhru", 4)) {
 			return 0;
@@ -1129,10 +1052,7 @@ static int isDimensionIncompatable (char *pfDimName, char *modDimName) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getParamFileParamSize
- | COMMENT		: local
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: local
 \*--------------------------------------------------------------------*/
 static int getParamFileParamSize (PARAM *param) {
 	int i, size;
@@ -1146,10 +1066,7 @@ static int getParamFileParamSize (PARAM *param) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : oneToAnySizedArray
- | COMMENT		: local
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: local
 \*--------------------------------------------------------------------*/
 static void oneToAnySizedArray(PARAM *param, char *pf_value) {
 	int i;
@@ -1175,10 +1092,7 @@ static void oneToAnySizedArray(PARAM *param, char *pf_value) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getMapParamName
- | COMMENT		: local
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: local
 \*--------------------------------------------------------------------*/
 static char *getMapParamName(char *name) {
 	char *mapParamName;
@@ -1196,10 +1110,7 @@ static char *getMapParamName(char *name) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : subbasinTo1DArray
- | COMMENT		: local
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: local
 \*--------------------------------------------------------------------*/
 static void subbasinTo1DArray (PARAM *param, PARAM *mapping_param, char *pf_value) {
 	int i, map;
@@ -1232,10 +1143,8 @@ static void subbasinTo1DArray (PARAM *param, PARAM *mapping_param, char *pf_valu
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : open_parameter_file
- | COMMENT		: local
- | PARAMETERS   :
+ | COMMENT	: local
  | RETURN VALUE : error message otherwise NULL
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 static char *open_parameter_file () {
     param_file = NULL;
@@ -1248,10 +1157,7 @@ static char *open_parameter_file () {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : close_parameter_file
- | COMMENT		: local
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: local
 \*--------------------------------------------------------------------*/
 static void close_parameter_file () {
 	if (param_file != NULL) {
@@ -1263,10 +1169,8 @@ static void close_parameter_file () {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : get_next_line
- | COMMENT		: Use this only to read line from parameter file
- | PARAMETERS   :
+ | COMMENT	: Use this only to read line from parameter file
  | RETURN VALUE : Pointer to "line" string if read was successful
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 static char *get_next_line () {
 	char *line_p;
@@ -1289,10 +1193,7 @@ static char *get_next_line () {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : error_string
- | COMMENT		: Generates an error message
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: Generates an error message
 \*--------------------------------------------------------------------*/
 static char *error_string (char *message) {
 	static char buf[256];
@@ -1302,10 +1203,7 @@ static char *error_string (char *message) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : warning_string
- | COMMENT		: Generates a warning message.
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: Generates a warning message.
 \*--------------------------------------------------------------------*/
 static char *warning_string (char *message) {
 	static char buf[256];
@@ -1315,10 +1213,7 @@ static char *warning_string (char *message) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : bad_param_value_l
- | COMMENT		: Generates the warning message when a long value is out of range.
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: Generates the warning message when a long value is out of range.
 \*--------------------------------------------------------------------*/
 static void bad_param_value_l (long l, int i, char *name, long min_l, long max_l) {
 	static char buf[256];
@@ -1331,10 +1226,7 @@ static void bad_param_value_l (long l, int i, char *name, long min_l, long max_l
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : bad_param_value
- | COMMENT		: Generates the warning message when a double or float value is out of range.
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: Generates the warning message when a double or float value is out of range.
 \*--------------------------------------------------------------------*/
 static void bad_param_value (double d, int i, char *name, double min_d, double max_d) {
 	static char buf[256];

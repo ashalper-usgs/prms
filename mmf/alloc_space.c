@@ -5,7 +5,6 @@
  * COMMENT  : Allocates space for variables.
  */
 
-#define ALLOC_SPACE_C
 #include <string.h>
 #include "structs.h"
 #include "globals.h"
@@ -13,6 +12,24 @@
 #include "protos.h"
 #include "build_lists.h"
 #include "alloc_space.h"
+
+LIST *cont_db;
+LIST *dim_db;
+int max_vars;
+PUBVAR **Mvarbase = NULL;   /* pointer to public variables database */
+long Mnvars = 0;	    /* no of public variables in database */
+int max_params;
+PARAM **Mparambase = NULL;  /* pointer to parameter database */
+long Mnparams = 0;	    /* no of params in database */
+int max_read_vars;
+READCHECK **Mcheckbase = NULL;	/* pointer to read check database */
+long Mnreads = 0;	  /* max no. of calls to be made by readvar */
+DATETIME *Mstrttime = NULL;	/* pointer to start time structure */
+DATETIME *Mendtime = NULL;	/* pointer to end time structure */
+DATETIME *Mnowtime = NULL; /* pointer to current data time structure */
+DATETIME *Mnexttime = NULL;  /* pointer to next data time structure */
+char *Mparaminfo = NULL;     /* pointer to param information string */
+char *Mdatainfo = NULL;	     /* pointer to data information string */
 
 void alloc_space (void) {
 	static DATETIME start, end, now, next;
@@ -23,11 +40,6 @@ void alloc_space (void) {
    * space for the dimension pointer array
    */
 
-/*
-  max_dims = 50;
-  Mdimbase = (DIMEN **) umalloc (max_dims * sizeof(DIMEN *));
-  Mndims = 0;
-*/
 	dim_db = ALLOC_list ("Dimension Data Base", 0, 50);
 
   /*
@@ -44,12 +56,8 @@ void alloc_space (void) {
   Mvarbase = (PUBVAR **) umalloc (max_vars * sizeof(PUBVAR *));
   Mnvars = 0;
 
-/*
-	var_db = ALLOC_list ("Variable data base", 0, 100);
-*/
-
   /*
-   * space for the parameter pointer  array
+   * space for the parameter pointer array
    */
 
   max_params = 500;
@@ -66,10 +74,6 @@ void alloc_space (void) {
   max_read_vars = 50;
   Mcheckbase = (READCHECK **) umalloc (max_read_vars * sizeof(READCHECK *));
   Mnreads = 0;
-
-/*
-	read_var_db = ALLOC_list ("Paraameter data base", 0, 100);
-*/
 
 /*
 * space for time structures

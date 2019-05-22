@@ -1,27 +1,17 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : free_vstats
  * COMMENT  : free linked list for stats variables
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define FREE_VSTATS_C
-#include <stdio.h>
-#include <string.h>
-#include "mms.h"
+#include "structs.h"
+#include "defs.h"
+#include "globals.h"
+#include "protos.h"
 
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : free_vstats
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 void free_vstats (void) {
   long nstatVars;

@@ -1,42 +1,46 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : batch_run_functions
- * COMMENT  :
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "mms.h"
+#include "structs.h"
+#include "defs.h"
+#include "protos.h"
+#include "globals.h"
 
-/**5*********************** LOCAL VARIABLES ***************************/
-  static FILE *statvar_file;
-  static FILE **ani_out_files;
-  static long nstatVars, naniVars;
-  static char **statVar_names, **statVar_element;
-  static char **aniVar_names;
-  static char statvar_path[MAXPATHLEN];
-  static char ani_path[MAXPATHLEN];
-  static char buf[256];
-  static long i, j, stats_flag, ani_out_flag;
-  static char  *err_message, *c;
-  static char   err[256];
-  static int       started;
-  static PUBVAR    **ani_out_vars, *var;
-  static DIMEN **ani_out_dims, *dim;
-  static DIMEN *nhrudim, *ngwdim, *nssrdim, *foobar;
-  static FILE **ani_var_files;
-  static int num_ani_dims, found, k;
-  static DATETIME start_of_data, end_of_data;
+/* in alloc_space.c */
+extern DATETIME *Mstrttime;
+extern DATETIME *Mendtime;
+extern DATETIME *Mnowtime;
+
+/* in parse_args.c */
+extern int preprocess_on;
+
+static FILE *statvar_file;
+static FILE **ani_out_files;
+static long nstatVars, naniVars;
+static char **statVar_names, **statVar_element;
+static char **aniVar_names;
+static char statvar_path[FILENAME_MAX];
+static char ani_path[FILENAME_MAX];
+static char buf[256];
+static long i, j, stats_flag, ani_out_flag;
+static char  *err_message, *c;
+static char   err[256];
+static int       started;
+static PUBVAR    **ani_out_vars, *var;
+static DIMEN **ani_out_dims, *dim;
+static DIMEN *nhrudim, *ngwdim, *nssrdim, *foobar;
+static FILE **ani_var_files;
+static int num_ani_dims, found, k;
+static DATETIME start_of_data, end_of_data;
 
 /**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\
@@ -127,7 +131,7 @@ char *single_run_pre_init () {
 * Open statvar file, and store number of variables and variable names
 */
   if (stats_flag) {
-    (void)snprintf(statvar_path, MAXPATHLEN, "%s", *((char **) control_var("stat_var_file")));
+    (void)snprintf(statvar_path, FILENAME_MAX, "%s", *((char **) control_var("stat_var_file")));
 
     if ((statvar_file = fopen(statvar_path, "w")) == NULL) {
       (void)snprintf (err, 256, "ERROR - single_run: Could not open statvar file '%s'\n",
@@ -152,7 +156,7 @@ char *single_run_pre_init () {
 */
   if (ani_out_flag) {
     aniVar_names = (char **) control_var("aniOutVar_names");
-    (void)snprintf(ani_path, MAXPATHLEN, "%s", *((char **) control_var("ani_output_file")));
+    (void)snprintf(ani_path, FILENAME_MAX, "%s", *((char **) control_var("ani_output_file")));
 
     ani_out_dims = (DIMEN **)malloc (naniVars * sizeof (DIMEN *));
     ani_var_files = (FILE **)malloc (naniVars * sizeof (FILE *));

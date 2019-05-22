@@ -1,35 +1,26 @@
-/*+
+/*
 ** DANGER looks for spaces before comment and sets them to null so
 ** data part of the line does not have any part of the comment
- * United States Geological Survey
+ * United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : read_control
  * COMMENT  : reads the control data base from a file
  *            File name is obtained from the environment variable "mms_control_file"
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define READ_CONTROL_C
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "structs.h"
+#include "defs.h"
+#include "protos.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static char *rc (char *);
 char *fgets_rc (char *, int , FILE *);
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : read_control
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 char *read_control (char *control_name) {
    static char *foo = NULL;
@@ -58,10 +49,6 @@ char *read_control (char *control_name) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : rc
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 static char *rc (char *control_name) {
    FILE   *control_file;
@@ -228,10 +215,7 @@ static char *rc (char *control_name) {
 /*--------------------------------------------------------------------*\
  | FUNCTION     : fgets_rc
  | COMMENT      : replacement in read_control functions for fgets which
- |                stripps off comments.
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
+ |                strips off comments.
 \*--------------------------------------------------------------------*/
 char *fgets_rc (char *str, int num, FILE *stream) {
    char *ptr, *ptr2;

@@ -1,5 +1,4 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : load_param
@@ -7,23 +6,16 @@
  *            required address.  Uses str_to_vals to decode the strings and
  *            store the values. This routine mainly handles the error conditions.
  *            Examples of legal strings for this routine are given in str_to_vals.c
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define LOAD_PARAM_C
-#include <stdio.h>
 #include <string.h>
-#include "mms.h"
+#include "structs.h"
+#include "defs.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : load_param
- | COMMENT		:
- | PARAMETERS   :
  | RETURN VALUE : Returns 0 if successful, 1 otherwise.
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 long load_param (PARAM *param) {
 

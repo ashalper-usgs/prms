@@ -1,28 +1,26 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : read_datainfo
  * COMMENT  : reads the data file and updates the
  *            datainfo string and the data variable names and sizes
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define READ_DATAINFO_C
-#include <errno.h>
 #include <string.h>
 #include <stdlib.h>
-#include "mms.h"
+#include <errno.h>
+#include "structs.h"
+#include "globals.h"
+#include "defs.h"
+#include "protos.h"
+
+/* in alloc_space.c */
+extern int max_read_vars;
+extern READCHECK **Mcheckbase;
+extern long Mnreads;
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : read_datainfo
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 char *read_datainfo (FILE_DATA *fd) {
 

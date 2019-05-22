@@ -1,5 +1,4 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : putvar() to be called from C
@@ -7,29 +6,20 @@
  *            Returns 0 if successful, 1 otherwise.
  * COMMENT  : gets the value associated with a module and name, and copies
  *            it into the variable provided by the calling routine.
- *
-* $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define PUTVAR_C
-#include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : putvar_
- | COMMENT		: called from Fortran, sorts out args and calls putvar()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from Fortran, sorts out args and calls putvar()
 \*--------------------------------------------------------------------*/
 long putvar_ (char *mname, char *vname, ftnint *vmaxsize, char *vtype, double *value, 
 	     ftnlen mnamelen, ftnlen vnamelen, ftnlen vtypelen) {
 
-//  char *module, *name, *type;
   char module[80], name[80], type[80];
   long maxsize, retval;
 
@@ -43,18 +33,6 @@ long putvar_ (char *mname, char *vname, ftnint *vmaxsize, char *vtype, double *v
    * copy args to new strings, and terminate
    */
 
-//  module = (char *) umalloc(mnamelen + 1);
-//  strncpy(module, mname, mnamelen);
-//  module[mnamelen] = '\0';
-
-//  name = (char *) umalloc(vnamelen + 1);
-//  strncpy(name, vname, vnamelen);
-//  name[vnamelen] = '\0';
-
-//  type = (char *) umalloc(vtypelen + 1);
-//  strncpy(type, vtype, vtypelen);
-//  type[vtypelen] = '\0';
-
     strncpy (module, mname, mnamelen);
     *(module + mnamelen) = '\0';
 
@@ -63,7 +41,6 @@ long putvar_ (char *mname, char *vname, ftnint *vmaxsize, char *vtype, double *v
 
     strncpy (type, vtype, vtypelen);
     *(type + vtypelen) = '\0';
-
 
   /*
    * call C version of putvar()
@@ -77,16 +54,12 @@ long putvar_ (char *mname, char *vname, ftnint *vmaxsize, char *vtype, double *v
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : putvar
- | COMMENT		: called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from C
 \*--------------------------------------------------------------------*/
 long putvar (char *module, char *name, long maxsize, char *type, double *value) {
   int var_type;
   PUBVAR *var;
-//  char *vkey;
-    char vkey[128];
+  char vkey[128];
   long i;
   long n1, n2;
   char *ptr1;
@@ -96,16 +69,10 @@ long putvar (char *module, char *name, long maxsize, char *type, double *value) 
    * compute the key
    */
 
-/*
-  vkey = (char *) umalloc(strlen(module) + strlen(name) + 2);
-  (void)strncpy(vkey, module, strlen(module) + strlen(name) + 2);
-  strcat(strcat(vkey, "."), name);
-*/
-//  vkey = strdup (name);
    strncpy (vkey, name, 128);
 
   /*
-   * convert fortran types to C types
+   * convert Fortran types to C types
    */
   var_type = M_LONG;
   if (!strcmp(type, "real") || !strcmp(type, "float"))
@@ -151,16 +118,6 @@ long putvar (char *module, char *name, long maxsize, char *type, double *value) 
     (void)fprintf(stderr, "Available space in calling routine: %ld\n", maxsize);
     return(1);
   }
-  /*
-    if (strcmp(Mtypes[var->type], type)) {
-    (void)fprintf(stderr, 
-    "ERROR - putvar - incorrect data type requested.\n");
-    (void)fprintf(stderr, "Key:   '%s'\n", vkey);
-    (void)fprintf(stderr, "Requested type: %s\n", type);
-    (void)fprintf(stderr, "Actual type in data base: %s\n", Mtypes[var->type]);
-    return(1);
-    }
-    */
   
   /*
    * copy the variable across

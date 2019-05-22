@@ -1,23 +1,18 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : batch_run
  * COMMENT  : runs the MMS time loop
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-
-#define BATCH_RUN_C
-
+#include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include "mms.h"
+#include "structs.h"
+#include "globals.h"
+#include "defs.h"
+#include "protos.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 extern int call_modules (char *);
 extern char *single_run_pre_init (void);
 extern char *single_run_post_init (void);
@@ -43,7 +38,6 @@ int BATCH_run (void) {
    }
 
    if (call_modules("initialize")) {
-      //closeUserFiles();
       fprintf (stderr, "single_run:  Problem with initializing modules.");
       return(1);
    }
@@ -63,15 +57,9 @@ int BATCH_run (void) {
          ret = single_run_pre_run ();
          if (ret) return(1);
 
-/*
-         if ((Mnowtime->month == 1) && (Mnowtime->day == 1)) {
-             printf ("  running year = %ld\n", Mnowtime->year);
-         }
-*/
          errno = 0;
 
          if(call_modules("run")) {
-            //closeUserFiles ();
             fprintf (stderr, "Problem while running modules.");
             return(1);
          }
@@ -95,4 +83,3 @@ int BATCH_run (void) {
 
    return(0);
 }
-

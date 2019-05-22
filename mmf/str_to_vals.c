@@ -1,5 +1,4 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : str_to_vals
@@ -14,19 +13,15 @@
  * The repeat count is optional, but must be greater than 0 if included.
  * If the total number of entries is less than required, the sequence
  * is repeated.
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define STR_TO_VALS_C
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
-#include <errno.h>
 #include <stdlib.h>
-#include "mms.h"
+#include <string.h>
+#include <errno.h>
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
+#include "globals.h"
 
 #define S2V_ERROR 1l
 #define S2V_SUCCESS 0l

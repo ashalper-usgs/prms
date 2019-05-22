@@ -1,39 +1,30 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : print_model_info
- * COMMENT  :
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define PRINT_MODEL_INFO_C
-#include <string.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include "mms.h"
+#include "structs.h"
+#include "globals.h"
+
+/* in parse_args.c */
+extern char *MAltContFile;
 
 #define PRINTLEN 77
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : print_model_info
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 int print_model_info (void) {
 
-  char pathname[MAXPATHLEN];
+  char pathname[FILENAME_MAX];
   FILE *model_info_file;
   int i, j;
   MODULE_DATA *module;
   LIST *vlist, *plist;
 
-	(void)snprintf (pathname, MAXPATHLEN, "%s.mod_name", MAltContFile);
+	(void)snprintf (pathname, FILENAME_MAX, "%s.mod_name", MAltContFile);
 
 	if ((model_info_file = fopen (pathname, "w")) == NULL) {
 		(void)fprintf(stderr, "ERROR - print_model_info - creating file '%s'\n", pathname);

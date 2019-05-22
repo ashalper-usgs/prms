@@ -1,27 +1,31 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : parse_args
  * COMMENT  : parses the command line arguments
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define PARSE_ARGS_C
-#include <math.h> 
-#include <string.h> 
-#include <stdlib.h> 
-#include "mms.h" 
+#include <string.h>
+#include <stdlib.h>
+#include "structs.h"
+#include "globals.h"
+#include "defs.h"
+
+long Mdebuglevel = 0;		/* the current debug level */
+char *MAltContFile = NULL;	/* Alt. name of control file */
+char *model_name = NULL;
+char *executable_model = NULL;
+int batch_run_mode = FALSE;	/* flag for running in batch mode  */
+int print_mode = FALSE;
+int run_period_of_record = FALSE; /* flag for running entire period of
+				     record in batch mode  */
+int runtime_graph_on = FALSE;
+int preprocess_on = FALSE;   /* flag for running in preprocess mode */
+int max_data_ln_len;	/* now possible to set this on command line */
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : parse_args
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : void
- | RESTRICTIONS :
+ | RETURN VALUE : None.
 \*--------------------------------------------------------------------*/
 void parse_args (int argc, char **argv, int *set_count, char **set_name, char **set_value, int set_size) {
 

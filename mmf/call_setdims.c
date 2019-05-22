@@ -1,24 +1,15 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : call_setdims
- * COMMENT  :
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
 #include <stdio.h>
-#include "mms.h"
 
 extern long setdims_();
 
 int call_setdims()
-
 {
-
   long retval;
 
   retval = setdims_();

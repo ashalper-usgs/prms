@@ -1,5 +1,4 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : julconvert
@@ -7,20 +6,12 @@
  *            Modify as needed for your application.
  *            The Julian day starts at noon of the Gregorian day and extends
  *            to noon the next Gregorian day.
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define JULCONVERT_C
-#include <stdio.h>
-#include <string.h>
 #include <math.h>
-#include "mms.h"
-
-
-//static char *dayofweekstr[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+#include "structs.h"
+#include "defs.h"
+#include "protos.h"
 
 /*
 ** Takes a date, and returns a Julian day. A Julian day is the number of
@@ -48,9 +39,6 @@ double getjulday(int mon, int day, int year, int h, int mi, double se) {
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getjulday_
  | COMMENT      : getjulday binding for Fortran
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 double getjulday_(int *mon, int *day, int *year, int *h, int *mi, double *se) {
    return getjulday (*mon, *day, *year, *h, *mi, *se);
@@ -66,7 +54,6 @@ int dayofweek(double j) {
  | COMMENT      : isleap binding for Fortran
  | PARAMETERS   : see below
  | RETURN VALUE : see below
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 long isleap_ (ftnint *year) {
    return ((long)isleap((int)(*year)));

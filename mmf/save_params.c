@@ -1,43 +1,30 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : save_params
- * COMMENT  : saves the param data base to a file. File name is passed in.
- *
- * $Id$
- *
--*/
+ * COMMENT  : saves the param database to a file. File name is passed in.
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define SAVE_PARAMS_C
-#include <string.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include "mms.h"
+#include <string.h>
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
+#include "globals.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
+/* in alloc_space.c */
+extern LIST *dim_db;
+extern long Mnparams;
+
 static void write_parameters (FILE *, int);
 static void write_dimensions (FILE *);
 static void write_header (FILE *, char *);
 
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : save_params
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 int save_params (char *param_file_name) {
 	FILE *param_file;
-	//PARAM *param;
-	//DIMEN *dim;
-	//char *ptr;
-	//long i,j;
-	//double	*dvalptr;
-	//float	*fvalptr;
-	//long	*lvalptr;
 
 	if ((param_file = fopen (param_file_name, "w")) == NULL) {
 		(void)fprintf(stderr, "ERROR - save_params - creating file '%s'\n", param_file_name);
@@ -118,11 +105,9 @@ static void write_dimensions (FILE *param_file) {
 
 static void write_parameters (FILE *param_file, int writeAllParams) {
 	PARAM *param;
-//	char *ptr;
 	long i,j;
 	double	*dvalptr;
 	float	*fvalptr;
-//	long	*lvalptr;
 	int	*lvalptr;
 
     // 2016-01-13 PAN: cvalptr declaration removed
@@ -166,15 +151,6 @@ static void write_parameters (FILE *param_file, int writeAllParams) {
 					for (j = 0; j < param->size; j++) {
 						(void)fprintf(param_file, "%.20le\n", *dvalptr);
 						dvalptr++;
-						//if (param->value_desc[j]) {
-						 // while ((ptr = strchr (param->value_desc[j], '\n'))) {
-							//*ptr = '\0';
-							//(void)fprintf (param_file, "@%s\n", param->value_desc[j]);
-							//param->value_desc[j] = ptr + 1;
-						 // }
-						 // if (param->value_desc[j] && strlen (param->value_desc[j]))
-							//(void)fprintf (param_file, "@%s\n", param->value_desc[j]);
-						//}
 					}
 					break;
 
@@ -188,40 +164,19 @@ static void write_parameters (FILE *param_file, int writeAllParams) {
 					for (j = 0; j < param->size; j++) {
 						(void)fprintf(param_file, "%.12e\n", *fvalptr);
 						fvalptr++;
-						//if (param->value_desc[j]) {
-						//  while ((ptr = strchr (param->value_desc[j], '\n'))) {
-						//	*ptr = '\0';
-						//	(void)fprintf (param_file, "@%s\n", param->value_desc[j]);
-						//	param->value_desc[j] = ptr + 1;
-						//  }
-						//  if (param->value_desc[j] && strlen (param->value_desc[j]))
-						//	(void)fprintf (param_file, "@%s\n", param->value_desc[j]);
-						//}
 					}
 					break;
 
 				case M_LONG:
 					if (writeAllParams) {
-//						lvalptr = (long *) param->value;
 						lvalptr = (int *) param->value;
 					} else {
-//						lvalptr = (long *) (param->references[0]);
 						lvalptr = (int *) (param->references[0]);
 					}
 
 					for (j = 0; j < param->size; j++) {
-//						(void)fprintf(param_file, "%ld\n", *lvalptr);
 						(void)fprintf(param_file, "%d\n", *lvalptr);
 						lvalptr++;
-						//if (param->value_desc[j]) {
-						//  while ((ptr = strchr (param->value_desc[j], '\n'))) {
-						//	*ptr = '\0';
-						//	(void)fprintf (param_file, "@%s\n", param->value_desc[j]);
-						//	param->value_desc[j] = ptr + 1;
-						//  }
-						//  if (param->value_desc[j] && strlen (param->value_desc[j]))
-						//	(void)fprintf (param_file, "@%s\n", param->value_desc[j]);
-						//}
 					}
 					break;
 
@@ -231,29 +186,15 @@ static void write_parameters (FILE *param_file, int writeAllParams) {
                 //                 single parameter value.
 				case M_STRING:
                     if (writeAllParams) {
-//						cvalptr = (char *)param->value;
-//					}
-//					else {
-//						cvalptr = (char *)(param->references[0]);
-//					}
                         for (j = 0; j < param->size; j++) {
                             if (*((char **) param->value + j) == NULL || *((char **) param->value + j)[0] == '\0') {
                                 (void)fprintf(param_file, "\n");
                             } else {
                                 (void)fprintf(param_file, "%s\n", *((char **) param->value + j));
                             }
-//							(void)fprintf(param_file, "%s\n", *cvalptr);
-//                          cvalptr++;
 			}
 		}
 					break;
-//                    					if (writeAllParams) {
-//						lvalptr = (long *) param->value;
-//						lvalptr = (int *) param->value;
-//					} else {
-//						lvalptr = (long *) (param->references[0]);
-//						lvalptr = (int *) (param->references[0]);
-//					}
 	}
 }
 	}

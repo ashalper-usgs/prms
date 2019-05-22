@@ -1,27 +1,21 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : call_modules
  * COMMENT  : used to call a Fortran version
- *
- * $Id$
- *
--*/
+ */
 
-/**1************************ INCLUDE FILES ****************************/
 #include <stdlib.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
 
 extern long call_modules_ (char *, ftnlen);
 
 int call_modules(char *arg) {
-	 long retval;
-	 ftnlen len;
+  long retval;
+  ftnlen len;
 
-	 len = (ftnlen)strlen(arg);
-	 retval = call_modules_ (arg, len);
-	 return((int)retval);
+  len = (ftnlen)strlen(arg);
+  retval = call_modules_ (arg, len);
+  return((int)retval);
 }
-

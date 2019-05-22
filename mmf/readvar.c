@@ -1,35 +1,29 @@
-/*+
- * United States Geological Survey
+/* United States Geological Survey (USGS)
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : readvar() to be called from C
  *            readvar_() to be called from Fortran
  *            returns 0 if success, 1 if failure
  * COMMENT  : reads the values associated with a key from an input file,
- *            and stores it in the data base
- *
- * $Id$
- *
--*/
+ *            and stores it in the database
+ */
 
-/**1************************ INCLUDE FILES ****************************/
-#define READVAR_C
-#include <stdio.h>
-#include <math.h>
-#include <errno.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "protos.h"
+#include "globals.h"
 
-/**2************************* LOCAL MACROS ****************************/
+/* in alloc_space.c */
+extern READCHECK **Mcheckbase;
+extern long Mnreads;
+
 #define MISSING_VAR -999
 
 /**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : readvar_
- | COMMENT		: called from Fortran, sorts out args and calls readvar()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from Fortran, sorts out args and calls readvar()
 \*--------------------------------------------------------------------*/
 long readvar_ (char *mname, char *vname, ftnlen mnamelen, ftnlen vnamelen) {
 	char module[80], name[80];
@@ -54,10 +48,7 @@ long readvar_ (char *mname, char *vname, ftnlen mnamelen, ftnlen vnamelen) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : readvar
- | COMMENT		: called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from C
 \*--------------------------------------------------------------------*/
 long readvar (char *module, char *name) {
 
@@ -70,12 +61,6 @@ long readvar (char *module, char *name) {
 
 /*
 * compute the key
-*/
-
-/*
-  vkey = (char *) umalloc(strlen(module) + strlen(name) + 2);
-  (void)strncpy(vkey, module, 80);
-  strncat(strncat(vkey, ".", 80), name, 80);
 */
 	strncpy (vkey, name, 80);
 

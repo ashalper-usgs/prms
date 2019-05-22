@@ -9,18 +9,50 @@
 #define MMF_C
 
 #include <stdlib.h>
-#include <stdio.h>
-#include <sys/stat.h>
 #include <string.h>
-#include "mms.h"
+#include <sys/stat.h>
+#include "structs.h"
+#include "defs.h"
+#include "globals.h"
+#include "protos.h"
+#include "mmf.h"
 #include "build_lists.h"
+
+/* in parse_args.c */
+extern char *MAltContFile;
+
+/* in parse_args.c */
+extern char *model_name;
+extern char *executable_model;
+extern batch_run_mode;
+extern int print_mode;
+extern int run_period_of_record;
+extern int runtime_graph_on;
+extern int preprocess_on;
 
 extern int call_modules(char *);
 extern int call_setdims(void);
 
+LIST *module_db;
+MODULE_DATA *current_module;
+PARAM **unsort_params = NULL;	/* pointer to unsorted parameters */
+FILE_DATA   **fd = NULL;
+long Mnsteps = 0;      /* the number of steps so far */
+double Mprevjt = -1.0; /* the latest previous Julian time  */
+double Mdeltat = 0.0;  /* the latest time step in hours */
+char *Minpptr = NULL;  /* pointer to current posn in data input line*/
+double Mdeltanext = 0.0;      /* the latest next time step in hours */
+int  M_stop_run = 0;	      /* Run switch 0 -or 1 */
+STAT_LIST_TYPE *Mfirst_stat_list = NULL; /* pointer to first entry
+					    in stats link list */
+char *Mtypes[] = {"", "long", "float", "double", "string", "", "","", "", ""};
+long ParamBaseIsDirty = FALSE;
+int max_dims;
+int max_controls;
+
 /*--------------------------------------------------------------------*\
   | FUNCTION     : main
-  | COMMENT		: Main source for xmms
+  | COMMENT	 : Main source for xmms
   | PARAMETERS   :
   |     int argc -- Argument count of command line parameters.
   |     char *argv[] -- Command line parameters.
@@ -42,7 +74,7 @@ int main (int argc, char *argv[]) {
    char	*err;
    static int      num_param_files = 0;
    char   **fname;
-   char pathname[MAXPATHLEN];
+   char pathname[FILENAME_MAX];
    int set_size;
 
 
@@ -144,7 +176,6 @@ int main (int argc, char *argv[]) {
     
     err = read_dims (*control_svar("param_file"));
     if (err) {
-//		(void)fprintf (stderr,"\nERROR: reading dimensions from Parameter File\n");
 		fprintf (stderr,"\n%s\n", err);
         exit (1);
 	}
@@ -219,7 +250,7 @@ int main (int argc, char *argv[]) {
       print_params();
       print_vars();
       print_model_info();
-	  (void)snprintf (pathname, MAXPATHLEN, "%s.param", MAltContFile);
+	  (void)snprintf (pathname, FILENAME_MAX, "%s.param", MAltContFile);
 	  save_params (pathname);
 
     } else {
