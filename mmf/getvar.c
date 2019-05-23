@@ -110,18 +110,6 @@ long getvar (char *module, char *name, long maxsize, char *type, double *value) 
 	}
 
 /*
-	if (strcmp(Mtypes[var->type], type)) {
-		(void)fprintf(stderr, 
-				"ERROR - getvar - incorrect data type requested.\n");
-		(void)fprintf(stderr, "Key:   '%s'\n", vkey);
-		(void)fprintf(stderr, "Requested type: %s\n", type);
-		(void)fprintf(stderr, "Actual declared type: %s\n",
-							Mtypes[var->type]);
-		return(1);
-	}
-*/
-  
-/*
 * copy the variable across
 */
   
