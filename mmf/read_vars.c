@@ -2,8 +2,8 @@
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : read_vars
- * COMMENT  : reads the vars data base from a file.
- *            File name is passed in as an argument
+ * COMMENT  : Reads the vars database from a file.
+ *            File name is passed in as an argument.
  */
 
 #include <stdio.h>
@@ -14,6 +14,10 @@
 #include "defs.h"
 #include "globals.h"
 #include "protos.h"
+
+/* in globals.c */
+extern double Mdeltat;
+extern double Mdeltanext;
 
 /* in alloc_space.c */
 extern char *Mparaminfo;
