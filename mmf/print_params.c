@@ -12,6 +12,8 @@
 #include "defs.h"
 #include "protos.h"
 
+extern char *Mtypes[];		/* in globals.c */
+
 /* in alloc_space.c */
 extern LIST *dim_db;
 extern PARAM **Mparambase;
