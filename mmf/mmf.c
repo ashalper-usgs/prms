@@ -18,6 +18,12 @@
 #include "mmf.h"
 #include "build_lists.h"
 
+/* in globals.c */
+extern PARAM **unsort_params;
+extern double Mdeltat;
+extern long Mnsteps;
+extern double Mdeltanext;
+
 /* in parse_args.c */
 extern char *MAltContFile;
 
@@ -35,17 +41,12 @@ extern int call_setdims(void);
 
 LIST *module_db;
 MODULE_DATA *current_module;
-PARAM **unsort_params = NULL;	/* pointer to unsorted parameters */
 FILE_DATA   **fd = NULL;
-long Mnsteps = 0;      /* the number of steps so far */
 double Mprevjt = -1.0; /* the latest previous Julian time  */
-double Mdeltat = 0.0;  /* the latest time step in hours */
 char *Minpptr = NULL;  /* pointer to current posn in data input line*/
-double Mdeltanext = 0.0;      /* the latest next time step in hours */
 int  M_stop_run = 0;	      /* Run switch 0 -or 1 */
 STAT_LIST_TYPE *Mfirst_stat_list = NULL; /* pointer to first entry
 					    in stats link list */
-char *Mtypes[] = {"", "long", "float", "double", "string", "", "","", "", ""};
 long ParamBaseIsDirty = FALSE;
 int max_dims;
 int max_controls;
