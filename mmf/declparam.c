@@ -15,6 +15,8 @@
 #include "globals.h"
 #include "protos.h"
 
+extern char *Mtypes[];		/* in globals.c */
+
 /* in alloc_space.c */
 extern int max_params;
 extern PARAM **Mparambase;
