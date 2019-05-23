@@ -8,14 +8,14 @@
 #define MAIN
 #define MMF_C
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "structs.h"
 #include "defs.h"
+#include "structs.h"
 #include "globals.h"
 #include "protos.h"
-#include "mmf.h"
 #include "build_lists.h"
 
 /* in globals.c */

@@ -16,5 +16,5 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 # Checks for library functions.
 
 AC_CONFIG_FILES([Makefile])
-AC_CONFIG_SUBDIRS([mmf prms])
+AC_CONFIG_SUBDIRS([mmf src])
 AC_OUTPUT

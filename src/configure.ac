@@ -6,10 +6,9 @@ AC_INIT([prms], [5.1.0], [https://github.com/nhm-usgs/prms/issues])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 # Checks for programs.
+AM_PROG_CC_C_O
 AC_PROG_FC
 AC_PROG_F77
-AC_PROG_RANLIB
-AM_PROG_AR
 
 # Checks for libraries.
 

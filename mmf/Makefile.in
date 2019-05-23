@@ -107,7 +107,7 @@ am_libmmf_a_OBJECTS = alloc_space.$(OBJEXT) batch_run.$(OBJEXT) \
 	control_array.$(OBJEXT) control_var.$(OBJEXT) \
 	create_vstats.$(OBJEXT) decl_control.$(OBJEXT) \
 	decldim.$(OBJEXT) declparam.$(OBJEXT) declvar.$(OBJEXT) \
-	dim_addr.$(OBJEXT) free_vstats.$(OBJEXT) \
+	dim_addr.$(OBJEXT) free_vstats.$(OBJEXT) globals.$(OBJEXT) \
 	get_elem_add.$(OBJEXT) get_times.$(OBJEXT) getdim.$(OBJEXT) \
 	getdimname.$(OBJEXT) getparam.$(OBJEXT) getvar.$(OBJEXT) \
 	graph_single_run.$(OBJEXT) julconvert.$(OBJEXT) \
@@ -297,7 +297,7 @@ libmmf_a_SOURCES = alloc_space.c batch_run.c batch_run_functions.c	\
 	build_lists.c call_modules.c call_setdims.c check_vars.c	\
 	control_addr.c control_array.c control_var.c create_vstats.c	\
 	decl_control.c decldim.c declparam.c declvar.c dim_addr.c	\
-	free_vstats.c get_elem_add.c get_times.c getdim.c		\
+	free_vstats.c globals.c get_elem_add.c get_times.c getdim.c	\
 	getdimname.c getparam.c getvar.c graph_single_run.c		\
 	julconvert.c julday.c load_param.c param_addr.c parse_args.c	\
 	print_model_info.c print_params.c print_vars.c putvar.c		\
@@ -398,6 +398,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getdimname.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getparam.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getvar.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/globals.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/graph_single_run.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/julconvert.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/julday.Po@am__quote@

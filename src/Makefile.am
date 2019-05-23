@@ -3,7 +3,9 @@
 
 bin_PROGRAMS = prms
 
-prms_SOURCES = basin.f90 basin_sum.f90 basin_summary.f90		\
+prms_CPPFLAGS = -I../mmf
+
+prms_SOURCES = mmf.c basin.f90 basin_sum.f90 basin_summary.f90		\
                call_modules.f90 cascade.f90 ccsolrad.f90		\
                climate_hru.f90 climateflow.f90 convert_params.f90	\
                ddsolrad.f90 dynamic_param_read.f90 frost_date.f90	\

@@ -1,2 +1,2 @@
-SUBDIRS = mmf prms
+SUBDIRS = mmf src
 CLEANFILES = *~
