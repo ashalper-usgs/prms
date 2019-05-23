@@ -11,8 +11,8 @@
 #include "structs.h"
 #include "globals.h"
 
-/* in alloc_space.c */
-extern long Mnparams;
+extern PARAM **unsort_params;	/* in globals.c */
+extern long Mnparams;		/* in alloc_space.c */
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : sort_params
