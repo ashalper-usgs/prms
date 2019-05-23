@@ -20,6 +20,10 @@
 #include "defs.h"
 #include "protos.h"
 
+/* in globals.c */
+extern double Mdeltat;
+extern double Mdeltanext;
+
 /* in alloc_space.c */
 extern READCHECK **Mcheckbase;
 extern long Mnreads;
