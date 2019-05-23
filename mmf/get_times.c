@@ -10,6 +10,10 @@
 #include "protos.h"
 #include "globals.h"
 
+/* in globals.c */
+extern double Mdeltat;
+extern double Mdeltanext;
+
 /* in alloc_space.c */
 extern DATETIME *Mstrttime;
 extern DATETIME *Mendtime;
