@@ -93,7 +93,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_prms_OBJECTS = prms-mmf.$(OBJEXT) basin.$(OBJEXT) \
+am_prms_OBJECTS = prms-prms.$(OBJEXT) basin.$(OBJEXT) \
 	basin_sum.$(OBJEXT) basin_summary.$(OBJEXT) \
 	call_modules.$(OBJEXT) cascade.$(OBJEXT) ccsolrad.$(OBJEXT) \
 	climate_hru.$(OBJEXT) climateflow.$(OBJEXT) \
@@ -314,7 +314,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 prms_CPPFLAGS = -I../mmf
-prms_SOURCES = mmf.c basin.f90 basin_sum.f90 basin_summary.f90		\
+prms_SOURCES = prms.c basin.f90 basin_sum.f90 basin_summary.f90		\
                call_modules.f90 cascade.f90 ccsolrad.f90		\
                climate_hru.f90 climateflow.f90 convert_params.f90	\
                ddsolrad.f90 dynamic_param_read.f90 frost_date.f90	\
@@ -436,7 +436,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/prms-mmf.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/prms-prms.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -452,19 +452,19 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c `$(CYGPATH_W) '$<'`
 
-prms-mmf.o: mmf.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(prms_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT prms-mmf.o -MD -MP -MF $(DEPDIR)/prms-mmf.Tpo -c -o prms-mmf.o `test -f 'mmf.c' || echo '$(srcdir)/'`mmf.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/prms-mmf.Tpo $(DEPDIR)/prms-mmf.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mmf.c' object='prms-mmf.o' libtool=no @AMDEPBACKSLASH@
+prms-prms.o: prms.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(prms_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT prms-prms.o -MD -MP -MF $(DEPDIR)/prms-prms.Tpo -c -o prms-prms.o `test -f 'prms.c' || echo '$(srcdir)/'`prms.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/prms-prms.Tpo $(DEPDIR)/prms-prms.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='prms.c' object='prms-prms.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(prms_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o prms-mmf.o `test -f 'mmf.c' || echo '$(srcdir)/'`mmf.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(prms_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o prms-prms.o `test -f 'prms.c' || echo '$(srcdir)/'`prms.c
 
-prms-mmf.obj: mmf.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(prms_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT prms-mmf.obj -MD -MP -MF $(DEPDIR)/prms-mmf.Tpo -c -o prms-mmf.obj `if test -f 'mmf.c'; then $(CYGPATH_W) 'mmf.c'; else $(CYGPATH_W) '$(srcdir)/mmf.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/prms-mmf.Tpo $(DEPDIR)/prms-mmf.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='mmf.c' object='prms-mmf.obj' libtool=no @AMDEPBACKSLASH@
+prms-prms.obj: prms.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(prms_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT prms-prms.obj -MD -MP -MF $(DEPDIR)/prms-prms.Tpo -c -o prms-prms.obj `if test -f 'prms.c'; then $(CYGPATH_W) 'prms.c'; else $(CYGPATH_W) '$(srcdir)/prms.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/prms-prms.Tpo $(DEPDIR)/prms-prms.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='prms.c' object='prms-prms.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(prms_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o prms-mmf.obj `if test -f 'mmf.c'; then $(CYGPATH_W) 'mmf.c'; else $(CYGPATH_W) '$(srcdir)/mmf.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(prms_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o prms-prms.obj `if test -f 'prms.c'; then $(CYGPATH_W) 'prms.c'; else $(CYGPATH_W) '$(srcdir)/prms.c'; fi`
 
 .f.o:
 	$(AM_V_F77)$(F77COMPILE) -c -o $@ $<
