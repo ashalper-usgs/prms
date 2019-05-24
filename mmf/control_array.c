@@ -25,7 +25,7 @@
  **************************************************************************/
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : control_array
+  | FUNCTION     : control_array
 \*--------------------------------------------------------------------*/
 char *control_array (char *key, long ind) {
  
@@ -33,75 +33,64 @@ char *control_array (char *key, long ind) {
 
   if ((control = control_addr(key)) == NULL) {
     (void)fprintf(stderr, 
-	    "ERROR - control_array - key '%s' not found.\n", key);
+		  "ERROR - control_array - key '%s' not found.\n", key);
     exit(1);
   }
 
   if (ind >= control->size) {
     (void)fprintf(stderr, 
-	    "ERROR - control_array - ind %ld too high for %s.\n", ind, key);
-    (void)fprintf(stderr, 
-	    "Max ind is %ld.\n", control->size-1);
+		  "ERROR - control_array - ind %ld too high for %s.\n",
+		  ind, key);
+    (void)fprintf(stderr, "Max ind is %ld.\n", control->size - 1);
     exit(1);
   }
 
-	switch (control->type) {
-		case M_DOUBLE:
-			return (char *) ((double *)(control->start_ptr) + ind * sizeof(double));
+  switch (control->type) {
+  case M_DOUBLE:
+    return (char *) ((double *)(control->start_ptr) + ind * sizeof(double));
 
-		case M_FLOAT:
-			return (char *) ((float *)(control->start_ptr) + ind * sizeof(float));
+  case M_FLOAT:
+    return (char *) ((float *)(control->start_ptr) + ind * sizeof(float));
 
-		case M_LONG:
-			return (char *) ((long *)(control->start_ptr) + ind * sizeof(long));
+  case M_LONG:
+    return (char *) ((long *)(control->start_ptr) + ind * sizeof(long));
 
-		case M_STRING:
-			printf ("control_array: key = %s ind = %ld val = %s\n", key, ind, *((char **)control->start_ptr + ind));
-			return *((char **)control->start_ptr + ind);
-	}
+  case M_STRING:
+    printf ("control_array: key = %s ind = %ld val = %s\n",
+	    key, ind, *((char **)control->start_ptr + ind));
+    return *((char **)control->start_ptr + ind);
+  }
 
-	return (NULL);
+  return (NULL);
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : control_larray
- | COMMENT		: returns a pointer to a long entry 
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+  | FUNCTION     : control_larray
+  | COMMENT	 : returns a pointer to a long entry 
 \*--------------------------------------------------------------------*/
 long *control_larray (char *key, long ind) {
   return ((long *) control_array(key, ind));
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : control_farray
- | COMMENT		: returns a pointer to a float entry in control array
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+  | FUNCTION     : control_farray
+  | COMMENT	 : returns a pointer to a float entry in control array
 \*--------------------------------------------------------------------*/
 float *control_farray (char *key, long ind) {
   return ((float *) control_array(key, ind));
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : control_darray
- | COMMENT		: returns a pointer to a double entry in control array
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+  | FUNCTION     : control_darray
+  | COMMENT      : returns a pointer to a double entry in control array
 \*--------------------------------------------------------------------*/
 double *control_darray (char *key, long ind) {
   return ((double *) control_array(key, ind));
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : control_sarray
- | COMMENT		: returns a pointer to a string entry in control array
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+  | FUNCTION     : control_sarray
+  | COMMENT	 : returns a pointer to a string entry in control array
 \*--------------------------------------------------------------------*/
 char *control_sarray (char *key, long ind) {
   return control_array(key, ind);
