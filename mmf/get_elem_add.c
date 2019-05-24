@@ -13,153 +13,153 @@
 #include "protos.h"
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : CheckIndices
- | COMMENT	: Verifies that the number of indices
- |                passed as an argument is compatible with the indices
- |                declared for a parameter or a variable.
- | PARAMETERS   :
- |      key:        is the name of the parameter or variable
- |      elemString: is the string that contains the elements
- |                  separated by commas
- |      type:       = M_PARAMETER for parameters, 
- |                  = M_VARIABLE for variables.
+  | FUNCTION     : CheckIndices
+  | COMMENT	 : Verifies that the number of indices
+  |                passed as an argument is compatible with the indices
+  |                declared for a parameter or a variable.
+  | PARAMETERS   :
+  |      key:        is the name of the parameter or variable
+  |      elemString: is the string that contains the elements
+  |                  separated by commas
+  |      type:       = M_PARAMETER for parameters, 
+  |                  = M_VARIABLE for variables.
 \*--------------------------------------------------------------------*/
 int CheckIndices (char *key, char *elemString, int type) {
-	PARAM	*paddr;
-	PUBVAR	*vaddr;
-	DIMEN	*dim;
-	int      nd;
-	char	tsave[80], *temp, *t, *ptr;
-	char	**strindx;
-	DIMEN	**dimname;
-	int		*intindx;
-	int		nindex;
-	int		i, k, nk;
-	int		list_size, list_count;
+  PARAM	*paddr;
+  PUBVAR *vaddr;
+  DIMEN	*dim;
+  int nd;
+  char tsave[80], *temp, *t, *ptr;
+  char **strindx;
+  DIMEN	**dimname;
+  int *intindx;
+  int nindex;
+  int i, k, nk;
+  int list_size, list_count;
 
-/*
-**	Get the address of the array.
-*/
-	if (type == M_PARAMETER) {
-	    if (!(paddr = param_addr (key)))
-   		   	return (1);
+  /*
+  **	Get the address of the array.
+  */
+  if (type == M_PARAMETER) {
+    if (!(paddr = param_addr (key)))
+      return (1);
 
-		nd = paddr->ndimen;
-	    dimname = paddr->dimen;
+    nd = paddr->ndimen;
+    dimname = paddr->dimen;
 
-  	} else {
-		if (!(vaddr = var_addr (key)))
-			return (1);
+  } else {
+    if (!(vaddr = var_addr (key)))
+      return (1);
 
-		nd = vaddr->ndimen;
-		dimname = vaddr->dimen;
-	}
+    nd = vaddr->ndimen;
+    dimname = vaddr->dimen;
+  }
 
-/*
-**	Parse the index string. First make a local copy
-*/
-	(void)strncpy (tsave, elemString, 80);
+  /*
+  **	Parse the index string. First make a local copy
+  */
+  (void)strncpy (tsave, elemString, 80);
 
-/*
-**	Check for '(' and ')', and delete them
-*/
-	t = strchr (tsave, '(');
-	if (t) temp = t;
-	else temp = tsave;
+  /*
+  **	Check for '(' and ')', and delete them
+  */
+  t = strchr (tsave, '(');
+  if (t) temp = t;
+  else temp = tsave;
   
-	t = strchr (temp, ')');
-	if (t) *t = '\0';
-/*
-**	parse the string, build up a list of the multidimensional indices.
-*/
-	t = temp;
-	nindex = 0;
+  t = strchr (temp, ')');
+  if (t) *t = '\0';
+  /*
+  ** Parse the string; build up a list of the multidimensional indices.
+  */
+  t = temp;
+  nindex = 0;
 
-	list_size = 100;
-	list_count = 0;
-	strindx = (char **)malloc (list_size * sizeof (char *));
+  list_size = 100;
+  list_count = 0;
+  strindx = (char **)malloc (list_size * sizeof (char *));
 
-	while (t) {
-		if (list_count >= list_size) {
-			list_size += 100;
-			strindx = (char **)realloc (strindx, list_size * sizeof (char *));
-		}
-		ptr = strchr (t, ',');
+  while (t) {
+    if (list_count >= list_size) {
+      list_size += 100;
+      strindx = (char **)realloc (strindx, list_size * sizeof (char *));
+    }
+    ptr = strchr (t, ',');
 
-		if (ptr)
-			*ptr = '\0';
+    if (ptr)
+      *ptr = '\0';
 
-		strindx[list_count] = (char *)malloc (20 * sizeof (char));
-		(void)strncpy(strindx[list_count], t, 20);
-		list_count++;
+    strindx[list_count] = (char *)malloc (20 * sizeof (char));
+    (void)strncpy(strindx[list_count], t, 20);
+    list_count++;
 
-		if (ptr)
-			t = ptr + 1;
-		else
-			t = NULL;
-	} 
+    if (ptr)
+      t = ptr + 1;
+    else
+      t = NULL;
+  } 
 
-	nindex = list_count;
-/*
-**	compare number of indices
-*/
-	if (nd != nindex){
-		return (2);
-	}
-                                /* check if indices are numeric values */
-/*
-**	ANSI-CHANGE
-**  bad assignment type: long * = int *
-**	changed declreation from long * to int *
-*/
-	intindx = (int *)calloc (nindex, sizeof (int));
+  nindex = list_count;
+  /*
+  ** compare number of indices
+  */
+  if (nd != nindex){
+    return (2);
+  }
+  /* check if indices are numeric values */
+  /*
+  ** ANSI-CHANGE: bad assignment type: long * = int *;
+  **	          changed declaration from long * to int *
+  */
+  intindx = (int *)calloc (nindex, sizeof (int));
   
-	for (i = 0; i < nindex; i++) {
-/*
-**	check if all digits are numeric
-*/
-		t = strindx[i];
-		k = 0;
-		nk = strlen(strindx[i]);
+  for (i = 0; i < nindex; i++) {
+    /*
+    **	check if all digits are numeric
+    */
+    t = strindx[i];
+    k = 0;
+    nk = strlen(strindx[i]);
     
-		while (isdigit (t[k]) && (k < nk-1 )) k++;
+    while (isdigit (t[k]) && (k < nk-1 )) k++;
     
-		if (!isdigit (t[k]))
-			return(3);
+    if (!isdigit (t[k]))
+      return(3);
    
-		intindx[i] = atoi (strindx[i]);
+    intindx[i] = atoi (strindx[i]);
 
-		if (intindx[i] < 1)
-			return(4);
+    if (intindx[i] < 1)
+      return(4);
 
-/*
-**	get address of ith dimension
-*/
-		dim = dimname[i];
+    /*
+    **	get address of ith dimension
+    */
+    dim = dimname[i];
     
-		if (intindx[i] > (int)dim->value)
-			return(5);
-	}
+    if (intindx[i] > (int)dim->value)
+      return(5);
+  }
 
-	return(0);
+  return(0);
 }
   
 /*--------------------------------------------------------------------*\
- | FUNCTION     : GetElemAddress
- | COMMENT	: This function returns a pointer to the memory location
- |    corresponding to elemString. The format of the string should each
- |    such that each component is separated by a comma. For example:
- |
- |    "3" for single-element arrays, or
- |    "2,4" for two-element arrays, or
- |    "4,1,3" for three-element arrays.
- |
- | PARAMETERS   :
- |      key:        is the name of the parameter or variable
- |      elemString: is the string that contains the elements
- |                  separated by commas
- |      type:       = M_PARAMETER for parameters, 
- |                  = M_VARIABLE for variables.
+  | FUNCTION     : GetElemAddress
+  | COMMENT	 : This function returns a pointer to the memory location
+  |                corresponding to elemString. The format of the
+  |                string should each such that each component is
+  |                separated by a comma. For example:
+  |
+  |                  "3" for single-element arrays, or
+  |                  "2,4" for two-element arrays, or
+  |                  "4,1,3" for three-element arrays.
+  |
+  | PARAMETERS   :
+  |      key:        is the name of the parameter or variable
+  |      elemString: is the string that contains the elements
+  |                  separated by commas
+  |      type:       = M_PARAMETER for parameters, 
+  |                  = M_VARIABLE for variables.
 \*--------------------------------------------------------------------*/
 char *GetElemAddress (char *key, char *elemString, int type) {
   PARAM	*paddr;
@@ -187,6 +187,7 @@ char *GetElemAddress (char *key, char *elemString, int type) {
   ptr = tkey;
   while (*ptr == ' ')
     ptr++;
+
   /*
   **	strips trailing blanks
   */
@@ -277,8 +278,6 @@ char *GetElemAddress (char *key, char *elemString, int type) {
       break;
 
     case M_VARIABLE:
-      /*rsr changed next line */
-      /*				prod *= dim->max; */
       prod *= dim->value;
       break;
     }
