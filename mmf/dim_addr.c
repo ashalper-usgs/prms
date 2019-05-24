@@ -2,8 +2,8 @@
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : dim_addr
- *            returns a pointer to a DIMEN struct which contains the given name
- *            returns NULL if name not found
+ *            Returns a pointer to a DIMEN struct which contains the given name
+ *            returns NULL if name not found.
  */
 
 #include <stdio.h>
@@ -14,7 +14,7 @@
 extern LIST *dim_db;		/* in alloc_space.c */
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : dim_addr
+  | FUNCTION     : dim_addr
 \*--------------------------------------------------------------------*/
 DIMEN *dim_addr (char *name) { 
   long i;
@@ -30,7 +30,7 @@ DIMEN *dim_addr (char *name) {
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : dim_notes
+  | FUNCTION     : dim_notes
 \*--------------------------------------------------------------------*/
 char *dim_notes (char *ch_ptr) {
   int		i, j;

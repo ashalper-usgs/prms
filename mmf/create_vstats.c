@@ -14,7 +14,7 @@
 #include "globals.h"
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : create_vstats
+  | FUNCTION     : create_vstats
 \*--------------------------------------------------------------------*/
 void create_vstats (void) {
 
@@ -53,7 +53,8 @@ void create_vstats (void) {
       Mfirst_stat_list = curr_stat_list;
     } else {
       curr_stat_list->next =(STAT_LIST_TYPE *)umalloc(sizeof(STAT_LIST_TYPE));
-      curr_stat_list->next->key = (char *) umalloc(max_data_ln_len * sizeof(char));
+      curr_stat_list->next->key =
+	(char *) umalloc(max_data_ln_len * sizeof(char));
       curr_stat_list = curr_stat_list->next;
     }
 
@@ -62,8 +63,9 @@ void create_vstats (void) {
     if (ptr) *ptr = '\0';
 
     curr_stat_list->element = statVar_element[i];
-    curr_stat_list->value = (char *)GetElemAddress (curr_stat_list->key,
-						    statVar_element[i], M_VARIABLE);
+    curr_stat_list->value =
+      (char *)GetElemAddress (curr_stat_list->key,
+			      statVar_element[i], M_VARIABLE);
 
     if ((var = var_addr (curr_stat_list->key)) == NULL ) {
       (void)fprintf(stderr, "ERROR - create_vstats.\n");
@@ -73,5 +75,6 @@ void create_vstats (void) {
     }
     curr_stat_list->type = var->type;
     curr_stat_list->next = NULL;
+
   }
 }
