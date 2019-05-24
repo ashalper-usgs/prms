@@ -32,15 +32,15 @@ char *Mparaminfo = NULL;     /* pointer to param information string */
 char *Mdatainfo = NULL;	     /* pointer to data information string */
 
 void alloc_space (void) {
-	static DATETIME start, end, now, next;
+  static DATETIME start, end, now, next;
 
-	cont_db = ALLOC_list ("Control Data Base", 0, 100);
+  cont_db = ALLOC_list ("Control Data Base", 0, 100);
 
   /*
    * space for the dimension pointer array
    */
 
-	dim_db = ALLOC_list ("Dimension Data Base", 0, 50);
+  dim_db = ALLOC_list ("Dimension Data Base", 0, 50);
 
   /*
    * default dimension "one"
@@ -63,9 +63,6 @@ void alloc_space (void) {
   max_params = 500;
   Mparambase = (PARAM **) umalloc (max_params * sizeof(PARAM *));
   Mnparams = 0;
-/*
-	param_db = ALLOC_list ("Paraameter data base", 0, 100);
-*/
 
   /*
    * space for the read check data base
@@ -75,18 +72,18 @@ void alloc_space (void) {
   Mcheckbase = (READCHECK **) umalloc (max_read_vars * sizeof(READCHECK *));
   Mnreads = 0;
 
-/*
-* space for time structures
-*/
-	Mstrttime = &start;
-	Mendtime = &end;
-	Mnowtime = &now;
-	Mnexttime = &next;
+  /*
+   * space for time structures
+   */
+  Mstrttime = &start;
+  Mendtime = &end;
+  Mnowtime = &now;
+  Mnexttime = &next;
 
-/*
-* space for run info string
-*/
-	Mparaminfo = strdup ("Default case");
-	Mdatainfo = strdup ("Default case");
+  /*
+   * space for run info string
+   */
+  Mparaminfo = strdup ("Default case");
+  Mdatainfo = strdup ("Default case");
 }
 
