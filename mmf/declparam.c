@@ -396,67 +396,66 @@ long declparam (char *module, char *name, char *dimen, char *type, char *value,
  |                and calls declparam()
 \*--------------------------------------------------------------------*/
 long declparam_p_ (char *mname, char *pname, char *pdimen, char *ptype,
-	char *pvalstr, char *minstr, char *maxstr, char *dstr, char *hstr,
-	char *ustr, char *val, ftnlen mnamelen, ftnlen pnamelen,
-	ftnlen pdimenlen, ftnlen ptypelen, ftnlen pvallen, ftnlen minlen,
-	ftnlen maxlen, ftnlen dlen, ftnlen hlen, ftnlen ulen, ftnlen vallen) {
+		   char *pvalstr, char *minstr, char *maxstr, char *dstr, char *hstr,
+		   char *ustr, char *val, ftnlen mnamelen, ftnlen pnamelen,
+		   ftnlen pdimenlen, ftnlen ptypelen, ftnlen pvallen, ftnlen minlen,
+		   ftnlen maxlen, ftnlen dlen, ftnlen hlen, ftnlen ulen, ftnlen vallen) {
 
-	char *module, *name, *dimen, *type, *value;
-	char *minimum, *maximum, *descr, *help, *units;
-	long retval;
+  char *module, *name, *dimen, *type, *value;
+  char *minimum, *maximum, *descr, *help, *units;
 
-/*
-* copy args to new strings, and terminate correctly
-*/
+  /*
+   * copy args to new strings, and terminate correctly
+   */
 
-	module = (char *) umalloc(mnamelen + 1);
-	strncpy(module, mname, mnamelen);
-	module[mnamelen] = '\0';
+  module = (char *) umalloc(mnamelen + 1);
+  strncpy(module, mname, mnamelen);
+  module[mnamelen] = '\0';
 
-	name = (char *) umalloc(pnamelen + 1);
-	strncpy(name, pname, pnamelen);
-	name[pnamelen] = '\0';
+  name = (char *) umalloc(pnamelen + 1);
+  strncpy(name, pname, pnamelen);
+  name[pnamelen] = '\0';
 
-	dimen = (char *) umalloc(pdimenlen + 1);
-	strncpy(dimen, pdimen, pdimenlen);
-	dimen[pdimenlen] = '\0';
+  dimen = (char *) umalloc(pdimenlen + 1);
+  strncpy(dimen, pdimen, pdimenlen);
+  dimen[pdimenlen] = '\0';
 
-	type = (char *) umalloc(ptypelen + 1);
-	strncpy(type, ptype, ptypelen);
-	type[ptypelen] = '\0';
+  type = (char *) umalloc(ptypelen + 1);
+  strncpy(type, ptype, ptypelen);
+  type[ptypelen] = '\0';
 
-	value = (char *) umalloc(pvallen + 1);
-	strncpy(value, pvalstr, pvallen);
-	value[pvallen] = '\0';
+  value = (char *) umalloc(pvallen + 1);
+  strncpy(value, pvalstr, pvallen);
+  value[pvallen] = '\0';
 
-	minimum = (char *) umalloc(minlen + 1);
-	strncpy(minimum, minstr, minlen);
-	minimum[minlen] = '\0';
+  minimum = (char *) umalloc(minlen + 1);
+  strncpy(minimum, minstr, minlen);
+  minimum[minlen] = '\0';
 
-	maximum = (char *) umalloc(maxlen + 1);
-	strncpy(maximum, maxstr, maxlen);
-	maximum[maxlen] = '\0';
+  maximum = (char *) umalloc(maxlen + 1);
+  strncpy(maximum, maxstr, maxlen);
+  maximum[maxlen] = '\0';
 
-	descr = (char *) umalloc(dlen + 1);
-	strncpy(descr, dstr, dlen);
-	descr[dlen] = '\0';
+  descr = (char *) umalloc(dlen + 1);
+  strncpy(descr, dstr, dlen);
+  descr[dlen] = '\0';
 
-	help = (char *) umalloc(hlen + 1);
-	strncpy(help, hstr, hlen);
-	help[hlen] = '\0';
+  help = (char *) umalloc(hlen + 1);
+  strncpy(help, hstr, hlen);
+  help[hlen] = '\0';
 
-	units = (char *) umalloc(ulen + 1);
-	strncpy(units, ustr, ulen);
-	units[ulen] = '\0';
+  units = (char *) umalloc(ulen + 1);
+  strncpy(units, ustr, ulen);
+  units[ulen] = '\0';
 
-/*
-* call C version of declparam_p()
-*/
+  /*
+   * call C version of declparam_p()
+   */
 
-	retval = declparam_p(module, name, dimen, type, value,
-	    minimum, maximum, descr, help, units, val);
+  declparam_p(module, name, dimen, type, value,
+	      minimum, maximum, descr, help, units, val);
 
-	return(0);
+  return(0);
 }
 
 /*--------------------------------------------------------------------*\

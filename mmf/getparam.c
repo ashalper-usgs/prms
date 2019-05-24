@@ -326,17 +326,10 @@ long getparamfile_ (char *dinfo, ftnlen len) {
 \*--------------------------------------------------------------------*/
 
 long getparamstring_ (char *mname, char *pname, ftnint *pmaxsize, char *ptype, ftnint *pindex, char *pstring,
-	       ftnlen mnamelen, ftnlen pnamelen, ftnlen ptypelen, ftnlen pslen) {
+		      ftnlen mnamelen, ftnlen pnamelen, ftnlen ptypelen, ftnlen pslen) {
 
   char *module, *name, *type;
-  int maxsize;
   PARAM *param;
-
-  /*
-   * copy maxsize to local long int
-   */
-
-  maxsize = *pmaxsize;
 
   /*
    * copy args to new strings, and terminate

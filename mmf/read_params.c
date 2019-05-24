@@ -2,7 +2,7 @@
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : read_params
- * COMMENT  : reads the params data base from a file
+ * COMMENT  : Read the params database from a file.
  *            File name is passed in as an argument
  */
 
@@ -822,149 +822,139 @@ static char *READ_param_head (PARAM **param_ptr, int map_flag) {
 static char *READ_param_values (long size, long type, char *name,
 				char *value, char *line, char *min_string, char *max_string,
 				int bound_status) {
-	int i, j;
-    int  done;
-	int	desc_count = 0;
-	int repeat_count;
-	char delims[] = " ";
-	char *result = NULL;
-	char *comp_ptr = NULL;
-	static char *crap = NULL;
-	static char *crap2 = NULL;
-	float foo;
-	double d, min_d, max_d;
-	char *endp;
-	long l, min_l, max_l;
-	char *line_p;
+  int i, j;
+  int done;
+  int repeat_count;
+  char delims[] = " ";
+  char *result = NULL;
+  char *comp_ptr = NULL;
+  static char *crap = NULL;
+  static char *crap2 = NULL;
+  double d, min_d, max_d;
+  char *endp;
+  long l, min_l, max_l;
+  char *line_p;
 	
-	if (crap == NULL) {
-		crap = (char *) umalloc(max_data_ln_len * sizeof(char));
+  if (crap == NULL) {
+    crap = (char *) umalloc(max_data_ln_len * sizeof(char));
+  }
+
+  if (crap2 == NULL) {
+    crap2 = (char *) umalloc(max_data_ln_len * sizeof(char));
+  }
+
+  /*
+  ** Decode the min and max string based on data type
+  */
+  switch (type) {
+  case M_STRING:
+    break;
+  case M_DOUBLE:
+  case M_FLOAT:
+    min_d = strtod(min_string, &endp);
+    max_d = strtod(max_string, &endp);
+    break;
+  case M_LONG:
+    min_l = strtol(min_string, &endp, 0);
+    max_l = strtol(max_string, &endp, 0);
+    break;
+  } // switch
+
+  /*
+  **  Space for the values and value_desc are allocated in declparam
+  */
+  done = FALSE;
+  i = 0;
+  while (!done) {
+    if (!(line_p = get_next_line ())) {
+      done = TRUE;
+    } else if (!strncmp (line, "####", 4)) {
+      done = TRUE;
+    } else {
+      result = NULL;
+      strncpy (crap, line, max_data_ln_len);
+
+      result = strtok (crap, delims);
+      while (result != NULL && !done) {
+	strncpy (crap2, result, max_data_ln_len);
+	comp_ptr = strchr (crap2, '*');
+	if (comp_ptr == NULL){
+	  repeat_count = 1;
+	  comp_ptr = crap2;
+	} else {
+	  *comp_ptr = '\0';
+	  repeat_count = atol(crap2);
+	  comp_ptr++;
 	}
 
-	if (crap2 == NULL) {
-		crap2 = (char *) umalloc(max_data_ln_len * sizeof(char));
-	}
+	for (j = 0; j < repeat_count && !done; j++) {
+	  if (i < size) {
+	    switch (type) {
+	    case M_STRING:
+	      comp_ptr[strlen(comp_ptr)-1] = '\0';
+	      *((char **)value + i) = strdup (comp_ptr);
+	      i++;
+	      break;
+	    case M_DOUBLE:
+	      d = strtod(comp_ptr, &endp);
 
-/*
-** Decode the min and max string based on data type
-*/
-	switch (type) {
-		case M_STRING:
-			break;
+	      if (d < min_d || d > max_d) {
+		bad_param_value (d, i, name, min_d, max_d);
+	      }
 
-		case M_DOUBLE:
-		case M_FLOAT:
-			min_d = strtod(min_string, &endp);
-			max_d = strtod(max_string, &endp);
-			break;
+	      if (comp_ptr != endp && (*endp == '\n' || *endp == '\0')) {
+		((double *)value)[i++] = d;
+	      } else {
+		return error_string("parameter format error");
+	      }
+	      break;
 
-		case M_LONG:
-			min_l = strtol(min_string, &endp, 0);
-			max_l = strtol(max_string, &endp, 0);
-			break;
-	} // switch
+	    case M_FLOAT:
+	      d = strtod(comp_ptr, &endp);
 
-/*
-**  Space for the values and value_desc are allocated in declparam
-*/
-	done = FALSE;
-	i = 0;
-	while (!done) {
-		if (!(line_p = get_next_line ())) {
-			done = TRUE;
+	      if (d < min_d || d > max_d) {
+		bad_param_value (d, i, name, min_d, max_d);
+	      }
 
-		} else if (!strncmp (line, "####", 4)) {
-			done = TRUE;
+	      if (comp_ptr != endp && (*endp == '\n' || *endp == '\0')) {
+		((float *)value)[i++] = (float)d;
+	      } else {
+		return error_string("parameter format error");
+	      }
+	      break;
 
-		} else {
-			desc_count = 0;
-			result = NULL;
-			strncpy (crap, line, max_data_ln_len);
+	    case M_LONG:
+	      l = strtol(comp_ptr, &endp, 0);
 
-			result = strtok (crap, delims);
-			while (result != NULL && !done) {
-				strncpy (crap2, result, max_data_ln_len);
-				comp_ptr = strchr (crap2, '*');
-				if (comp_ptr == NULL){
-					repeat_count = 1;
-					comp_ptr = crap2;
-				} else {
-					*comp_ptr = '\0';
-					repeat_count = atol(crap2);
-					comp_ptr++;
-					foo = (float) atof(comp_ptr);
-				}
+	      // Does not check parameter ranges if bounded
+	      if ((l < min_l || l > max_l) && bound_status == M_UNBOUNDED) {
+		bad_param_value_l (l, i, name, min_l, max_l);
+	      }
 
-				for (j = 0; j < repeat_count && !done; j++) {
-					if (i < size) {
-						switch (type) {
-							case M_STRING:
-                                comp_ptr[strlen(comp_ptr)-1] = '\0';
-								*((char **)value + i) = strdup (comp_ptr);
-                                i++;
-								break;
-
-							case M_DOUBLE:
-								d = strtod(comp_ptr, &endp);
-
-								if (d < min_d || d > max_d) {
-									bad_param_value (d, i, name, min_d, max_d);
-								}
-
-								if (comp_ptr != endp && (*endp == '\n' || *endp == '\0')) {
-									((double *)value)[i++] = d;
-								} else {
-									return error_string("parameter format error");
-								}
-								break;
-
-							case M_FLOAT:
-								d = strtod(comp_ptr, &endp);
-
-								if (d < min_d || d > max_d) {
-									bad_param_value (d, i, name, min_d, max_d);
-								}
-
-								if (comp_ptr != endp && (*endp == '\n' || *endp == '\0')) {
-									((float *)value)[i++] = (float)d;
-								} else {
-									return error_string("parameter format error");
-								}
-								break;
-
-							case M_LONG:
-								l = strtol(comp_ptr, &endp, 0);
-
-// Does not check parameter ranges if bounded
-								if ((l < min_l || l > max_l) &&
-										bound_status == M_UNBOUNDED) {
-									bad_param_value_l (l, i, name, min_l, max_l);
-								}
-
-								if (comp_ptr != endp && (*endp == '\n' || *endp == '\0')) {
-									((int *)value)[i++] = (int)l;
-								} else {
-									return error_string("parameter format error");
-								}
-								break;
-						} // switch
+	      if (comp_ptr != endp && (*endp == '\n' || *endp == '\0')) {
+		((int *)value)[i++] = (int)l;
+	      } else {
+		return error_string("parameter format error");
+	      }
+	      break;
+	    } // switch
 				 
-					} else { // if (i < size)
-						done = TRUE;
-						i++;
-					} // if (i < size)
-				}
-				result = strtok(NULL, delims);
-			} // while
-		}
+	  } else {
+	    done = TRUE;
+	    i++;
+	  } // if (i < size)
 	}
+	result = strtok(NULL, delims);
+      } // while
+    }
+  }
 
-	if (i < size) {
-		return error_string("too few values read for paramter");
-	} else if (i > size && !done) {
-		return error_string("too many values read for paramter");
-	}
-	return NULL;
+  if (i < size) {
+    return error_string("too few values read for paramter");
+  } else if (i > size && !done) {
+    return error_string("too many values read for paramter");
+  }
+  return NULL;
 } // READ_param_values
 
 /*--------------------------------------------------------------------*\
