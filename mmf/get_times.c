@@ -19,7 +19,7 @@ extern DATETIME *Mstrttime;
 extern DATETIME *Mendtime;
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : get_times
+  | FUNCTION     : get_times
 \*--------------------------------------------------------------------*/
 void get_times (void) {
   long *datetime;
@@ -41,7 +41,7 @@ void get_times (void) {
   Mendtime->min = datetime[4];
   Mendtime->sec = datetime[5];
 
-  /* compute julian day for start and end  - this fills in the julian date
+  /* compute Julian day for start and end  - this fills in the Julian date
      parts of the datetime data structure */
 
   julday(Mstrttime);
