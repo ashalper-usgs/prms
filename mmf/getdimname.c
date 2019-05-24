@@ -13,10 +13,11 @@
 #include "protos.h"
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : getdimname_
- | COMMENT		: called from fortran
+  | FUNCTION     : getdimname_
+  | COMMENT	 : called from Fortran
 \*--------------------------------------------------------------------*/
-void getdimname_ (char *name, ftnint *i, char *idxname, ftnlen namelen, ftnlen idxlen) {
+void getdimname_ (char *name, ftnint *i, char *idxname,
+		  ftnlen namelen, ftnlen idxlen) {
   /*
    * local copies
    */
@@ -28,19 +29,20 @@ void getdimname_ (char *name, ftnint *i, char *idxname, ftnlen namelen, ftnlen i
   lname[namelen] = '\0';
 
   /*
-   * call c version
+   * call C version
    */
- getdimname(lname, (*i) - 1, idxname, idxlen);
+  getdimname(lname, (*i) - 1, idxname, idxlen);
   
   idxlen = strlen(idxname);
 
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : getdimdesc_
- | COMMENT	: called from Fortran
+  | FUNCTION     : getdimdesc_
+  | COMMENT	 : called from Fortran
 \*--------------------------------------------------------------------*/
-void getdimdesc_ (char *name, ftnint *i, char *desc, ftnlen namelen, ftnlen desclen) {
+void getdimdesc_ (char *name, ftnint *i, char *desc,
+		  ftnlen namelen, ftnlen desclen) {
   /*
    * local copies
    */
@@ -51,16 +53,16 @@ void getdimdesc_ (char *name, ftnint *i, char *desc, ftnlen namelen, ftnlen desc
   strncpy(lname, name, namelen);
   lname[namelen] = '\0';
 
-/*
-**	call c version
-*/
-	getdimdesc (lname, (*i) - 1, desc, namelen+1);
-	desclen = strlen (desc);
+  /*
+  **	call C version
+  */
+  getdimdesc (lname, (*i) - 1, desc, namelen+1);
+  desclen = strlen (desc);
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : getdimnameint_
- | COMMENT	: called from Fortran
+  | FUNCTION     : getdimnameint_
+  | COMMENT	: called from Fortran
 \*--------------------------------------------------------------------*/
 void getdimnameint_ (char *name, ftnint *i, ftnint *idx, ftnlen namelen) {
   /*
@@ -77,53 +79,59 @@ void getdimnameint_ (char *name, ftnint *i, ftnint *idx, ftnlen namelen) {
   /*
    * call C version
    */
- getdimname(lname, (*i) - 1, idxname, 80);
+  getdimname(lname, (*i) - 1, idxname, 80);
   
   *idx = atoi(idxname);
 
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : getdimname
+  | FUNCTION     : getdimname
 \*--------------------------------------------------------------------*/
 void getdimname (char *name, long i, char *idxname, int idxlen) {
   DIMEN *dim;
 
   dim = dim_addr(name);
   if (!dim) {
-      (void)fprintf(stderr, "ERROR - getdimname, Can't find dimension named %s\n",name);
-      return;
-	}
+    (void)fprintf(
+	    stderr,
+	    "ERROR - getdimname, Can't find dimension named %s\n",
+	    name
+	  );
+    return;
+  }
   
   if (!dim->names) {
-      (void)fprintf(stderr, "ERROR - getdimname. Dimension %s has no named indices\n",name);
-      return;
-    }
+    (void)fprintf(stderr,
+		  "ERROR - getdimname. Dimension %s has no named indices\n",
+		  name);
+    return;
+  }
   (void)strncpy(idxname, dim->names[i], idxlen);
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : getdimdesc
+  | FUNCTION     : getdimdesc
 \*--------------------------------------------------------------------*/
 void getdimdesc (char *name, long i, char *descname, int deslen) {
-	DIMEN *dim;
+  DIMEN *dim;
 
-	dim = dim_addr(name);
-	if (!dim) {
-		(void)fprintf (stderr,
-			"ERROR - getdimname, Can't find dimension named %s\n", name);
-		(void)strncpy (descname, "", deslen);
-		return;
-	}
+  dim = dim_addr(name);
+  if (!dim) {
+    (void)fprintf (stderr,
+		   "ERROR - getdimname, Can't find dimension named %s\n", name);
+    (void)strncpy (descname, "", deslen);
+    return;
+  }
   
-	if (!dim->notes) {
-		(void)strncpy (descname, "", deslen);
-		return;
-	}
+  if (!dim->notes) {
+    (void)strncpy (descname, "", deslen);
+    return;
+  }
 
-	if (dim->notes[i])
-		(void)strncpy (descname, dim->notes[i], deslen);
-	else
-		(void)strncpy (descname, "", deslen);
+  if (dim->notes[i])
+    (void)strncpy (descname, dim->notes[i], deslen);
+  else
+    (void)strncpy (descname, "", deslen);
 
 }
