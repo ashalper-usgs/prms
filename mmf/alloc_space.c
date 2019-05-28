@@ -2,8 +2,9 @@
 #include "structs.h"
 #include "globals.h"
 #include "defs.h"
-#include "protos.h"
 #include "build_lists.h"
+#include "decldim.h"
+#include "umalloc_etc.h"
 #include "alloc_space.h"
 
 LIST *cont_db;

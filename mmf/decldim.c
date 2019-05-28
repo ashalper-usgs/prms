@@ -12,8 +12,12 @@
 #include <string.h>
 #include "defs.h"
 #include "structs.h"
-#include "protos.h"
 #include "globals.h"
+#include "umalloc_etc.h"
+#include "dim_addr.h"
+#include "build_lists.h"
+#include "sort_dims.h"
+#include "decldim.h"
 
 extern LIST *dim_db;		/* in alloc_space.c */
 extern long Mdebuglevel;	/* in parse_args.c */
