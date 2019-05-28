@@ -11,13 +11,19 @@
 #include <string.h>
 #include "structs.h"
 #include "defs.h"
-#include "protos.h"
 #include "globals.h"
+#include "control_var.h"
+#include "param_addr.h"
+#include "umalloc_etc.h"
 
 /* in alloc_space.c */
 extern char *Mdatainfo;
 
+long getparam (char *, char *, int, char *, double *);
 static long paramcopy (PARAM *, double *, int);
+long getdatainfo (char *, ftnlen);
+long getoutname (char *, int, char *);
+long getdataname (char *, int, char *);
 
 /*--------------------------------------------------------------------*\
   | FUNCTION     : updateparam

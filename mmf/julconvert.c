@@ -11,7 +11,9 @@
 #include <math.h>
 #include "structs.h"
 #include "defs.h"
-#include "protos.h"
+#include "julday.h"
+
+int isleap (int);
 
 /*
 ** Takes a date, and returns a Julian day. A Julian day is the number of

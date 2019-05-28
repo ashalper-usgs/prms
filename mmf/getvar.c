@@ -11,7 +11,9 @@
 #include <string.h>
 #include "defs.h"
 #include "structs.h"
-#include "protos.h"
+#include "var_addr.h"
+
+long getvar (char *, char *, long, char *, double *);
 
 /*--------------------------------------------------------------------*\
  | FUNCTION		: getvar_

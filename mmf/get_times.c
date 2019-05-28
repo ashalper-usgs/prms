@@ -7,8 +7,9 @@
 
 #include "defs.h"
 #include "structs.h"
-#include "protos.h"
 #include "globals.h"
+#include "control_var.h"
+#include "julday.h"
 
 /* in globals.c */
 extern double Mdeltat;
