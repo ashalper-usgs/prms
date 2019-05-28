@@ -8,6 +8,7 @@
 
 #include <math.h>
 #include "structs.h"
+#include "julday.h"
 
 #define IGREG (15+31L*(10+12L*1582))
 
