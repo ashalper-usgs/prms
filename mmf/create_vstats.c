@@ -10,8 +10,12 @@
 #include <stdlib.h>
 #include "structs.h"
 #include "defs.h"
-#include "protos.h"
 #include "globals.h"
+#include "control_var.h"
+#include "get_elem_add.h"
+#include "umalloc_etc.h"
+#include "var_addr.h"
+#include "create_vstats.h"
 
 /*--------------------------------------------------------------------*\
   | FUNCTION     : create_vstats

@@ -11,7 +11,7 @@
 #include "structs.h"
 #include "globals.h"
 #include "defs.h"
-#include "protos.h"
+#include "read_line.h"
 
 extern int call_modules (char *);
 extern char *single_run_pre_init (void);

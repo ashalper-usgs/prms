@@ -9,8 +9,9 @@
 #include <string.h>
 #include "defs.h"
 #include "structs.h"
-#include "protos.h"
 #include "globals.h"
+#include "control_var.h"
+#include "save_params.h"
 
 /* in alloc_space.c */
 extern LIST *dim_db;

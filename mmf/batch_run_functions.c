@@ -12,8 +12,18 @@
 #include <sys/stat.h>
 #include "structs.h"
 #include "defs.h"
-#include "protos.h"
 #include "globals.h"
+#include "control_var.h"
+#include "check_vars.h"
+#include "create_vstats.h"
+#include "read_line.h"
+#include "julday.h"
+#include "var_addr.h"
+#include "dim_addr.h"
+#include "graph_single_run.h"
+#include "write_vstats.h"
+#include "free_vstats.h"
+#include "save_params.h"
 
 /* in alloc_space.c */
 extern DATETIME *Mstrttime;

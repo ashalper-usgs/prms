@@ -8,7 +8,8 @@
 #include "structs.h"
 #include "defs.h"
 #include "globals.h"
-#include "protos.h"
+#include "control_var.h"
+#include "free_vstats.h"
 
 /*--------------------------------------------------------------------*\
   | FUNCTION     : free_vstats

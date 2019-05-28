@@ -10,7 +10,9 @@
 #include <ctype.h>
 #include "structs.h"
 #include "defs.h"
-#include "protos.h"
+#include "param_addr.h"
+#include "var_addr.h"
+#include "get_elem_add.h"
 
 /*--------------------------------------------------------------------*\
   | FUNCTION     : CheckIndices

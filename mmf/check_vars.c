@@ -7,7 +7,11 @@
 #include <string.h>
 #include "defs.h"
 #include "structs.h"
-#include "protos.h"
+#include "control_array.h"
+#include "control_var.h"
+#include "get_elem_add.h"
+#include "var_addr.h"
+#include "check_vars.h"
 
 /*--------------------------------------------------------------------*\
   | FUNCTION     : CHECK_stat_vars
