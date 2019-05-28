@@ -1,0 +1,1 @@
+int julday (DATETIME *);

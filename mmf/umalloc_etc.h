@@ -1,0 +1,1 @@
+char *umalloc (unsigned);
