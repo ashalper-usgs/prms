@@ -1,8 +1,11 @@
-/* United States Geological Survey (USGS)
+/** 
+ * @file alloc_space.c
  *
- * PROJECT  : Modular Modeling System (MMS)
- * FUNCTION : alloc_space
- * COMMENT  : Allocates space for variables.
+ * @brief Allocates space for variables.
+ *
+ * @author United States Geological Survey (USGS)
+ *
+ * @ingroup Modular Modeling System (MMS)
  */
 
 #include <string.h>
@@ -31,6 +34,11 @@ DATETIME *Mnexttime = NULL;  /* pointer to next data time structure */
 char *Mparaminfo = NULL;     /* pointer to param information string */
 char *Mdatainfo = NULL;	     /* pointer to data information string */
 
+/** 
+ * @brief Allocates space for variables.
+ *
+ * @note References global variables.
+ */
 void alloc_space (void) {
   static DATETIME start, end, now, next;
 
@@ -81,7 +89,7 @@ void alloc_space (void) {
   Mnexttime = &next;
 
   /*
-   * space for run info string
+   * space for run info. string
    */
   Mparaminfo = strdup ("Default case");
   Mdatainfo = strdup ("Default case");
