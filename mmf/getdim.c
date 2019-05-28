@@ -10,7 +10,9 @@
 #include <string.h>
 #include "defs.h"
 #include "structs.h"
-#include "protos.h"
+#include "dim_addr.h"
+#include "umalloc_etc.h"
+#include "getdim.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getdim_

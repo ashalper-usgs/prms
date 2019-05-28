@@ -10,7 +10,10 @@
 #include <string.h>
 #include "defs.h"
 #include "structs.h"
-#include "protos.h"
+#include "dim_addr.h"
+
+void getdimname (char *, long, char *, int);
+void getdimdesc (char *, long, char *, int);
 
 /*--------------------------------------------------------------------*\
   | FUNCTION     : getdimname_
