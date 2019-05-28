@@ -10,6 +10,7 @@
 #include <string.h>
 #include "structs.h"
 #include "globals.h"
+#include "sort_params.h"
 
 extern PARAM **unsort_params;	/* in globals.c */
 extern long Mnparams;		/* in alloc_space.c */
