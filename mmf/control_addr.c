@@ -10,6 +10,7 @@
 #include <string.h>
 #include "structs.h"
 #include "globals.h"
+#include "control_addr.h"
 
 extern LIST *cont_db;		/* in alloc_space.c */
 
