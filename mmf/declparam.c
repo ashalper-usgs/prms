@@ -13,7 +13,12 @@
 #include "defs.h"
 #include "structs.h"
 #include "globals.h"
-#include "protos.h"
+#include "dim_addr.h"
+#include "load_param.h"
+#include "param_addr.h"
+#include "sort_params.h"
+#include "umalloc_etc.h"
+#include "declparam.h"
 
 extern char *Mtypes[];		/* in globals.c */
 

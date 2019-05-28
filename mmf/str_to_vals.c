@@ -20,8 +20,9 @@
 #include <errno.h>
 #include "defs.h"
 #include "structs.h"
-#include "protos.h"
 #include "globals.h"
+#include "umalloc_etc.h"
+#include "str_to_vals.h"
 
 #define S2V_ERROR 1l
 #define S2V_SUCCESS 0l

@@ -11,7 +11,9 @@
 #include <string.h>
 #include "structs.h"
 #include "defs.h"
-#include "protos.h"
+#include "umalloc_etc.h"
+#include "str_to_vals.h"
+#include "load_param.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : load_param
