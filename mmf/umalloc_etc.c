@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "umalloc_etc.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : umalloc
