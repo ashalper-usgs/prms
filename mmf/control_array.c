@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include "structs.h"
 #include "defs.h"
-#include "protos.h"
+#include "control_addr.h"
 
 /**************************************************************************
  * control_array.c: 

@@ -10,7 +10,10 @@
 #include "structs.h"
 #include "globals.h"
 #include "defs.h"
-#include "protos.h"
+#include "control_addr.h"
+#include "umalloc_etc.h"
+#include "build_lists.h"
+#include "decl_control.h"
 
 extern LIST *cont_db;		/* in alloc_space.c */
 

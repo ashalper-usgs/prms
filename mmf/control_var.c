@@ -14,8 +14,10 @@
 #include <string.h>
 #include "defs.h"
 #include "structs.h"
-#include "protos.h"
 #include "globals.h"
+#include "control_addr.h"
+#include "umalloc_etc.h"
+#include "control_var.h"
 
 /* in parse_args.c */
 extern char *MAltContFile;

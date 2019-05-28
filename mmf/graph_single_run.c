@@ -10,7 +10,10 @@
 #include "structs.h"
 #include "globals.h"
 #include "defs.h"
-#include "protos.h"
+#include "control_addr.h"
+#include "control_array.h"
+#include "julday.h"
+#include "var_addr.h"
 
 /* in alloc_space.c */
 extern DATETIME *Mstrttime;
