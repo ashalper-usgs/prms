@@ -14,7 +14,9 @@
 #include <stdlib.h>
 #include "structs.h"
 #include "defs.h"
-#include "protos.h"
+#include "control_addr.h"
+#include "decl_control.h"
+#include "umalloc_etc.h"
 
 static char *rc (char *);
 char *fgets_rc (char *, int , FILE *);

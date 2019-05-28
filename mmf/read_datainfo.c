@@ -12,7 +12,9 @@
 #include "structs.h"
 #include "globals.h"
 #include "defs.h"
-#include "protos.h"
+#include "umalloc_etc.h"
+#include "var_addr.h"
+#include "read_datainfo.h"
 
 /* in alloc_space.c */
 extern int max_read_vars;

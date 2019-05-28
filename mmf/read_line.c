@@ -18,7 +18,12 @@
 #include "structs.h"
 #include "globals.h"
 #include "defs.h"
-#include "protos.h"
+#include "control_addr.h"
+#include "umalloc_etc.h"
+#include "control_var.h"
+#include "read_datainfo.h"
+#include "julday.h"
+#include "read_line.h"
 
 /* in globals.c */
 extern double Mdeltat;
