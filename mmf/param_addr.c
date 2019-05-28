@@ -9,6 +9,7 @@
 #include <string.h>
 #include "structs.h"
 #include "globals.h"
+#include "param_addr.h"
 
 /* in alloc_space.c */
 extern long Mnparams;

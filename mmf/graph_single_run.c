@@ -14,6 +14,7 @@
 #include "control_array.h"
 #include "julday.h"
 #include "var_addr.h"
+#include "graph_single_run.h"
 
 /* in alloc_space.c */
 extern DATETIME *Mstrttime;

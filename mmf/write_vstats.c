@@ -10,6 +10,7 @@
 #include "structs.h"
 #include "globals.h"
 #include "defs.h"
+#include "write_vstats.h"
 
 /* in alloc_space.c */
 extern DATETIME *Mnowtime;
