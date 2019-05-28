@@ -17,7 +17,7 @@ extern long Mnvars;
 /*--------------------------------------------------------------------*\
  | FUNCTION     : var_addr
 \*--------------------------------------------------------------------*/
-PUBVAR *var_addr (char *key) { 
+PUBVAR *var_addr (char *key) {
   PUBVAR **vars;
   int lowcomp, midcomp, highcomp;
   long low, mid, high;
