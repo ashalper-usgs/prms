@@ -12,3 +12,5 @@ libmmf_a_SOURCES = alloc_space.c batch_run.c batch_run_functions.c	\
 	read_vars.c readvar.c reset_dim.c save_params.c setup_cont.c	\
 	sort_dims.c sort_params.c sort_vars.c str_to_vals.c timing.c	\
 	umalloc_etc.c var_addr.c write_vstats.c
+
+CLEANFILES = *~
