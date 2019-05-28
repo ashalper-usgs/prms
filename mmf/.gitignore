@@ -6,5 +6,7 @@
 /config.h
 /config.log
 /config.status
+/html/
+/latex/
 /libmmf.a
 /stamp-h1
