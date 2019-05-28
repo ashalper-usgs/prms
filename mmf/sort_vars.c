@@ -9,6 +9,7 @@
 #include <string.h>
 #include "structs.h"
 #include "globals.h"
+#include "sort_vars.h"
 
 /* in alloc_space.c */
 extern PUBVAR **Mvarbase;
