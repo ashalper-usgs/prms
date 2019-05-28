@@ -11,8 +11,12 @@
 #include <string.h>
 #include "defs.h"
 #include "structs.h"
-#include "protos.h"
 #include "globals.h"
+#include "dim_addr.h"
+#include "sort_vars.h"
+#include "umalloc_etc.h"
+#include "var_addr.h"
+#include "declvar.h"
 
 /* in alloc_space.c */
 extern int max_vars;
