@@ -10,6 +10,7 @@
 #include <string.h>
 #include "structs.h"
 #include "globals.h"
+#include "dim_addr.h"
 
 extern LIST *dim_db;		/* in alloc_space.c */
 

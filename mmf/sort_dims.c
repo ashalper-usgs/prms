@@ -9,6 +9,7 @@
 #include <string.h>
 #include "structs.h"
 #include "globals.h"
+#include "sort_dims.h"
 
 extern LIST *dim_db;		/* in alloc_space.c */
 
