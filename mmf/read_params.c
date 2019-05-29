@@ -12,8 +12,14 @@
 #include <ctype.h>
 #include "structs.h"
 #include "defs.h"
-#include "protos.h"
 #include "globals.h"
+#include "control_var.h"
+#include "declparam.h"
+#include "dim_addr.h"
+#include "getdim.h"
+#include "getparam.h"
+#include "param_addr.h"
+#include "umalloc_etc.h"
 
 static char *READ_param_head (PARAM **, int);
 static char *READ_param_values (long, long, char *, char *, char[], char *, char *, int);

@@ -10,7 +10,8 @@
 #include "structs.h"
 #include "globals.h"
 #include "defs.h"
-#include "protos.h"
+#include "control_var.h"
+#include "umalloc_etc.h"
 
 extern char *Mtypes[];		/* in globals.c */
 
