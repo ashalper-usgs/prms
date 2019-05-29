@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "structs.h"
 #include "globals.h"
+#include "print_model_info.h"
 
 /* in parse_args.c */
 extern char *MAltContFile;

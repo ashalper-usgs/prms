@@ -12,6 +12,7 @@
 #include "defs.h"
 #include "control_var.h"
 #include "umalloc_etc.h"
+#include "print_vars.h"
 
 extern char *Mtypes[];		/* in globals.c */
 
