@@ -46,7 +46,7 @@ static void INSERT_time (char *, DATETIME *);
   | FUNCTION     : read_line
   | RETURN VALUE : None.
 \*--------------------------------------------------------------------*/
-long read_line (void) {
+long read_line (long Mnsteps) {
 
   char   *start_point, *end_point;
   float   initial_deltat;
@@ -71,9 +71,6 @@ long read_line (void) {
   if (Mnsteps == 0) {
     start_of_data = TRUE;
     Mprevjt = 1.0;
-    /*
-      prevjt = -1.0;
-    */
   }
 
   prevtime = *Mnowtime;
@@ -89,8 +86,16 @@ long read_line (void) {
     **  9999 in the year field is the code for EOF. 
     */
     if (cur_fd->time.year == 9999) {
-      (void)fprintf (stderr,"\nWARNING, date of end_time reached the last date in the Data File \n");
-      (void)fprintf(stderr, "         simulation stopped on: %ld %ld %ld \n", Mnowtime->year, Mnowtime->month, Mnowtime->day);
+      (void)fprintf (
+	      stderr,
+	      "\nWARNING, date of end_time reached the last date in "
+	      "the Data File \n"
+	    );
+      (void)fprintf(
+	      stderr,
+	      "         simulation stopped on: %ld %ld %ld \n",
+	      Mnowtime->year, Mnowtime->month, Mnowtime->day
+	    );
       return ENDOFFILE;
     }
 
