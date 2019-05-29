@@ -17,7 +17,7 @@
 #include "umalloc_etc.h"
 #include "getparam.h"
 
-/* in alloc_space.c */
+/* in prms.c */
 extern char *Mdatainfo;
 
 long getparam (char *, char *, int, char *, double *);

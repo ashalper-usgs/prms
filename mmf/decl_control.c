@@ -15,7 +15,7 @@
 #include "build_lists.h"
 #include "decl_control.h"
 
-extern LIST *cont_db;		/* in alloc_space.c */
+extern LIST *cont_db;		/* in prms.c */
 
 /*--------------------------------------------------------------------*\
   | FUNCTION     : add_control

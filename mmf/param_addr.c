@@ -11,7 +11,7 @@
 #include "globals.h"
 #include "param_addr.h"
 
-/* in alloc_space.c */
+/* in prms.c */
 extern long Mnparams;
 
 /*--------------------------------------------------------------------*\

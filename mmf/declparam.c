@@ -22,7 +22,7 @@
 
 extern char *Mtypes[];		/* in globals.c */
 
-/* in alloc_space.c */
+/* in prms.c */
 extern int max_params;
 extern PARAM **Mparambase;
 extern long Mnparams;

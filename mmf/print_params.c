@@ -16,7 +16,7 @@
 
 extern char *Mtypes[];		/* in globals.c */
 
-/* in alloc_space.c */
+/* in prms.c */
 extern LIST *dim_db;
 extern PARAM **Mparambase;
 extern long Mnparams;

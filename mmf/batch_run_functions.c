@@ -25,7 +25,7 @@
 #include "free_vstats.h"
 #include "save_params.h"
 
-/* in alloc_space.c */
+/* in prms.c */
 extern DATETIME *Mstrttime;
 extern DATETIME *Mendtime;
 extern DATETIME *Mnowtime;

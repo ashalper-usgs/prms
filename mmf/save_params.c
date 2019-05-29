@@ -13,7 +13,7 @@
 #include "control_var.h"
 #include "save_params.h"
 
-/* in alloc_space.c */
+/* in prms.c */
 extern LIST *dim_db;
 extern long Mnparams;
 

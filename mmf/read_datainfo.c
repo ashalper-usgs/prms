@@ -16,7 +16,7 @@
 #include "var_addr.h"
 #include "read_datainfo.h"
 
-/* in alloc_space.c */
+/* in prms.c */
 extern int max_read_vars;
 extern READCHECK **Mcheckbase;
 extern long Mnreads;

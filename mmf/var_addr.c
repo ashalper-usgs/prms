@@ -10,7 +10,7 @@
 #include "structs.h"
 #include "globals.h"
 
-/* in alloc_space.c */
+/* in prms.c */
 extern PUBVAR **Mvarbase;
 extern long Mnvars;
 

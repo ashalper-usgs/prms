@@ -19,7 +19,7 @@
 #include "sort_dims.h"
 #include "decldim.h"
 
-extern LIST *dim_db;		/* in alloc_space.c */
+extern LIST *dim_db;		/* in prms.c */
 extern long Mdebuglevel;	/* in parse_args.c */
 
 /*--------------------------------------------------------------------*\

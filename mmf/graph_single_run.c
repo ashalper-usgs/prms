@@ -16,7 +16,7 @@
 #include "var_addr.h"
 #include "graph_single_run.h"
 
-/* in alloc_space.c */
+/* in prms.c */
 extern DATETIME *Mstrttime;
 extern DATETIME *Mnowtime;
 

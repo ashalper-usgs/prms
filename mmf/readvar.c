@@ -14,7 +14,7 @@
 #include "globals.h"
 #include "var_addr.h"
 
-/* in alloc_space.c */
+/* in prms.c */
 extern READCHECK **Mcheckbase;
 extern long Mnreads;
 

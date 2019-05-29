@@ -29,7 +29,7 @@
 extern double Mdeltat;
 extern double Mdeltanext;
 
-/* in alloc_space.c */
+/* in prms.c */
 extern READCHECK **Mcheckbase;
 extern long Mnreads;
 extern DATETIME *Mstrttime;

@@ -11,7 +11,7 @@
 #include "defs.h"
 #include "umalloc_etc.h"
 
-/* in alloc_space.c */
+/* in prms.c */
 extern PUBVAR **Mvarbase;
 extern long Mnvars;
 extern long Mnparams;

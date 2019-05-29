@@ -13,7 +13,7 @@
 #include "sort_params.h"
 
 extern PARAM **unsort_params;	/* in globals.c */
-extern long Mnparams;		/* in alloc_space.c */
+extern long Mnparams;		/* in prms.c */
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : sort_params

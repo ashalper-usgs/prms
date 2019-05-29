@@ -19,7 +19,7 @@
 extern double Mdeltat;
 extern double Mdeltanext;
 
-/* in alloc_space.c */
+/* in prms.c */
 extern DATETIME *Mstrttime;
 extern DATETIME *Mendtime;
 extern DATETIME *Mnowtime;

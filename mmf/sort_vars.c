@@ -11,7 +11,7 @@
 #include "globals.h"
 #include "sort_vars.h"
 
-/* in alloc_space.c */
+/* in prms.c */
 extern PUBVAR **Mvarbase;
 
 /*--------------------------------------------------------------------*\

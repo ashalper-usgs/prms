@@ -16,7 +16,7 @@
 
 extern char *Mtypes[];		/* in globals.c */
 
-/* in alloc_space.c */
+/* in prms.c */
 extern PUBVAR **Mvarbase;
 extern long Mnvars;
 extern DATETIME *Mstrttime;

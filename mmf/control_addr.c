@@ -12,7 +12,7 @@
 #include "globals.h"
 #include "control_addr.h"
 
-extern LIST *cont_db;		/* in alloc_space.c */
+extern LIST *cont_db;		/* in prms.c */
 
 CONTROL *control_addr (char *key) { 
   CONTROL *cp;

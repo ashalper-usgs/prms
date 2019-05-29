@@ -20,7 +20,7 @@
 extern double Mdeltat;
 extern double Mdeltanext;
 
-/* in alloc_space.c */
+/* in prms.c */
 extern char *Mparaminfo;
 
 static int read_var_line (char *, char *, FILE *, char *);

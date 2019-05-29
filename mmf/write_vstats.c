@@ -12,7 +12,7 @@
 #include "defs.h"
 #include "write_vstats.h"
 
-/* in alloc_space.c */
+/* in prms.c */
 extern DATETIME *Mnowtime;
 
 /*--------------------------------------------------------------------*\

@@ -18,7 +18,7 @@
 #include "var_addr.h"
 #include "declvar.h"
 
-/* in alloc_space.c */
+/* in prms.c */
 extern int max_vars;
 extern PUBVAR **Mvarbase;
 extern long Mnvars;
