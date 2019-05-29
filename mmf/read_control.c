@@ -6,7 +6,8 @@
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : read_control
  * COMMENT  : reads the control database from a file
- *            File name is obtained from the environment variable "mms_control_file"
+ *            File name is obtained from the environment variable
+ *            "mms_control_file".
  */
 
 #include <stdio.h>
@@ -244,18 +245,19 @@ char *fgets_rc (char *str, int num, FILE *stream) {
     */
   } else if (strstr (str, "//")) {
     /*
-    ** comment in data line
-    ** DANGER looks for spaces before comment and sets them to null so
-    ** data part of the line does not have any part of the comment
+    ** Comment in data line.
+    **
+    ** DANGER looks for spaces before comment and sets NULL so
+    ** data part of the line does not have any part of the comment.
     */
     ptr2 = strstr (str, "//");
 
-    /* New -- terminate data part of line where the comment starts
-     *(ptr2) = '\0';
+    /* New -- terminate data part of line where the comment starts */
+    *(ptr2) = '\0';
          
-     /* Now look for spaces before the comment deliminator. If there
-     ** are some, null them out.
-     */
+    /* Now look for spaces before the comment delimiter. If there
+    ** are some, null them out.
+    */
 
     ptr2--;
     while (*ptr2 != ' ') ptr2--;
@@ -265,4 +267,5 @@ char *fgets_rc (char *str, int num, FILE *stream) {
   } else {
     return ptr;
   }
+
 }
