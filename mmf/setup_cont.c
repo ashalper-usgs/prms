@@ -7,6 +7,7 @@
 #include "defs.h"
 #include "structs.h"
 #include "umalloc_etc.h"
+#include "setup_cont.h"
 
 /* in parse_args.c */
 extern char *executable_model;

@@ -10,6 +10,7 @@
 #include "structs.h"
 #include "globals.h"
 #include "defs.h"
+#include "parse_args.h"
 
 long Mdebuglevel = 0;		/* the current debug level */
 char *MAltContFile = NULL;	/* Alt. name of control file */
