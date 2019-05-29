@@ -12,14 +12,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <sys/stat.h>
 
 #include "defs.h"
 #include "structs.h"
 #include "globals.h"
 
 #include "build_lists.h"
-#include "call_modules.h"
 #include "check_vars.h"
 #include "control_addr.h"
 #include "control_var.h"
@@ -61,11 +59,11 @@ extern int run_period_of_record;
 extern int runtime_graph_on;
 extern int preprocess_on;
 
-extern int call_modules(char *);
 extern int call_setdims(void);
 
 void alloc_space (void);
 int BATCH_run (void);
+int call_modules(char *);
 
 char *single_run_pre_init (void);
 char *single_run_post_init (void);
@@ -78,9 +76,9 @@ MODULE_DATA *current_module;
 FILE_DATA   **fd = NULL;
 double Mprevjt = -1.0; /* the latest previous Julian time  */
 char *Minpptr = NULL;  /* pointer to current position in data input line */
-int  M_stop_run = 0;	      /* Run switch 0 -or 1 */
-STAT_LIST_TYPE *Mfirst_stat_list = NULL; /* pointer to first entry
-					    in stats link list */
+int  M_stop_run = 0;   /* Run switch 0 -or 1 */
+/* pointer to first entry in stats link list */
+STAT_LIST_TYPE *Mfirst_stat_list = NULL;
 long ParamBaseIsDirty = FALSE;
 int max_dims;
 int max_controls;
@@ -869,4 +867,15 @@ char *single_run_post_cleanup (void) {
   }
 
   return (NULL);
+}
+
+extern long call_modules_ (char *, ftnlen);
+
+int call_modules(char *arg) {
+  long retval;
+  ftnlen len;
+
+  len = (ftnlen)strlen(arg);
+  retval = call_modules_ (arg, len);
+  return((int)retval);
 }
