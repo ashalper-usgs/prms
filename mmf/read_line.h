@@ -2,6 +2,8 @@ long read_line (void);
 
 char *DATA_read_init (void);
 
+char *READ_data_info (void);
+
 char *DATA_check_start (void);
 
 void DATA_close (void);
