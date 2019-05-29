@@ -10,6 +10,7 @@
 #include "globals.h"
 #include "control_var.h"
 #include "julday.h"
+#include "get_times.h"
 
 /* in globals.c */
 extern double Mdeltat;
