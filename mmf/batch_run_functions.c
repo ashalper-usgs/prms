@@ -10,20 +10,24 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
+
 #include "structs.h"
 #include "defs.h"
 #include "globals.h"
-#include "control_var.h"
+
 #include "check_vars.h"
+#include "control_var.h"
 #include "create_vstats.h"
-#include "read_line.h"
-#include "julday.h"
-#include "var_addr.h"
 #include "dim_addr.h"
-#include "graph_single_run.h"
-#include "write_vstats.h"
 #include "free_vstats.h"
+#include "graph_single_run.h"
+#include "julday.h"
+#include "read_line.h"
 #include "save_params.h"
+#include "var_addr.h"
+#include "write_vstats.h"
+
+#include "batch_run_functions.h"
 
 /* in prms.c */
 extern DATETIME *Mstrttime;
@@ -56,7 +60,7 @@ static DATETIME start_of_data, end_of_data;
   | FUNCTION     : single_run_pre_init
   | RETURN VALUE : char *
 \*--------------------------------------------------------------------*/
-char *single_run_pre_init () {
+char *single_run_pre_init (void) {
 
   stats_flag = *control_lvar ("statsON_OFF");
   if (stats_flag == 1)
@@ -318,7 +322,7 @@ char *single_run_pre_init () {
   | FUNCTION     : single_run_post_init
   | RETURN VALUE : char *
 \*--------------------------------------------------------------------*/
-char *single_run_post_init () {
+char *single_run_post_init (void) {
 
   initializeRuntimeGraphs();
 
@@ -340,7 +344,7 @@ char *single_run_post_init () {
   | RETURN VALUE : char *
   | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-char *single_run_pre_run () {
+char *single_run_pre_run (void) {
 
   started = TRUE;
 
@@ -355,7 +359,7 @@ char *single_run_pre_run () {
   | RETURN VALUE : char *
   | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-char *single_run_post_run () {
+char *single_run_post_run (void) {
 
   if (stats_flag)
     write_vstats (statvar_file);
@@ -415,7 +419,7 @@ char *single_run_post_run () {
   | FUNCTION     : single_run_pre_cleanup
   | RETURN VALUE : char *
 \*--------------------------------------------------------------------*/
-char *single_run_pre_cleanup () {
+char *single_run_pre_cleanup (void) {
   return (NULL);
 }
 
@@ -426,7 +430,7 @@ char *single_run_pre_cleanup () {
   | RETURN VALUE : char *
   | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-char *single_run_post_cleanup () {
+char *single_run_post_cleanup (void) {
 
   /*
    * free up stats vars linked list
