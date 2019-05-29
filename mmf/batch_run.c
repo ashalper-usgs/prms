@@ -23,7 +23,6 @@ extern char *single_run_post_cleanup (void);
 
 /*--------------------------------------------------------------------*\
   | FUNCTION     : BATCH_run
-  | COMMENT      :
   | PARAMETERS   : None
   | RETURN VALUE : int - error message if there is one.
   | RESTRICTIONS : None
