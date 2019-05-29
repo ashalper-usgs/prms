@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "defs.h"
+#include "call_modules.h"
 
 extern long call_modules_ (char *, ftnlen);
 
