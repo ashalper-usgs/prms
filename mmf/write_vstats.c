@@ -19,7 +19,7 @@ extern DATETIME *Mnowtime;
  | FUNCTION     : write_vstats
  | RETURN VALUE : None.
 \*--------------------------------------------------------------------*/
-void write_vstats (FILE *statvar_file) { 
+void write_vstats (FILE *statvar_file, long Mnsteps) { 
 
   STAT_LIST_TYPE *stat_list;
 

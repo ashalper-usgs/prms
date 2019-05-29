@@ -1,1 +1,1 @@
-void write_vstats (FILE *);
+void write_vstats (FILE *, long);
