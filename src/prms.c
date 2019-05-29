@@ -71,7 +71,6 @@ char *single_run_pre_run (void);
 char *single_run_post_run (void);
 char *single_run_post_cleanup (void);
 
-LIST *module_db;
 MODULE_DATA *current_module;
 FILE_DATA   **fd = NULL;
 double Mprevjt = -1.0; /* the latest previous Julian time  */
@@ -92,35 +91,35 @@ int max_controls;
   | RETURN VALUE : int
 \*--------------------------------------------------------------------*/
 int main (int argc, char *argv[]) {
-   int set_count;
-   int i, j;
-   char **set_name, **set_value;
-   CONTROL *cp;
-   char *cptr;
-   double *dptr;
-   float *fptr;
-   long *lptr;
-   char **cpt;
-   struct stat stbuf;
-   char	buf[512];
-   char	*err;
-   static int      num_param_files = 0;
-   char   **fname;
-   char pathname[FILENAME_MAX];
-   int set_size;
+  LIST *module_db;
+  int set_count;
+  int i, j;
+  char **set_name, **set_value;
+  CONTROL *cp;
+  char *cptr;
+  double *dptr;
+  float *fptr;
+  long *lptr;
+  char **cpt;
+  struct stat stbuf;
+  char	buf[512];
+  char	*err;
+  static int      num_param_files = 0;
+  char   **fname;
+  char pathname[FILENAME_MAX];
+  int set_size;
 
    /*
-   **  Maximum buffer size for reading lines from files.
-   **  This used to be set as a C precompiler directive.
-   **  That is still the default, but now users are give.
-   **  the option to set this on the command line, otherwise
-   **  size still comes from the defs.h file.
+   **  Maximum buffer size for reading lines from files. This used to
+   **  be set as a C precompiler directive. That is still the default,
+   **  but now users are given the option to set this on the command
+   **  line, otherwise size still comes from the defs.h file.
    */
    max_data_ln_len = MAXDATALNLEN;
 
    /*
-   **  List of modules that are used by the model. This is
-   **  determined by calls to declmodule
+   **  List of modules that are used by the model. This is determined
+   **  by calls to declmodule().
    */
    module_db = ALLOC_list ("Module Data Base", 0, 100);
 
@@ -287,7 +286,7 @@ int main (int argc, char *argv[]) {
    if (print_mode) {
      print_params();
      print_vars();
-     print_model_info();
+     print_model_info(module_db);
      (void)snprintf (pathname, FILENAME_MAX, "%s.param", MAltContFile);
      save_params (pathname);
    } else {
