@@ -16,7 +16,6 @@
 #include "structs.h"
 #include "globals.h"
 
-#include "batch_run.h"
 #include "batch_run_functions.h"
 #include "build_lists.h"
 #include "call_modules.h"
@@ -57,6 +56,7 @@ extern int call_modules(char *);
 extern int call_setdims(void);
 
 void alloc_space (void);
+int BATCH_run (void);
 
 LIST *module_db;
 MODULE_DATA *current_module;
