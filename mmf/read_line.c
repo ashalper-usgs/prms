@@ -476,8 +476,8 @@ FILE_DATA * FILE_with_next_ts (void) {
     fd_ptr = fd[i];  
     if (fd_ptr->time.year != 9999) {
       /*
-      **   If two files have the same julian day, assume one is a storm file
-      **   and one is a daily file.  Throw out the daily value.
+      **   If two files have the same Julian day, assume one is a storm file
+      **   and one is a daily file. Throw out the daily value.
       */
       if (fd_ptr->time.jd == cur_fd->time.jd) {
 	if (fd_ptr->time.jt == cur_fd->time.jt) {
