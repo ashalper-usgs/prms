@@ -1,1 +1,1 @@
-int print_model_info (void);
+int print_model_info (LIST *);
