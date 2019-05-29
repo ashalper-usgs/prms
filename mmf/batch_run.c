@@ -12,6 +12,7 @@
 #include "globals.h"
 #include "defs.h"
 #include "read_line.h"
+#include "batch_run.h"
 
 extern int call_modules (char *);
 extern char *single_run_pre_init (void);
@@ -24,7 +25,7 @@ extern char *single_run_post_cleanup (void);
   | FUNCTION     : BATCH_run
   | COMMENT      :
   | PARAMETERS   : None
-  | RETURN VALUE : char * - error message if there is one.
+  | RETURN VALUE : int - error message if there is one.
   | RESTRICTIONS : None
 \*--------------------------------------------------------------------*/
 int BATCH_run (void) {
