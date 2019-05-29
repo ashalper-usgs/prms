@@ -15,14 +15,17 @@
 #include <string.h>
 #include <errno.h>
 #include <sys/stat.h>
+
 #include "structs.h"
 #include "globals.h"
 #include "defs.h"
+
 #include "control_addr.h"
-#include "umalloc_etc.h"
 #include "control_var.h"
-#include "read_datainfo.h"
 #include "julday.h"
+#include "read_datainfo.h"
+#include "umalloc_etc.h"
+
 #include "read_line.h"
 
 /* in globals.c */
