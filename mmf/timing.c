@@ -252,27 +252,6 @@ double deltim (void) {
 }
 
 /**************************************************************************
- * getstep_() is called from Fortran, getstep()
- */
-
-/*--------------------------------------------------------------------*\
-  | FUNCTION     : getstep_
-\*--------------------------------------------------------------------*/
-long getstep_ (void) {
-  return getstep();
-}
-
-/**************************************************************************
- * getstep() is called from C
- */
-/*--------------------------------------------------------------------*\
-  | FUNCTION     : getstep
-\*--------------------------------------------------------------------*/
-long getstep (void) {
-  return Mnsteps;
-}
-
-/**************************************************************************
  * djulian_ and djulian : returns the double Julian date of the data stream
  *                        relative to calendar, solar and water year start dates.
  *                         (1 JAN)   (22 DEC)  (1 OCT)
