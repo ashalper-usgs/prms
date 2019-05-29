@@ -19,8 +19,8 @@
 #include "getdim.h"
 #include "getparam.h"
 #include "param_addr.h"
-#include "read_params.h"
 #include "umalloc_etc.h"
+#include "read_params.h"
 
 static char *READ_param_head (PARAM **, int);
 static char *READ_param_values (long, long, char *, char *, char[], char *, char *, int);
