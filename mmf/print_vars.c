@@ -26,12 +26,10 @@ extern DATETIME *Mnowtime;
 /* in parse_args.c */
 extern char *MAltContFile;
 
-#define PRINTLEN 77
-
 /*--------------------------------------------------------------------*\
  | FUNCTION     : print_vars
 \*--------------------------------------------------------------------*/
-int print_vars (void) {
+int print_vars (long Mnsteps) {
 
   char pathname[FILENAME_MAX], *infostr;
   FILE *var_file;
