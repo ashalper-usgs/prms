@@ -2,7 +2,7 @@
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : umalloc_etc
- * COMMENT  : memory allocation routines with error handling
+ * COMMENT  : Memory allocation routines with error handling.
  */
 
 #include <stdlib.h>
@@ -20,7 +20,7 @@ char *umalloc (unsigned size) {
 
   if ((ptr = (char *)malloc(size)) == NULL)
     if (size != 0) {
-      (void)fprintf(stderr, "Cannot perform malloc, size = %d\n",size);
+      (void)fprintf(stderr, "Cannot perform malloc, size = %d\n", size);
       exit(1);
     }
   return(ptr);
@@ -33,21 +33,26 @@ char *urealloc (char *ptr, unsigned size) {
   if (ptr == NULL) return(umalloc(size));
   if ((ptr = (char *)realloc(ptr, size)) == NULL)
     if (size != 0) {
-      (void)fprintf(stderr, "Cannot perform realloc, size = %d\n",size);
+      (void)fprintf(stderr, "Cannot perform realloc, size = %d\n", size);
       exit(1);
     }
   return(ptr);
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : ucalloc
-\*--------------------------------------------------------------------*/
+  | FUNCTION     : ucalloc
+  \*--------------------------------------------------------------------*/
 char *ucalloc (unsigned num, unsigned size) {
   char *ptr;
-  if ((ptr = (char *)calloc(num, size)) == NULL) 
-    if ((size != 0) && (num != 0))
-      (void)fprintf(stderr, "Cannot perform calloc, num, size = %d,%d\n",num,size);
+  
+  if ((ptr = (char *)calloc(num, size)) == NULL) {
+    if ((size != 0) && (num != 0)) {
+      (void)fprintf(stderr,
+		    "Cannot perform calloc, num, size = %d,%d\n",
+		    num, size);
       exit(1);
+    }
+  }
   return(ptr);
 }
 
@@ -56,4 +61,3 @@ char *ucalloc (unsigned num, unsigned size) {
 \*--------------------------------------------------------------------*/
 void ufree (char *ptr) {
 }
-
