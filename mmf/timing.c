@@ -2,17 +2,18 @@
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : timing
- * COMMENT  : timing functions
- *            The routines with a _ suffix are called from Fortran
- *            The routines without the suffix are called from C
+ * COMMENT  : Timing functions.
+ *            The routines with a "_" suffix are called from Fortran.
+ *            The routines without the suffix are called from C.
  */
 
 #include <string.h>
 #include <stdlib.h>
 #include "defs.h"
 #include "structs.h"
-#include "protos.h"
 #include "globals.h"
+#include "julday.h"
+#include "umalloc_etc.h"
 
 /* in globals.c */
 extern double Mdeltat;
@@ -23,19 +24,25 @@ extern DATETIME *Mstrttime;
 extern DATETIME *Mendtime;
 extern DATETIME *Mnowtime;
 
+void dattim (char *, long *);
+long julian (char *, char *);
+double deltim (void);
+long getstep (void);
+double djulian (char *, char *);
+double delnex (void);
+
 /**************************************************************************
  * dattim and dattim_ : get start, end or current data date and time
  *
  * args - dwhen : string, "start", "end", and "now"
  *        timearray: integer or long array which accepts the time
  *                   and date
- * 
  */
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : dattim_
- | COMMENT	: called from Fortran, sorts out args and calls dattim()
- |                get start, end or current data date and time
+  | FUNCTION    : dattim_
+  | COMMENT	: called from Fortran, sorts out args and calls dattim()
+  |               get start, end or current data date and time
 \*--------------------------------------------------------------------*/
 void dattim_ (char *dwhen, ftnint *timearray, ftnlen dwhenlen) {
 
@@ -46,8 +53,8 @@ void dattim_ (char *dwhen, ftnint *timearray, ftnlen dwhenlen) {
    * copy when and terminate
    */
 
-    strncpy (when, dwhen, dwhenlen);
-    *(when + dwhenlen) = '\0';
+  strncpy (when, dwhen, dwhenlen);
+  *(when + dwhenlen) = '\0';
 
   /*
    * call C version of dattim()
@@ -64,8 +71,8 @@ void dattim_ (char *dwhen, ftnint *timearray, ftnlen dwhenlen) {
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : dattim
- | COMMENT	: called from C
+  | FUNCTION    : dattim
+  | COMMENT	: called from C
 \*--------------------------------------------------------------------*/
 void dattim (char *when, long *timearray) {
 
@@ -83,7 +90,7 @@ void dattim (char *when, long *timearray) {
     time = Mnowtime;
   else {
     (void)fprintf(stderr,
-	    "ERROR - dattim - illegal argument '%s'.\n", when);
+		  "ERROR - dattim - illegal argument '%s'.\n", when);
     exit(1);
   }
 
@@ -101,14 +108,14 @@ void dattim (char *when, long *timearray) {
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : nowjt_
+  | FUNCTION     : nowjt_
 \*--------------------------------------------------------------------*/
 double nowjt_ () {
-   return Mnowtime->jt;
+  return Mnowtime->jt;
 }
 
 /**************************************************************************
- * julian_ and julian : returns the julian date of the data stream relative
+ * julian_ and julian : returns the Julian date of the data stream relative
  *                      to calendar, solar and water year start dates.
  *                         (1 JAN)   (22 DEC)  (1 OCT)
  *
@@ -119,7 +126,7 @@ double nowjt_ () {
  */
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : julian_
+  | FUNCTION     : julian_
 \*--------------------------------------------------------------------*/
 long julian_ (char *jwhen, char *jtype, ftnlen jwhenlen, ftnlen jtypelen) {
 
@@ -130,11 +137,11 @@ long julian_ (char *jwhen, char *jtype, ftnlen jwhenlen, ftnlen jtypelen) {
    * copy strings and terminate
    */
 
-    strncpy (when, jwhen, jwhenlen);
-    *(when + jwhenlen) = '\0';
+  strncpy (when, jwhen, jwhenlen);
+  *(when + jwhenlen) = '\0';
 
-    strncpy (type, jtype, jtypelen);
-    *(type + jtypelen) = '\0';
+  strncpy (type, jtype, jtypelen);
+  *(type + jtypelen) = '\0';
 
   /*
    * call C version of julian()
@@ -151,8 +158,8 @@ long julian_ (char *jwhen, char *jtype, ftnlen jwhenlen, ftnlen jtypelen) {
  */
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : julian
-\*--------------------------------------------------------------------*/
+  | FUNCTION     : julian
+  \*--------------------------------------------------------------------*/
 long julian (char *when, char *type) {
 
   DATETIME *time, reftime;
@@ -169,7 +176,7 @@ long julian (char *when, char *type) {
     time = Mnowtime;
   else {
     (void)fprintf(stderr,
-	    "ERROR - julian - illegal argument '%s'.\n", when);
+		  "ERROR - julian - illegal argument '%s'.\n", when);
     exit(1);
   }
 
@@ -189,13 +196,13 @@ long julian (char *when, char *type) {
     reftime.month = 12;
     reftime.day = 21;
   } else if(!strcmp(type, "spring")) {
-	  if ((time->month > 3) || (time->month == 3 && time->day > 20)) {
-		reftime.year = time->year;
-	  } else {
-		reftime.year = time->year - 1;
-	  }
-	reftime.month = 3;
-	reftime.day = 20;
+    if ((time->month > 3) || (time->month == 3 && time->day > 20)) {
+      reftime.year = time->year;
+    } else {
+      reftime.year = time->year - 1;
+    }
+    reftime.month = 3;
+    reftime.day = 20;
   } else if (!strcmp(type, "water")) {
     if (time->month > 9)
       reftime.year = time->year;
@@ -208,7 +215,7 @@ long julian (char *when, char *type) {
     return (time->jd);
   } else {
     (void)fprintf(stderr,
-	    "ERROR - julian - illegal argument '%s'.\n", type);
+		  "ERROR - julian - illegal argument '%s'.\n", type);
     exit(1);
   }
 
@@ -217,7 +224,7 @@ long julian (char *when, char *type) {
   reftime.sec = 0;
 
   /*
-   * compute the julian dates
+   * compute the Julian dates
    */
 
   julday(time);
@@ -230,19 +237,15 @@ long julian (char *when, char *type) {
 /**************************************************************************
  * deltim_() is called from Fortran, deltim()
  */
-
 double deltim_(void) {
-
-/* printf ("from deltim:  %f\n", deltim()); */
   return deltim();
-
 }
 
 /**************************************************************************
  * deltim() is called from C
  */
 /*--------------------------------------------------------------------*\
- | FUNCTION     : deltim
+  | FUNCTION     : deltim
 \*--------------------------------------------------------------------*/
 double deltim (void) {
   return (double) Mdeltat * 24.0;
@@ -253,7 +256,7 @@ double deltim (void) {
  */
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : getstep_
+  | FUNCTION     : getstep_
 \*--------------------------------------------------------------------*/
 long getstep_ (void) {
   return getstep();
@@ -263,15 +266,15 @@ long getstep_ (void) {
  * getstep() is called from C
  */
 /*--------------------------------------------------------------------*\
- | FUNCTION     : getstep
+  | FUNCTION     : getstep
 \*--------------------------------------------------------------------*/
 long getstep (void) {
   return Mnsteps;
 }
 
 /**************************************************************************
- * djulian_ and djulian : returns the double julian date of the data stream
- *                      relative to calendar, solar and water year start dates.
+ * djulian_ and djulian : returns the double Julian date of the data stream
+ *                        relative to calendar, solar and water year start dates.
  *                         (1 JAN)   (22 DEC)  (1 OCT)
  *
  * args - when : string, "start", "end", "now"
@@ -281,7 +284,7 @@ long getstep (void) {
  */
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : djulian_
+  | FUNCTION     : djulian_
 \*--------------------------------------------------------------------*/
 double djulian_ (char *jwhen, char *jtype, ftnlen jwhenlen, ftnlen jtypelen) {
 
@@ -319,7 +322,7 @@ double djulian_ (char *jwhen, char *jtype, ftnlen jwhenlen, ftnlen jtypelen) {
  */
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : djulian
+  | FUNCTION     : djulian
 \*--------------------------------------------------------------------*/
 double djulian (char *when, char *type) {
 
@@ -337,7 +340,7 @@ double djulian (char *when, char *type) {
     time = Mnowtime;
   else {
     (void)fprintf(stderr,
-	    "ERROR - julian - illegal argument '%s'.\n", when);
+		  "ERROR - julian - illegal argument '%s'.\n", when);
     exit(1);
   }
 
@@ -368,7 +371,7 @@ double djulian (char *when, char *type) {
     return (time->jt);
   } else {
     (void)fprintf(stderr,
-	    "ERROR - julian - illegal argument '%s'.\n", type);
+		  "ERROR - julian - illegal argument '%s'.\n", type);
     exit(1);
   }
 
@@ -377,7 +380,7 @@ double djulian (char *when, char *type) {
   reftime.sec = 0;
 
   /*
-   * compute the julian dates
+   * compute the Julian dates
    */
 
   julday(time);
@@ -392,17 +395,14 @@ double djulian (char *when, char *type) {
  */
 
 double delnex_(void) {
-
-/* printf ("from deltim:  %f\n", deltim()); */
   return delnex();
-
 }
 
 /**************************************************************************
  * delnex() is called from C
  */
 /*--------------------------------------------------------------------*\
- | FUNCTION     : delnex
+  | FUNCTION     : delnex
 \*--------------------------------------------------------------------*/
 double delnex (void) {
   return (double) Mdeltanext * 24.0;

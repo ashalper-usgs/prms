@@ -13,7 +13,8 @@
 #include "structs.h"
 #include "defs.h"
 #include "globals.h"
-#include "protos.h"
+#include "dim_addr.h"
+#include "var_addr.h"
 
 /* in globals.c */
 extern double Mdeltat;
@@ -25,310 +26,314 @@ extern char *Mparaminfo;
 static int read_var_line (char *, char *, FILE *, char *);
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : read_vars
+  | FUNCTION     : read_vars
 \*--------------------------------------------------------------------*/
 int read_vars (char *var_file_name) {
 
-	FILE *var_file;
-	PUBVAR *var;
-	DIMEN *dim;
-	long dim_size, var_size, type, i;
-	double *dvalptr;
-	float *fvalptr;
-	long *lvalptr;
-	char line[MAXVARLEN], key[MAXVARLEN];
-	char dimen[MAXVARLEN];
-	char *pathname;
-	char *endptr;
+  FILE *var_file;
+  PUBVAR *var;
+  DIMEN *dim;
+  long dim_size, var_size, type, i;
+  double *dvalptr;
+  float *fvalptr;
+  long *lvalptr;
+  char line[MAXVARLEN], key[MAXVARLEN];
+  char dimen[MAXVARLEN];
+  char *pathname;
+  char *endptr;
 
-/*
-* get var name, open file
-*/
-      pathname = strdup (var_file_name);
+  /*
+   * get var name, open file
+   */
+  pathname = strdup (var_file_name);
 
-   if ((var_file = fopen (pathname, "r")) == NULL) {
-      (void)fprintf(stderr, "WARNING - read_vars - cannot open file '%s'\n",
-                    pathname);
-      return(0);
-   }
+  if ((var_file = fopen (pathname, "r")) == NULL) {
+    (void)fprintf(stderr, "WARNING - read_vars - cannot open file '%s'\n",
+		  pathname);
+    return(0);
+  }
 
-/*
-* read in run info string
-*/
-   if (fgets(line, MAXVARLEN, var_file) == NULL) {
-      fclose(var_file);
-      return(0);
-   }
-   Mparaminfo = strdup (line);
+  /*
+   * read in run info string
+   */
+  if (fgets(line, MAXVARLEN, var_file) == NULL) {
+    fclose(var_file);
+    return(0);
+  }
+  Mparaminfo = strdup (line);
 
-/*
-* read in last nstep
-*/
-   if (fgets(line, MAXVARLEN, var_file) == NULL) {
-      fclose(var_file);
-      return(0);
-   }
+  /*
+   * read in last nstep
+   */
+  if (fgets(line, MAXVARLEN, var_file) == NULL) {
+    fclose(var_file);
+    return(0);
+  }
 
-   Mnsteps = strtol(&(line[11]), &endptr, 10);
+  Mnsteps = strtol(&(line[11]), &endptr, 10);
 
-/*
-* read in last time step
-*/
-   if (fgets(line, MAXVARLEN, var_file) == NULL) {
-      fclose(var_file);
-      return(0);
-   }
+  /*
+   * read in last time step
+   */
+  if (fgets(line, MAXVARLEN, var_file) == NULL) {
+    fclose(var_file);
+    return(0);
+  }
 
-/*
-* read in last delta time
-*/
-   if (fgets(line, MAXVARLEN, var_file) == NULL) {
-      fclose(var_file);
-      return(0);
-   }
+  /*
+   * read in last delta time
+   */
+  if (fgets(line, MAXVARLEN, var_file) == NULL) {
+    fclose(var_file);
+    return(0);
+  }
 
-   Mdeltat = strtod(&(line[16]), &endptr);
-   Mdeltanext = strtod(&(line[16]), &endptr);
+  Mdeltat = strtod(&(line[16]), &endptr);
+  Mdeltanext = strtod(&(line[16]), &endptr);
 
-/*
-* read in dimensions
-*/
-   while (!feof(var_file)) {
+  /*
+   * read in dimensions
+   */
+  while (!feof(var_file)) {
 
-/*
-* space fwd to #### header
-*/
-   (void)strncpy(line, " ", MAXVARLEN);
-   while (strncmp(line, "####", 4)) {
+    /*
+     * space fwd to #### header
+     */
+    (void)strncpy(line, " ", MAXVARLEN);
+    while (strncmp(line, "####", 4)) {
       if (fgets(line, MAXVARLEN, var_file) == NULL) {
-         fclose(var_file);
-         return(0);
+	fclose(var_file);
+	return(0);
       }
 
-/*
-* break if variable list starts
-*/
+      /*
+       * break if variable list starts
+       */
       if(!strncmp(line, "** Variables **", strlen("** Variables **")))
-         goto variables;
+	goto variables;
+    }
+
+    /*
+     * get dimen name
+     */
+
+    if(fgets(key, MAXVARLEN, var_file) == NULL) {
+      (void)fprintf(stderr, "ERROR - read_var, reading dimen name.\n");
+      (void)fprintf(stderr, "Early end-of-file, file '%s'\n", var_file_name);
+      return(1);
+    }
+    key[strlen(key)-1] = '\0';
+
+    if ((dim = dim_addr(key)) == NULL) {
+      (void)fprintf(stderr, "WARNING - read_vars.\n");
+      (void)fprintf(stderr, "Using var file '%s'\n", pathname);
+      (void)fprintf(stderr, "Dimension '%s' not declared.\n", key);
+      (void)fprintf(stderr, "Variables not read from file.\n");
+      fclose(var_file);
+      return(0);
+    } else {
+
+      /*
+       * get dimen size
+       */
+      if(fgets(line, MAXVARLEN, var_file) == NULL) {
+	(void)fprintf(stderr, "ERROR - read_var, reading dimen size.\n");
+	fprintf(stderr,"Early end-of-file, file '%s'\n",var_file_name);
+	return(1);
       }
 
-/*
-* get dimen name
-*/
-
-      if(fgets(key, MAXVARLEN, var_file) == NULL) {
-         (void)fprintf(stderr, "ERROR - read_var, reading dimen name.\n");
-         (void)fprintf(stderr, "Early end-of-file, file '%s'\n", var_file_name);
-         return(1);
+      errno = 0;
+      dim_size = strtol(line, &endptr, 10);
+      if(errno != 0) {
+	(void)fprintf(stderr,
+		      "ERROR - read_var, decoding size from '%s'.\n", line);
+	(void)fprintf(stderr, "Var file '%s'.\n", var_file_name);
+	perror(" ");
+	return(1);
       }
-      key[strlen(key)-1] = '\0';
-
-      if ((dim = dim_addr(key)) == NULL) {
-         (void)fprintf(stderr, "WARNING - read_vars.\n");
-         (void)fprintf(stderr, "Using var file '%s'\n", pathname);
-         (void)fprintf(stderr, "Dimension '%s' not declared.\n", key);
-         (void)fprintf(stderr, "Variables not read from file.\n");
-         fclose(var_file);
-         return(0);
-      } else {
-
-/*
-* get dimen size
-*/
-         if(fgets(line, MAXVARLEN, var_file) == NULL) {
-            (void)fprintf(stderr, "ERROR - read_var, reading dimen size.\n");
-            fprintf(stderr,"Early end-of-file, file '%s'\n",var_file_name);
-            return(1);
-         }
-
-         errno = 0;
-         dim_size = strtol(line, &endptr, 10);
-         if(errno != 0) {
-            (void)fprintf(stderr,
-                        "ERROR - read_var, decoding size from '%s'.\n", line);
-            (void)fprintf(stderr, "Var file '%s'.\n", var_file_name);
-            perror(" ");
-            return(1);
-         }
-/*
-* check dimension size
-*/
-         if (dim->value != dim_size) {
-            (void)fprintf(stderr, "WARNING - read_vars.\n");
-            (void)fprintf(stderr, "Using var file '%s'\n", pathname);
-            (void)fprintf(stderr, "Dimension '%s' has size %ld.\n", key, dim->value);
-            (void)fprintf(stderr, "Size in var file is %ld.\n", dim_size);
-            (void)fprintf(stderr, "Variables not read from file.\n");
-            fclose(var_file);
-            return(0);
-         }
+      /*
+       * check dimension size
+       */
+      if (dim->value != dim_size) {
+	(void)fprintf(stderr, "WARNING - read_vars.\n");
+	(void)fprintf(stderr, "Using var file '%s'\n", pathname);
+	(void)fprintf(stderr,
+		      "Dimension '%s' has size %ld.\n", key, dim->value);
+	(void)fprintf(stderr, "Size in var file is %ld.\n", dim_size);
+	(void)fprintf(stderr, "Variables not read from file.\n");
+	fclose(var_file);
+	return(0);
       }
-   } /* while */
+    }
+  } /* while */
 
-/*
-* read in variables
-*/
+  /*
+   * read in variables
+   */
 
-variables:
-   while (!feof(var_file)) {
+ variables:
+  while (!feof(var_file)) {
 
-/*
-* space fwd to #### header
-*/
-      (void)strncpy(line, " ", MAXVARLEN);
-      while (strncmp(line, "####", 4)) {
-         if (fgets(line, MAXVARLEN, var_file) == NULL) {
-            fclose(var_file);
-            return(0);
-         }
+    /*
+     * space fwd to #### header
+     */
+    (void)strncpy(line, " ", MAXVARLEN);
+    while (strncmp(line, "####", 4)) {
+      if (fgets(line, MAXVARLEN, var_file) == NULL) {
+	fclose(var_file);
+	return(0);
+      }
+    }
+
+    /*
+     * get key
+     */
+    if(fgets(key, MAXVARLEN, var_file) == NULL) {
+      (void)fprintf(stderr, "ERROR - read_var, reading var key.\n");
+      (void)fprintf(stderr, "Early end-of-file, file '%s'\n", var_file_name);
+      return(1);
+    }
+    key[strlen(key) - 1] = '\0';
+
+    if ((var = var_addr(key)) != NULL) {
+      /*
+       * get number of dimensions
+       */
+      if(fgets(line, MAXVARLEN, var_file) == NULL) {
+	(void)fprintf(stderr, "ERROR - read_var, reading var ndimen.\n");
+	fprintf(stderr, "Early end-of-file, file '%s'\n", var_file_name);
+	return(1);
       }
 
-/*
-* get key
-*/
-      if(fgets(key, MAXVARLEN, var_file) == NULL) {
-         (void)fprintf(stderr, "ERROR - read_var, reading var key.\n");
-         (void)fprintf(stderr, "Early end-of-file, file '%s'\n", var_file_name);
-         return(1);
+      if((var->ndimen = atol(line)) == 0) {
+	(void)fprintf(stderr,
+		      "ERROR - read_var, decoding var ndimen from '%s'.\n", line);
+	(void)fprintf(stderr, "Key is '%s'\n", key);
+	(void)fprintf(stderr, "Var file '%s'.\n", var_file_name);
+	return(1);
       }
-      key[strlen(key) - 1] = '\0';
 
-      if ((var = var_addr(key)) != NULL) {
-/*
-* get number of dimensions
-*/
-         if(fgets(line, MAXVARLEN, var_file) == NULL) {
-            (void)fprintf(stderr, "ERROR - read_var, reading var ndimen.\n");
-            fprintf(stderr, "Early end-of-file, file '%s'\n", var_file_name);
-            return(1);
-         }
+      /*
+       * get dimens
+       */
 
-         if((var->ndimen = atol(line)) == 0) {
-            (void)fprintf(stderr,
-                  "ERROR - read_var, decoding var ndimen from '%s'.\n", line);
-            (void)fprintf(stderr, "Key is '%s'\n", key);
-            (void)fprintf(stderr, "Var file '%s'.\n", var_file_name);
-            return(1);
-         }
+      for (i = 0; i < var->ndimen; i++) {
+	if(fgets(dimen, MAXVARLEN, var_file) == NULL) {
+	  (void)fprintf(stderr, "ERROR - read_var, reading var dimen.\n");
+	  (void)fprintf(stderr,
+			"Early end-of-file, file '%s'\n", var_file_name);
+	  return(1);
+	}
+	dimen[strlen(dimen) - 1] = '\0';
 
-/*
-* get dimens
-*/
+	if (strcmp(dimen, "PRIVATE")) {
+	  if (strcmp(dimen, var->dimen[i]->name)) {
+	    (void)fprintf(stderr, "ERROR - read_var, reading var dimen.\n");
+	    (void)fprintf(stderr,
+			  "Expecting dimension '%s'\n", var->dimen[i]->name);
+	    (void)fprintf(stderr, "Read dimension '%s'\n", dimen);
+	    (void)fprintf(stderr, "Key is '%s'\n", key);
+	    (void)fprintf(stderr, "File '%s'\n", var_file_name);
+	    return(1);
+	  }
+	}
+      } /* i */
 
-         for (i = 0; i < var->ndimen; i++) {
-            if(fgets(dimen, MAXVARLEN, var_file) == NULL) {
-               (void)fprintf(stderr, "ERROR - read_var, reading var dimen.\n");
-               (void)fprintf(stderr, "Early end-of-file, file '%s'\n", var_file_name);
-               return(1);
-            }
-            dimen[strlen(dimen) - 1] = '\0';
+      /*
+       * get var size
+       */
 
-            if (strcmp(dimen, "PRIVATE")) {
-               if (strcmp(dimen, var->dimen[i]->name)) {
-                  (void)fprintf(stderr, "ERROR - read_var, reading var dimen.\n");
-                  (void)fprintf(stderr, "Expecting dimension '%s'\n", var->dimen[i]->name);
-                  (void)fprintf(stderr, "Read dimension '%s'\n", dimen);
-                  (void)fprintf(stderr, "Key is '%s'\n", key);
-                  (void)fprintf(stderr, "File '%s'\n", var_file_name);
-                  return(1);
-               }
-            }
-         } /* i */
+      if(fgets(line, MAXVARLEN, var_file) == NULL) {
+	(void)fprintf(stderr, "ERROR - read_var, reading var size.\n");
+	(void)fprintf(stderr, "Early end-of-file, file '%s'\n", var_file_name);
+	return(1);
+      }
 
-/*
-* get var size
-*/
+      errno = 0;
+      var_size = strtol(line, &endptr, 10);
+      if(errno != 0) {
+	(void)fprintf(stderr,
+		      "ERROR - read_var, decoding var size from '%s'.\n", line);
+	(void)fprintf(stderr, "Key is '%s'\n", key);
+	(void)fprintf(stderr, "Var file '%s'.\n", var_file_name);
+	return(1);
+      }
+      if(var_size != var->size) {
+	(void)fprintf(stderr, "ERROR - read_var, size incorrect.\n");
+	(void)fprintf(stderr, "Key is '%s'\n", key);
+	(void)fprintf(stderr, "Var file '%s'.\n", var_file_name);
+	return(1);
+      }
 
-         if(fgets(line, MAXVARLEN, var_file) == NULL) {
-            (void)fprintf(stderr, "ERROR - read_var, reading var size.\n");
-            (void)fprintf(stderr, "Early end-of-file, file '%s'\n", var_file_name);
-            return(1);
-         }
+      /*
+       * get type
+       */
+      if(fgets(line, MAXVARLEN, var_file) == NULL) {
+	(void)fprintf(stderr, "ERROR - read_var, reading var type.\n");
+	(void)fprintf(stderr, "Early end-of-file, file '%s'\n", var_file_name);
+	return(1);
+      }
+      if((type = atol(line)) == 0) {
+	(void)fprintf(stderr,
+		      "ERROR - read_var, decoding var type from '%s'.\n", line);
+	(void)fprintf(stderr, "Key is '%s'\n", key);
+	(void)fprintf(stderr, "Var file '%s'.\n", var_file_name);
+	return(1);
+      }
+      if(type != var->type) {
+	(void)fprintf(stderr, "ERROR - read_var, type incorrect.\n");
+	(void)fprintf(stderr, "Key is '%s'\n", key);
+	(void)fprintf(stderr, "Var file '%s'.\n", var_file_name);
+	return(1);
+      }
 
-         errno = 0;
-         var_size = strtol(line, &endptr, 10);
-         if(errno != 0) {
-            (void)fprintf(stderr,
-                     "ERROR - read_var, decoding var size from '%s'.\n", line);
-            (void)fprintf(stderr, "Key is '%s'\n", key);
-            (void)fprintf(stderr, "Var file '%s'.\n", var_file_name);
-            return(1);
-         }
-         if(var_size != var->size) {
-            (void)fprintf(stderr, "ERROR - read_var, size incorrect.\n");
-            (void)fprintf(stderr, "Key is '%s'\n", key);
-            (void)fprintf(stderr, "Var file '%s'.\n", var_file_name);
-            return(1);
-         }
+      /*
+       * read in and store the file data
+       */
 
-/*
-* get type
-*/
-         if(fgets(line, MAXVARLEN, var_file) == NULL) {
-            (void)fprintf(stderr, "ERROR - read_var, reading var type.\n");
-            (void)fprintf(stderr, "Early end-of-file, file '%s'\n", var_file_name);
-            return(1);
-         }
-         if((type = atol(line)) == 0) {
-            (void)fprintf(stderr,
-                  "ERROR - read_var, decoding var type from '%s'.\n", line);
-            (void)fprintf(stderr, "Key is '%s'\n", key);
-            (void)fprintf(stderr, "Var file '%s'.\n", var_file_name);
-            return(1);
-         }
-         if(type != var->type) {
-            (void)fprintf(stderr, "ERROR - read_var, type incorrect.\n");
-            (void)fprintf(stderr, "Key is '%s'\n", key);
-            (void)fprintf(stderr, "Var file '%s'.\n", var_file_name);
-            return(1);
-         }
+      switch (type) {
+      case M_DOUBLE:
+	dvalptr = (double *) var->value;
+	for (i = 0; i < var_size; i++) {
+	  if(read_var_line(key, line, var_file, var_file_name))
+	    return(1);
+	  dvalptr[i] = atof(line);
+	}
+	break;
 
-/*
-* read in and store the file data
-*/
+      case M_FLOAT:
+	fvalptr = (float *) var->value;
+	for (i = 0; i < var_size; i++) {
+	  if(read_var_line(key, line, var_file, var_file_name))
+	    return(1);
+	  fvalptr[i] = (float) atof(line);
+	}
+	break;
 
-         switch (type) {
-            case M_DOUBLE:
-               dvalptr = (double *) var->value;
-               for (i = 0; i < var_size; i++) {
-                  if(read_var_line(key, line, var_file, var_file_name))
-                     return(1);
-                  dvalptr[i] = atof(line);
-               }
-               break;
+      case M_LONG:
+	lvalptr = (long *) var->value;
+	for (i = 0; i < var_size; i++) {
+	  if(read_var_line(key, line, var_file, var_file_name))
+	    return(1);
+	  lvalptr[i] =  atol(line);
+	}
+	break;
+      }
+    } /* if (var ... */
 
-            case M_FLOAT:
-               fvalptr = (float *) var->value;
-               for (i = 0; i < var_size; i++) {
-                  if(read_var_line(key, line, var_file, var_file_name))
-                     return(1);
-                  fvalptr[i] = (float) atof(line);
-               }
-               break;
+  } /* while */
 
-         case M_LONG:
-            lvalptr = (long *) var->value;
-            for (i = 0; i < var_size; i++) {
-               if(read_var_line(key, line, var_file, var_file_name))
-                  return(1);
-               lvalptr[i] =  atol(line);
-            }
-            break;
-         }
-      } /* if (var ... */
+  fclose(var_file);
 
-   } /* while */
-
-   fclose(var_file);
-
-   return(0);
+  return(0);
 }
 
 /*--------------------------------------------------------------------*\
- | FUNCTION     : read_var_line
- | COMMENT	: gets a line from the variable file
+  | FUNCTION     : read_var_line
+  | COMMENT	: gets a line from the variable file
 \*--------------------------------------------------------------------*/
-static int read_var_line (char *key, char *line, FILE *var_file, char *var_file_name) {
+static int read_var_line (char *key, char *line, FILE *var_file,
+			  char *var_file_name) {
 
   if (fgets(line, MAXVARLEN, var_file) == NULL) {
     (void)fprintf(stderr, "ERROR - read_var, reading data.\n");
