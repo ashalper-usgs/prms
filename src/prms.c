@@ -13,8 +13,14 @@
 #include "defs.h"
 #include "structs.h"
 #include "globals.h"
-#include "protos.h"
+#include "alloc_space.h"
 #include "build_lists.h"
+#include "control_var.h"
+#include "parse_args.h"
+#include "read_control.h"
+#include "setup_cont.h"
+#include "read_line.h"
+#include "control_addr.h"
 
 /* in globals.c */
 extern PARAM **unsort_params;
@@ -28,7 +34,7 @@ extern char *MAltContFile;
 /* in parse_args.c */
 extern char *model_name;
 extern char *executable_model;
-extern batch_run_mode;
+extern int batch_run_mode;
 extern int print_mode;
 extern int run_period_of_record;
 extern int runtime_graph_on;
@@ -56,7 +62,7 @@ int max_controls;
   |     int argc -- Argument count of command line parameters.
   |     char *argv[] -- Command line parameters.
   | RETURN VALUE : int
-  \*--------------------------------------------------------------------*/
+\*--------------------------------------------------------------------*/
 int main (int argc, char *argv[]) {
    int set_count;
    int i, j;
@@ -74,7 +80,6 @@ int main (int argc, char *argv[]) {
    char   **fname;
    char pathname[FILENAME_MAX];
    int set_size;
-
 
    /*
    **  Maximum buffer size for reading lines from files.
