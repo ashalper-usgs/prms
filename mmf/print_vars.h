@@ -1,1 +1,1 @@
-int print_vars (void);
+int print_vars (long);
