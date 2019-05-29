@@ -15,6 +15,7 @@
 #include "control_var.h"
 #include "param_addr.h"
 #include "umalloc_etc.h"
+#include "getparam.h"
 
 /* in alloc_space.c */
 extern char *Mdatainfo;
