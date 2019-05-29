@@ -42,8 +42,6 @@
 #include "write_vstats.h"
 
 /* in globals.c */
-extern PARAM **unsort_params;
-extern double Mdeltat;
 extern long Mnsteps;
 extern double Mdeltanext;
 
@@ -62,13 +60,13 @@ extern int preprocess_on;
 extern int call_setdims(void);
 
 void alloc_space (void);
-int BATCH_run (void);
+int BATCH_run (long *);
 int call_modules(char *);
 
-char *single_run_pre_init (void);
-char *single_run_post_init (void);
+char *single_run_pre_init (long *);
+char *single_run_post_init (long *);
 char *single_run_pre_run (void);
-char *single_run_post_run (void);
+char *single_run_post_run (long);
 char *single_run_post_cleanup (void);
 
 MODULE_DATA *current_module;
@@ -92,6 +90,7 @@ int max_controls;
 \*--------------------------------------------------------------------*/
 int main (int argc, char *argv[]) {
   LIST *module_db;
+  long Mnsteps = 0;	      /* the number of steps so far */
   int set_count;
   int i, j;
   char **set_name, **set_value;
@@ -285,12 +284,12 @@ int main (int argc, char *argv[]) {
     
    if (print_mode) {
      print_params();
-     print_vars();
+     print_vars(Mnsteps);
      print_model_info(module_db);
      (void)snprintf (pathname, FILENAME_MAX, "%s.param", MAltContFile);
      save_params (pathname);
    } else {
-      BATCH_run ();
+      BATCH_run (&Mnsteps);
    }
 
    exit (0);
@@ -380,11 +379,11 @@ void alloc_space (void) {
  * RESTRICTIONS : None
  * COMMENT  : Runs the MMS time loop.
  */
-int BATCH_run (void) {
+int BATCH_run (long *Mnsteps) {
   char *ret;
   long endofdata = 0;
 
-  ret = single_run_pre_init ();
+  ret = single_run_pre_init (Mnsteps);
   if (ret) {
     fprintf (stderr,"%s\n", ret);
     return(1);
@@ -395,7 +394,7 @@ int BATCH_run (void) {
     return(1);
   }
 
-  ret = single_run_post_init ();
+  ret = single_run_post_init (Mnsteps);
   if (ret) return(1);
 
   /*
@@ -406,7 +405,7 @@ int BATCH_run (void) {
   Mprevjt = -1.0;
 
   while(!endofdata) {
-    if(!(endofdata = read_line ())) {
+    if(!(endofdata = read_line (*Mnsteps))) {
       ret = single_run_pre_run ();
       if (ret) return(1);
 
@@ -417,7 +416,7 @@ int BATCH_run (void) {
 	return(1);
       }
 
-      ret = single_run_post_run ();
+      ret = single_run_post_run (*Mnsteps);
       if (ret) return(1);
     }
   }
@@ -466,7 +465,7 @@ static DATETIME start_of_data, end_of_data;
   | FUNCTION     : single_run_pre_init
   | RETURN VALUE : char *
 \*--------------------------------------------------------------------*/
-char *single_run_pre_init (void) {
+char *single_run_pre_init (long *Mnsteps) {
 
   stats_flag = *control_lvar ("statsON_OFF");
   if (stats_flag == 1)
@@ -714,7 +713,7 @@ char *single_run_pre_init (void) {
   **  set initial values of nsteps global variable if they
   **  don't come from the var init file
   */
-  Mnsteps = 0;
+  *Mnsteps = 0;
 
   /*
    * initialize modules
@@ -728,7 +727,7 @@ char *single_run_pre_init (void) {
   | FUNCTION     : single_run_post_init
   | RETURN VALUE : char *
 \*--------------------------------------------------------------------*/
-char *single_run_post_init (void) {
+char *single_run_post_init (long *Mnsteps) {
 
   initializeRuntimeGraphs();
 
@@ -736,7 +735,7 @@ char *single_run_post_init (void) {
   **  set initial values of nsteps global variable if they
   **  don't come from the var init file
   */
-  Mnsteps = 0;
+  *Mnsteps = 0;
 
   started = FALSE;
 
@@ -759,10 +758,10 @@ char *single_run_pre_run (void) {
   | FUNCTION     : single_run_post_run
   | RETURN VALUE : char *
 \*--------------------------------------------------------------------*/
-char *single_run_post_run (void) {
+char *single_run_post_run (long Mnsteps) {
 
   if (stats_flag)
-    write_vstats (statvar_file);
+    write_vstats (statvar_file, Mnsteps);
 
   /*
   **  Write the ANIMATION output variables to their respective files.
