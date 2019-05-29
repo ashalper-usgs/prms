@@ -59,8 +59,8 @@ char *CHECK_stat_vars (void) {
 
 /*--------------------------------------------------------------------*\
   | FUNCTION     : CHECK_disp_vars
-  | COMMENT		: Makes sure that the selected display variables
-  |                  are valid.
+  | COMMENT	 : Makes sure that the selected display variables
+  |                are valid.
   | RETURN VALUE : error message
 \*--------------------------------------------------------------------*/
 char *CHECK_disp_vars (void) {
