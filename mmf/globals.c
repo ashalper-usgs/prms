@@ -6,5 +6,4 @@
 
 #include "structs.h"
 
-char *Mtypes[] = {"", "long", "float", "double", "string", "", "","", "", ""};
 PARAM **unsort_params = NULL; /* pointer to unsorted parameters */
