@@ -41,10 +41,6 @@
 #include "var_addr.h"
 #include "write_vstats.h"
 
-/* in globals.c */
-extern long Mnsteps;
-extern double Mdeltanext;
-
 /* in parse_args.c */
 extern char *MAltContFile;
 
@@ -57,10 +53,12 @@ extern int run_period_of_record;
 extern int runtime_graph_on;
 extern int preprocess_on;
 
+extern double Mdeltat;		/* in timing.c */
+
 extern int call_setdims(void);
 
 void alloc_space (void);
-int BATCH_run (long *);
+int BATCH_run (long *, double *, double*);
 int call_modules(char *);
 
 char *single_run_pre_init (long *);
@@ -91,6 +89,7 @@ int max_controls;
 int main (int argc, char *argv[]) {
   LIST *module_db;
   long Mnsteps = 0;	      /* the number of steps so far */
+  double Mdeltanext = 0.0;    /* the latest next time step in hours */
   int set_count;
   int i, j;
   char **set_name, **set_value;
@@ -280,7 +279,7 @@ int main (int argc, char *argv[]) {
    /*
    **	get start and end time
    */
-   get_times ();
+   get_times (&Mdeltat, &Mdeltanext);
     
    if (print_mode) {
      print_params();
@@ -289,7 +288,7 @@ int main (int argc, char *argv[]) {
      (void)snprintf (pathname, FILENAME_MAX, "%s.param", MAltContFile);
      save_params (pathname);
    } else {
-      BATCH_run (&Mnsteps);
+     BATCH_run (&Mnsteps, &Mdeltat, &Mdeltanext);
    }
 
    exit (0);
@@ -379,7 +378,7 @@ void alloc_space (void) {
  * RESTRICTIONS : None
  * COMMENT  : Runs the MMS time loop.
  */
-int BATCH_run (long *Mnsteps) {
+int BATCH_run (long *Mnsteps, double *Mdeltat, double *Mdeltanext) {
   char *ret;
   long endofdata = 0;
 
@@ -405,13 +404,13 @@ int BATCH_run (long *Mnsteps) {
   Mprevjt = -1.0;
 
   while(!endofdata) {
-    if(!(endofdata = read_line (*Mnsteps))) {
+    if (!(endofdata = read_line (*Mnsteps, Mdeltat, Mdeltanext))) {
       ret = single_run_pre_run ();
       if (ret) return(1);
 
       errno = 0;
 
-      if(call_modules("run")) {
+      if (call_modules("run")) {
 	fprintf (stderr, "Problem while running modules.");
 	return(1);
       }
