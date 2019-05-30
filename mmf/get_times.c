@@ -12,10 +12,6 @@
 #include "julday.h"
 #include "get_times.h"
 
-/* in globals.c */
-extern double Mdeltat;
-extern double Mdeltanext;
-
 /* in prms.c */
 extern DATETIME *Mstrttime;
 extern DATETIME *Mendtime;
@@ -23,7 +19,7 @@ extern DATETIME *Mendtime;
 /*--------------------------------------------------------------------*\
   | FUNCTION     : get_times
 \*--------------------------------------------------------------------*/
-void get_times (void) {
+void get_times (double *Mdeltat, double *Mdeltanext) {
   long *datetime;
   float *newvalue;
 
@@ -50,6 +46,6 @@ void get_times (void) {
   julday(Mendtime);
 
   newvalue = (float *) control_var("initial_deltat");
-  Mdeltat = (double)(*newvalue / 24.0);
-  Mdeltanext = (double)(*newvalue / 24.0);
+  *Mdeltat = (double)(*newvalue / 24.0);
+  *Mdeltanext = (double)(*newvalue / 24.0);
 }

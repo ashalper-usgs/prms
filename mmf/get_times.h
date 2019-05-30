@@ -1,1 +1,2 @@
-void get_times (void);
+void get_times (double *, double *);
+
