@@ -20,8 +20,6 @@
 #include "umalloc_etc.h"
 #include "declparam.h"
 
-extern char *Mtypes[];		/* in globals.c */
-
 /* in prms.c */
 extern int max_params;
 extern PARAM **Mparambase;
@@ -29,6 +27,9 @@ extern long Mnparams;
 
 /* in parse_args.c */
 extern int preprocess_on;
+
+char *Mtypes[] =
+  {"", "long", "float", "double", "string", "", "","", "", ""};
 
 static int CHECK_param_in_db (char *, char *, char *, int, char *, char *,
 			      char *, char *, char *, char *);
