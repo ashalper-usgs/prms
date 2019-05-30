@@ -14,7 +14,7 @@
 #include "umalloc_etc.h"
 #include "print_params.h"
 
-extern char *Mtypes[];		/* in globals.c */
+extern char *Mtypes[];		/* in declparam.c */
 
 /* in prms.c */
 extern LIST *dim_db;
