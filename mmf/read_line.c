@@ -28,10 +28,6 @@
 
 #include "read_line.h"
 
-/* in globals.c */
-extern double Mdeltat;
-extern double Mdeltanext;
-
 /* in prms.c */
 extern READCHECK **Mcheckbase;
 extern long Mnreads;
@@ -44,9 +40,9 @@ static void INSERT_time (char *, DATETIME *);
 
 /*--------------------------------------------------------------------*\
   | FUNCTION     : read_line
-  | RETURN VALUE : None.
+  | RETURN VALUE : long
 \*--------------------------------------------------------------------*/
-long read_line (long Mnsteps) {
+long read_line (long Mnsteps, double *Mdeltat, double *Mdeltanext) {
 
   char   *start_point, *end_point;
   float   initial_deltat;
@@ -165,7 +161,8 @@ long read_line (long Mnsteps) {
 		"\n\n read_line Mprevjt = %f Mnowtime->jt = %f\n",
 		Mprevjt, Mnowtime->jt
 	      );
-	(void)fprintf (stderr,"Current time step is before previous time step.\n");
+	(void)fprintf (stderr,
+		       "Current time step is before previous time step.\n");
 	(void)fprintf (stderr,"The data file(s) are running backwards.\n");
 	return (ERROR_TIME);
       }
@@ -175,14 +172,14 @@ long read_line (long Mnsteps) {
 	** DANGER This hack is to come out of the storm
 	*/
 	(void)fprintf (stderr,"read_line:  comming out of storm. dt = 1 day\n");
-	Mdeltat = 1.0;
-	Mprevjt = Mnowtime->jt - Mdeltat;
+	*Mdeltat = 1.0;
+	Mprevjt = Mnowtime->jt - *Mdeltat;
 
       } else {
 	if (Mprevjt < 0.0) {
-	  Mprevjt = Mnowtime->jt - Mdeltat;
+	  Mprevjt = Mnowtime->jt - *Mdeltat;
 	} else {
-	  Mdeltat = Mnowtime->jt - Mprevjt;
+	  *Mdeltat = Mnowtime->jt - Mprevjt;
 	}
       }
 
@@ -257,7 +254,7 @@ long read_line (long Mnsteps) {
 	Mnexttime->sec = cur_fd->time.sec;
 	Mnexttime->jd = cur_fd->time.jd;
 	Mnexttime->jt = cur_fd->time.jt;
-	Mdeltanext = Mnexttime->jt - Mnowtime->jt;
+	*Mdeltanext = Mnexttime->jt - Mnowtime->jt;
       }
       return (0);
     } else {

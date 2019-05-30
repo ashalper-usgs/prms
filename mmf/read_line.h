@@ -1,4 +1,4 @@
-long read_line (long);
+long read_line (long, double *, double*);
 
 char *DATA_read_init (void);
 
