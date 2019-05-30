@@ -16,13 +16,14 @@
 #include "umalloc_etc.h"
 
 /* in globals.c */
-extern double Mdeltat;
 extern double Mdeltanext;
 
 /* in prms.c */
 extern DATETIME *Mstrttime;
 extern DATETIME *Mendtime;
 extern DATETIME *Mnowtime;
+
+double Mdeltat = 0.0;		/* the latest time step in hours */
 
 void dattim (char *, long *);
 long julian (char *, char *);
@@ -367,22 +368,4 @@ double djulian (char *when, char *type) {
 
   return (time->jt - reftime.jt);
 
-}
-
-/**************************************************************************
- * delnex_() is called from Fortran, delnex()
- */
-
-double delnex_(void) {
-  return delnex();
-}
-
-/**************************************************************************
- * delnex() is called from C
- */
-/*--------------------------------------------------------------------*\
-  | FUNCTION     : delnex
-\*--------------------------------------------------------------------*/
-double delnex (void) {
-  return (double) Mdeltanext * 24.0;
 }
