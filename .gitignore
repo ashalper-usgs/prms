@@ -1,1 +1,5 @@
+*.a
+*.mod
+*.o
 /.project
+/prms/prms
