@@ -252,6 +252,15 @@ char *fgets_rc (char *str, int num, FILE *stream) {
     */
     ptr2 = strstr (str, "//");
 
+  } else if (strstr (str, "//")) {
+    /*
+    ** Comment in data line.
+    **
+    ** DANGER looks for spaces before comment and sets them to NULL so
+    ** data part of the line does not have any part of the comment.
+    */
+    ptr2 = strstr (str, "//");
+
     /* New -- terminate data part of line where the comment starts */
     *(ptr2) = '\0';
          
