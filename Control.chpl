@@ -430,7 +430,10 @@ module Control {
 
     // check that key does not already exist
     use Dimension;
-    if addr(key) != nil then {
+    try {
+      addr(key);
+    }
+    catch {
       stderr.write("ERROR - Control.decl - key '%s' already exists.\n", key);
       exit(1);
     }
