@@ -15,17 +15,22 @@ prms: Args Control Globals Space prms.chpl
 Args: Globals Args.chpl
 	chpl $@.chpl
 
-Globals: NHMList Globals.chpl
+Globals: PRMSList Globals.chpl
 	chpl $@.chpl
 
-Space:	Globals NHMList Space.chpl
+Space:	Globals PRMSList Space.chpl
 	chpl $@.chpl
 
-NHMList: Control NHMList.chpl
+# circular dependencies here
+
+Control: Dimension Globals PRMSList Control.chpl
 	chpl $@.chpl
 
-Dimension Control: %: %.chpl
+PRMSList: Globals Control PRMSList.chpl
+	chpl $@.chpl
+
+Dimension: %: %.chpl
 	chpl $<
 
 clean:
-	rm -f Args Control Dimension Globals NHMList Space main *~
+	rm -f Args Control Dimension Globals PRMSList Space main *~

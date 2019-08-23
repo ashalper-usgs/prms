@@ -1,5 +1,5 @@
 /*
- * United States Geological Survey
+ * U.S. Geological Survey
  *
  * File - Globals.chpl
  *
@@ -28,9 +28,9 @@ module Globals {
   var print_mode: bool = false;
   var runtime_graph_on = false;
   var preprocess_on = false; /* flag for running in preprocess mode */
-  use NHMList;
-  var cont_db: ListType;
-  var dim_db: ListType;
+  use PRMSList;
+  var cont_db: PRMSList.Type;
+  var dim_db: PRMSList.Type;
 //LIST *module_db;
 //MODULE_DATA *current_module;
 //PUBVAR **Mvarbase = NULL;           /* pointer to public variables data base */

@@ -14,11 +14,11 @@ module Space {
     //    static DATETIME start, end, now, next;
 
     use Globals;
-    use NHMList;
-    cont_db = NHMList.alloc("Control Data Base", 0, 100);
+    use PRMSList;
+    cont_db = PRMSList.alloc("Control Data Base", 0, 100);
 
     // space for the dimension pointer array
-    dim_db = NHMList.alloc("Dimension Data Base", 0, 50);
+    dim_db = PRMSList.alloc("Dimension Data Base", 0, 50);
 
     // default dimension "one"
     //  decldim ("one", 1, 1, "Dimension of scalar parameters and variables");

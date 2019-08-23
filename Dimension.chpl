@@ -9,7 +9,7 @@
 
 module Dimension {
 
-  record DimensionType {
+  record Type {
     var name: string;
     var value: int;
     var max: int;
@@ -26,7 +26,7 @@ module Dimension {
   use Globals;
 
   proc declare(name: string, value: int, max: int, descr: string): int {
-    var dim: DimensionType;
+    var dim: Dimension.Type;
 
     // check that name does not already exist
 
@@ -109,11 +109,11 @@ module Dimension {
 //   return (ret);
 //}
 
-  proc addr (name: string): DimensionType { 
+  proc addr(name: string): Dimension.Type { 
     if (dim_db.count == 0) then
       return nil;
 
-    for itm in dim_db.list do
+    for itm in dim_db.linked_list do
       if (itm.name == name) then
 	return itm;
 

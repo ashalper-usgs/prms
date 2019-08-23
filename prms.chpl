@@ -75,7 +75,8 @@ proc main(args: [] string) {
   use Space;
   Space.alloc();
 
-//   setup_cont ();
+  use Control;
+  Control.setup();
 //   err = read_control (MAltContFile);
 //   if (err) {
 //     (void)fprintf (stderr,"%s\n", err);
