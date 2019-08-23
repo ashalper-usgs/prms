@@ -1,22 +1,31 @@
+# U.S. Geological Survey
 #
-# Makefile --
+# File - Makefile
 #
-# Top-level makefile for the PRMS
+# Purpose - Top-level Makefile for PRMS.
 #
-
-include ./makelist
-
-#
-# Standard Targets for Users
+# Author - Andrew Halper
 #
 
-all: standard
+all: prms
 
-standard:
-	cd ./mmf; $(MAKE);
-	cd ./prms; $(MAKE);
+prms: Args Control Globals Space prms.chpl
+	chpl $@.chpl -o main
+
+Args: Globals Args.chpl
+	chpl $@.chpl
+
+Globals: NHMList Globals.chpl
+	chpl $@.chpl
+
+Space:	Globals NHMList Space.chpl
+	chpl $@.chpl
+
+NHMList: Control NHMList.chpl
+	chpl $@.chpl
+
+Dimension Control: %: %.chpl
+	chpl $<
 
 clean:
-	cd ./mmf; $(MAKE) clean;
-	cd ./prms; $(MAKE) clean;
-
+	rm -f Args Control Dimension Globals NHMList Space main *~
