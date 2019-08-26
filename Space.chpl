@@ -1,5 +1,4 @@
-/*
- * United States Geological Survey
+/* U.S. Geological Survey
  *
  * File - Space.chpl
  *
@@ -13,27 +12,24 @@ module Space {
     // TODO:
     //    static DATETIME start, end, now, next;
 
+    use Structs;
     use Globals;
-    use PRMSList;
-    cont_db = PRMSList.alloc("Control Data Base", 0, 100);
+
+    cont_db = new owned LIST("Control Data Base", 0, 100, CONTROL);
 
     // space for the dimension pointer array
-    dim_db = PRMSList.alloc("Dimension Data Base", 0, 50);
+    dim_db = new owned LIST("Dimension Data Base", 0, 50, DIMEN);
 
     // default dimension "one"
     //  decldim ("one", 1, 1, "Dimension of scalar parameters and variables");
 
-  /*
-   * space for the public variable pointer array
-   */
+    // space for the public variable pointer array
 
-//  max_vars = 500;
-//  Mvarbase = (PUBVAR **) umalloc (max_vars * sizeof(PUBVAR *));
-//  Mnvars = 0;
+    max_vars = 500;
+    //  Mvarbase = (PUBVAR **) umalloc (max_vars * sizeof(PUBVAR *));
+    //  Mnvars = 0;
 
-/*
-	var_db = ALLOC_list ("Variable data base", 0, 100);
-*/
+    // var_db = ALLOC_list ("Variable data base", 0, 100);
 
   /*
    * space for the parameter pointer  array

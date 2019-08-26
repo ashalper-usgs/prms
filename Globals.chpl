@@ -8,15 +8,11 @@
  * Authors - Steven Markstrom, Andrew Halper
  */
 
-//#ifndef MMS_GLOBAL_H
-//#define MMS_GLOBAL_H
-
-//#ifdef MAIN
-
 module Globals {
-/*
- * for MAIN only
- */
+  const M_FULLDEBUG: int = 2;
+  /*
+   * for MAIN only
+   */
   var max_data_ln_len: int; /* now possible to set this on command line */
   var MAltContFile: string = ""; /* Alt. name of control file */
   var Mdebuglevel: int = 0;	/* the current debug level */
@@ -28,12 +24,20 @@ module Globals {
   var print_mode: bool = false;
   var runtime_graph_on = false;
   var preprocess_on = false; /* flag for running in preprocess mode */
-  use PRMSList;
-  var cont_db: PRMSList.Type;
-  var dim_db: PRMSList.Type;
-//LIST *module_db;
+
+  use Structs;
+  use LinkedLists;
+  // TODO: type initializers for untyped fields in LIST record
+  // (user_data, itm) here can/should be more specific here once we
+  // get the Control, Dimension, and Module records-or-classes
+  // specified. See also
+  // ~chapel-1.19.0/examples/primers/genericClasses.chpl
+  var cont_db: LIST(UserData, LinkedList(int));
+  var dim_db: LIST(UserData, LinkedList(DIMEN));
+  var module_db: LIST(UserData, LinkedList(int));
+
 //MODULE_DATA *current_module;
-//PUBVAR **Mvarbase = NULL;           /* pointer to public variables data base */
+  var Mvarbase: PUBVAR;		// public variables database
 //long Mnvars = 0;                    /* no of public variables in data base */
 //PARAM **Mparambase = NULL;          /* pointer to parameter data base */
 //long Mnparams = 0;                  /* no of params in data base */
@@ -57,7 +61,7 @@ module Globals {
 //						in stats link list */
 //char *Mtypes[] = {"", "long", "float", "double", "string", "", "","", "", ""};
 //long ParamBaseIsDirty = FALSE;
-//int max_vars;
+  var max_vars: int;
 //int max_params;
 //int max_read_vars;
 //int max_dims;

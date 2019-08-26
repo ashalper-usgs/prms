@@ -22,6 +22,58 @@
 
 //  |     char *argv[] -- Command line parameters.
 //  | RETURN VALUE : None
+
+module PRMS {
+
+  class List {
+    var name: string;
+    var size: int;		// headroom; legacy artifact
+    var count: int;		// number of elements in list
+    var typ: int;		// "type" in PRMS 5
+    var ot: bool;		// "out" in PRMS 5
+
+    var itm: LinkedList(?eltType);
+
+    proc alloc(name: string, typ: int, size: int) {
+      if (0 < name.length) then
+	this.name = name;
+      else
+	this.name = "";
+
+      this.size = size;
+      this.count = 0;
+      this.typ = typ;
+      this.ot = false;
+    }
+
+    // TODO: might be unnecessary in Chapel
+    proc del() {
+      var i: int;
+
+      //	if (list->name)
+      //		free (list->name);
+      
+      //	for (i = 0; i < list->count; i++)
+      //		if (list->itm[i])
+      //			free (list->itm[i]);
+
+      //	free (list->itm);
+      //	free (list);
+    }
+
+    // TODO: no-op legacy artifact; try to factor out
+    proc resize(new_size: int) {
+      this.size = new_size;
+    }
+
+    proc add_to(element: ?t) {
+      if this.count >= this.size then
+	resize(this.size + 100);
+
+      this.itm.push_back(element);
+    }
+  } // List
+
 proc main(args: [] string) {
   var set_count: int;
   var i, j: int;
@@ -229,3 +281,5 @@ proc main(args: [] string) {
 
 //   exit (0);
 }
+
+} // PRMS

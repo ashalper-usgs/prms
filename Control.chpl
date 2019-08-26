@@ -447,8 +447,7 @@ module Control {
 
     // store record in controls
     use Globals;
-    use PRMSList;
-    add_to(cont_db, cp);
+    cont_db.add_to(cp);
   }
 
   proc decl_string(key: string, valstr: string) {

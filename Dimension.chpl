@@ -30,30 +30,29 @@ module Dimension {
 
     // check that name does not already exist
 
-    //	dim = dim_addr(name);
-//   if (dim != NULL) {
-		// This dimension has already been declared. Set the size to the
-		// value of the last call.
-//		dim->value = value;
+    dim = addr(name);
+    if dim != nil then {
+      // This dimension has already been declared. Set the size to the
+      // value of the last call.
+      dim.value = value;
 
-//      return(0);
-//   }
+      return 0;
+    }
 
-//   if (Mdebuglevel >= M_FULLDEBUG) {
-//      (void)fprintf(stderr, "Declaring dimension '%s'\n", name);
-//   }
+    if Mdebuglevel >= M_FULLDEBUG then {
+      stderr.write("Declaring dimension '%s'\n", name);
+   }
 
-/*
-* check that default value is within limits
-*/
+    // check that default value is within limits
 
-//   if(value < 0) {
-//      (void)fprintf(stderr, 
-//		    "ERROR - decldim - default dimension value negative.\n");
-//      (void)fprintf(stderr, "Name   :   '%s'\n", name);
-//      (void)fprintf(stderr, "Default:   %ld\n", value);
-//      return(1);
-//   }
+    if value < 0 then {
+      stderr.write(
+	"ERROR - Dimension.declare() - default dimension value negative.\n"
+      );
+      stderr.write("Name   :   '%s'\n", name);
+      stderr.write("Default:   %ld\n", value);
+      return 1;
+    }
 
 //   if(value > max) {
 //      (void)fprintf(stderr, 
@@ -90,7 +89,7 @@ module Dimension {
 //   dim->got = FALSE;
 
 //   sort_dims ();
-    return(0);
+    return 0;
 }
 
 /*--------------------------------------------------------------------*\
@@ -109,15 +108,17 @@ module Dimension {
 //   return (ret);
 //}
 
-  proc addr(name: string): Dimension.Type { 
+  proc addr(name: string): Dimension.Type {
     if (dim_db.count == 0) then
-      return nil;
+      // TODO: might be insufficient, due to incompatability with
+      // legacy code
+      throw new owned Error();
 
-    for itm in dim_db.linked_list do
+    for itm in dim_db.itm do
       if (itm.name == name) then
 	return itm;
 
-    return nil;
+    throw new owned Error();
   }
 
 //char *dim_notes (char *ch_ptr) {
