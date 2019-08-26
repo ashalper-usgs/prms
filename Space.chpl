@@ -15,10 +15,11 @@ module Space {
     use Structs;
     use Globals;
 
-    cont_db = new owned LIST("Control Data Base", 0, 100, CONTROL);
+    // TODO:
 
-    // space for the dimension pointer array
-    dim_db = new owned LIST("Dimension Data Base", 0, 50, DIMEN);
+    // cont_db = new owned LIST("Control Data Base", 0, 100, CONTROL);
+
+    //dim_db = new owned LIST("Dimension Data Base", 0, 50, DIMEN);
 
     // default dimension "one"
     //  decldim ("one", 1, 1, "Dimension of scalar parameters and variables");

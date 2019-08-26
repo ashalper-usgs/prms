@@ -425,8 +425,9 @@ module Control {
 //   return cp;
 //}
 
-  proc decl(key: string, typ: int, size: int, valstr: StartPtrType) {
-    var cp: Control.Type;
+  use Structs;
+  proc decl(key: string, typ: int, size: int, valstr) {
+    var cp: CONTROL = CONTROL(LinkedList(string));
 
     // check that key does not already exist
     use Dimension;
@@ -451,10 +452,7 @@ module Control {
   }
 
   proc decl_string(key: string, valstr: string) {
-    var cp: StartPtrType;
-
-    cp.m_string = valstr;
-    decl(key, M_STRING, 1, cp);
+    decl(key, M_STRING, 1, valstr);
   }
 
 //void decl_string_array (char *key, long size, char *valstr) {

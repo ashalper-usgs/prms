@@ -108,7 +108,7 @@ module Dimension {
 //   return (ret);
 //}
 
-  proc addr(name: string): Dimension.Type {
+  proc addr(name: string): LIST {
     if (dim_db.count == 0) then
       // TODO: might be insufficient, due to incompatability with
       // legacy code
