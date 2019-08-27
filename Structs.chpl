@@ -67,8 +67,7 @@ module Structs {
     var key: string;
     var size: int;
     var typ: int;
-    // TODO: might not be necessary
-    var start_ptr: void;
+    var start_ptr;
     var set_in_file: int;
   };
 
@@ -85,7 +84,7 @@ module Structs {
     var typ: int;
     var raus: bool;
     var user_data;
-    var itm;
+    var itm: LinkedList(?t);
   };
 
 //typedef struct {
@@ -133,8 +132,8 @@ module Structs {
   record MODULE_DATA {
     var name: string;
     var version: string;
-    var params: void;		// LIST?
-    var vars: void;		// LIST?
+    var params;		// LIST?
+    var vars;		// LIST?
   };
 
 //#endif

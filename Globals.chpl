@@ -28,11 +28,10 @@ module Globals {
   use Structs;
   use LinkedLists;
 
-  // TODO: "void" is a type place-holder here. See also
-  // ~chapel-1.19.0/examples/primers/genericClasses.chpl
-  var cont_db: LIST(void, LinkedList(CONTROL));
-  var dim_db: LIST(void, LinkedList(DIMEN));
-  var module_db: LIST(void, LinkedList(MODULE_DATA));
+  // see https://chapel-lang.org/docs/primers/genericClasses.html
+  var cont_db: LIST(void);
+  var dim_db: LIST(void);
+  var module_db: LIST(void);
 
 //MODULE_DATA *current_module;
 //var Mvarbase: PUBVAR;		// public variables database

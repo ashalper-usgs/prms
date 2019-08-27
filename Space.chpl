@@ -19,8 +19,7 @@ module Space {
   proc alloc_space (): void {
     var start, end, now, next: DATETIME;
 
-    cont_db =
-      ALLOC_list("Control Data Base", 0, 100, LinkedList(CONTROL));
+    cont_db = ALLOC_list("Control Data Base", 0, 100);
 
     // space for the dimension pointer array
 
@@ -30,7 +29,7 @@ module Space {
     // TODO: need to find out where this is declared in PRMS 5:
     //Mndims = 0;
 
-    dim_db = ALLOC_list("Dimension Data Base", 0, 50, LinkedList(DIMEN));
+    dim_db = ALLOC_list("Dimension Data Base", 0, 50);
 
     // default dimension "one"
 

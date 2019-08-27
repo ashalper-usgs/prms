@@ -8,6 +8,7 @@
  */
 
 module Control {
+  use Globals;
 
   const Lval = {0..1};
   const Fval = {0..1};
@@ -427,7 +428,7 @@ module Control {
 
   use Structs;
   proc decl(key: string, typ: int, size: int, valstr) {
-    var cp: CONTROL = CONTROL(LinkedList(string));
+    var cp: CONTROL(valstr.type);
 
     // check that key does not already exist
     use Dimension;
@@ -447,8 +448,8 @@ module Control {
     cp.set_in_file = 0;
 
     // store record in controls
-    use Globals;
-    cont_db.add_to(cp);
+    use Lists;
+    ADD_to_list(cont_db, cp);
   }
 
   proc decl_string(key: string, valstr: string) {
@@ -521,5 +522,17 @@ module Control {
 //	decl_control(key, type, size, value);
 //	return;
 //}
+
+  proc addr(key: string): CONTROL throws {
+    for cp in cont_db.itm do
+      if cp.key == key then
+	return cp;
+
+    throw new owned Error();
+
+    // unreachable code; here to avoid Chapel compiler error
+    var cp: CONTROL(void);
+    return cp;
+  }
 
 } // Control

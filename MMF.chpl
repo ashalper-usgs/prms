@@ -25,7 +25,8 @@ proc main(argv: [] string): int {
   use Globals;
   use Lists;
   use Space;
-  
+  use Control;
+
   var set_count: int;
   var i, j: int;
   var set_name, set_value: string;
@@ -54,8 +55,7 @@ proc main(argv: [] string): int {
     List of modules that are used by the model. This is determined by
     calls to declmodule.
   */
-  module_db =
-    ALLOC_list("Module Data Base", 0, 100, LinkedList(MODULE_DATA));
+  module_db = ALLOC_list("Module Data Base", 0, 100);
 
   // parse the command-line arguments
   set_count = 0;
@@ -72,7 +72,7 @@ proc main(argv: [] string): int {
 
   alloc_space();
 
-//   setup_cont ();
+  setup();
 //   	err = read_control (MAltContFile);
 //	if (err) {
 //       (void)fprintf (stderr,"%s\n", err);

@@ -14,9 +14,9 @@ module Lists {
   const INPUT: int = 1;
   const OUTPUT: int = 2;
 
-  proc ALLOC_list(name: string, typ: int, size: int, type t) {
+  proc ALLOC_list(name: string, typ: int, size: int) {
     // TODO: "void" is a place-holder type here.
-    var list: LIST(void, t);
+    var list: LIST(void);
 
     list.name = name;
 
@@ -43,16 +43,16 @@ module Lists {
 //	free (list);
 //}
 
-//void RESIZE_list (LIST *list, int new_size) {
-//	list->size = new_size;
-//	list->itm = (void **)realloc (list->itm, new_size * sizeof (void *));
-//}
+  // TODO: probably obsolete
+  proc RESIZE_list(list: LIST, new_size: int) {
+    list.size = new_size;
+  }
 
-//void ADD_to_list (LIST *list, void *itm) {
-//	if (list->count >= list->size)
-//		RESIZE_list (list, list->size + 100);
+  proc ADD_to_list(list: LIST, itm) {
+    if list.count >= list.size then
+      RESIZE_list(list, list.size + 100);
 
-//	list->itm[list->count++] = itm;
-//}
+    list.append(itm);
+  }
 
 } // Lists

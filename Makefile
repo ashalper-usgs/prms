@@ -11,4 +11,4 @@ all:
 	chpl MMF.chpl
 
 clean:
-	rm -f Args Control Dimension Globals PRMSList Space Structs main *~
+	rm -f Args Control Dimension Globals MMF PRMSList Space Structs *~
