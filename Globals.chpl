@@ -26,18 +26,15 @@ module Globals {
   var preprocess_on = false; /* flag for running in preprocess mode */
 
   use Structs;
-  use LinkedLists;
-  // TODO: type initializers for untyped fields in LIST record
-  // (user_data, itm) here can/should be more specific here once we
-  // get the Control, Dimension, and Module records-or-classes
-  // specified. See also
+
+  // TODO: "void" is a type place-holder here. See also
   // ~chapel-1.19.0/examples/primers/genericClasses.chpl
-  var cont_db: LIST(UserData, LinkedList(int));
-  var dim_db: LIST(UserData, LinkedList(DIMEN));
-  var module_db: LIST(UserData, LinkedList(int));
+  var cont_db: LIST(void, void);
+  var dim_db: LIST(void, DIMEN);
+  var module_db: LIST(void, void);
 
 //MODULE_DATA *current_module;
-  var Mvarbase: PUBVAR;		// public variables database
+//var Mvarbase: PUBVAR;		// public variables database
 //long Mnvars = 0;                    /* no of public variables in data base */
 //PARAM **Mparambase = NULL;          /* pointer to parameter data base */
 //long Mnparams = 0;                  /* no of params in data base */
@@ -64,7 +61,7 @@ module Globals {
   var max_vars: int;
 //int max_params;
 //int max_read_vars;
-//int max_dims;
+  var max_dims: int;
 //int max_controls;
 
 //#else
