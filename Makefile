@@ -7,8 +7,8 @@
 # Author - Andrew Halper
 #
 
-all: prms
-	chpl *.chpl -o main
+all:
+	chpl MMF.chpl
 
 clean:
 	rm -f Args Control Dimension Globals PRMSList Space Structs main *~
