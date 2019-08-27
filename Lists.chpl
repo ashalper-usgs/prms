@@ -14,9 +14,9 @@ module Lists {
   const INPUT: int = 1;
   const OUTPUT: int = 2;
 
-  proc ALLOC_list(name: string, typ: int, size: int) {
+  proc ALLOC_list(name: string, typ: int, size: int, type t) {
     // TODO: "void" is a place-holder type here.
-    var list: LIST(void, void);
+    var list: LIST(void, t);
 
     list.name = name;
 
