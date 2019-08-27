@@ -4,33 +4,48 @@
  *
  * Purpose - Allocate space for variables.
  *
- * Authors - Steven Markstrom, Steve Regan, Andy Halper
+ * Authors - Steve Markstrom, Steve Regan, Andrew Halper
  */
 
 module Space {
-  proc alloc () {
+//#define ALLOC_SPACE_C
+//#include <string.h>
+//#include "mms.h"
+  use Structs;
+  use Globals;
+  use Lists;
+  use Dimension;
+  
+  proc alloc_space (): void {
+    var start, end, now, next: DATETIME;
+
+    cont_db = ALLOC_list("Control Data Base", 0, 100);
+
+    // space for the dimension pointer array
+
+    max_dims = 50;
     // TODO:
-    //    static DATETIME start, end, now, next;
+    //Mdimbase = (DIMEN **) umalloc (max_dims * sizeof(DIMEN *));
+    // TODO: need to find out where this is declared in PRMS 5:
+    //Mndims = 0;
 
-    use Structs;
-    use Globals;
-
-    // TODO:
-
-    // cont_db = new owned LIST("Control Data Base", 0, 100, CONTROL);
-
-    //dim_db = new owned LIST("Dimension Data Base", 0, 50, DIMEN);
+    dim_db = ALLOC_list("Dimension Data Base", 0, 50);
 
     // default dimension "one"
-    //  decldim ("one", 1, 1, "Dimension of scalar parameters and variables");
 
-    // space for the public variable pointer array
+    decldim("one", 1, 1, "Dimension of scalar parameters and variables");
 
-    max_vars = 500;
-    //  Mvarbase = (PUBVAR **) umalloc (max_vars * sizeof(PUBVAR *));
-    //  Mnvars = 0;
+  /*
+   * space for the public variable pointer array
+   */
 
-    // var_db = ALLOC_list ("Variable data base", 0, 100);
+//  max_vars = 500;
+//  Mvarbase = (PUBVAR **) umalloc (max_vars * sizeof(PUBVAR *));
+//  Mnvars = 0;
+
+/*
+	var_db = ALLOC_list ("Variable data base", 0, 100);
+*/
 
   /*
    * space for the parameter pointer  array
@@ -68,5 +83,6 @@ module Space {
 */
 //	Mparaminfo = strdup ("Default case");
 //	Mdatainfo = strdup ("Default case");
-  } // alloc
+  }
+
 } // Space

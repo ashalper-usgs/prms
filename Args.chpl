@@ -1,5 +1,4 @@
-/*
- * United States Geological Survey
+/* U.S. Geological Survey
  *
  * File - Args.chpl
  * 
@@ -9,33 +8,33 @@
  */
 
 module Args {
-  proc parse(args: [] string, set_count: int, set_name: string,
+  proc parse(argv: [] string, set_count: int, set_name: string,
 	     set_value: string, set_size: int) {
     var i: int;
     var ptr: int;
 
     // get the model name
-    ptr = args[0].find("/");
+    ptr = argv[0].find("/");
     if (ptr == 0) then
-      ptr = args[0].find("\\");
+      ptr = argv[0].find("\\");
     ptr += 1;
 
     use Globals;
-    model_name = args[0](ptr..args[0].length);
-    executable_model = args[0].replace(".exe", "");
+    model_name = argv[0](ptr..argv[0].length);
+    executable_model = argv[0].replace(".exe", "");
 
-    if (args.size >= 2) then {
-      for i in 1..args.size - 1 do {
-	select (args[i]) {
+    if (argv.size >= 2) then {
+      for i in 1..argv.size - 1 do {
+	select (argv[i]) {
 	when "-debug" do {
 	  try {
-	    Mdebuglevel = args[i + 1]:int;
+	    Mdebuglevel = argv[i + 1]:int;
 	  }
 	  catch {
 	    writeln("could not parse -debug level");
 	  }
 	}
-	when "-C" do MAltContFile = args[i];
+	when "-C" do MAltContFile = argv[i];
 	when "-batch" do batch_run_mode = true;
 	when "-print" do print_mode = true;
 	when "-por" do run_period_of_record = true;
@@ -57,15 +56,15 @@ module Args {
 	}
 	when "-MAXDATALNLEN" do {
 	  try {
-	    max_data_ln_len = args[i + 1]:int;
+	    max_data_ln_len = argv[i + 1]:int;
 	  }
 	  catch {
 	    writeln("could not parse -MAXDATALNLEN value");
 	  }
 	 }
-	} // select (args[i])
+	} // select (argv[i])
 	// assume argument with no flag is control file name
-	MAltContFile = args[args.size - 1];
+	MAltContFile = argv[argv.size - 1];
       }
     }
   } // parse

@@ -2,26 +2,31 @@
  *
  * File - Structs.chpl
  *
- * Purpose - Data type declarations for PRMS.
+ * Purpose - Data structure definitions for PRMS.
  *
- * Authors - Steven Markstrom, Andrew Halper.
+ * Authors - Steve Markstrom, Steve Regan, Andrew Halper
  */
 
 module Structs {
-  // dimension
+//#ifndef _STRUCTS_H
+//#define _STRUCTS_H
+
+//#include <stdio.h>
+
+  // dimension structure
   record DIMEN {
     var name: string;
     var value: int;
     var max: int;
     var descr: string;
-    var names: [1..0] string;	// TODO: needs Chapel array domain
-    var notes: [1..0] string;	// TODO: needs Chapel array domain
-    var files: [1..0] file;	// TODO: needs Chapel array domain
+    var names: [1..0] string;
+    var notes: [1..0] string;
+    var files: [1..0] file;
     var column_width: int;
     var format: string;
     var fixed: int;
     var got: int;
-  }
+  };
 
 //typedef struct {
 //  char *key;
@@ -45,6 +50,7 @@ module Structs {
 //  char *units;
 //  char *format;
 //  long column_width;
+//  //char **value_desc;
 //  char *value_string;
 //  char *min_string;
 //  char *max_string;
@@ -56,60 +62,43 @@ module Structs {
 //  long preprocess;
 //} PARAM;                 /* parameter pointer structure */
 
-  // control variable class
   record CONTROL {
-    var key: string;
-    var size: int;
-    var typ: int;
-    var start_ptr;
-    var set_in_file: int;
+//  char *key;
+//  long size;
+//  long type;
+//  void *start_ptr;
+//  long set_in_file;
+  };                 /* control variable pointer structure */
+
+  // date and time structure
+  record DATETIME {
+    var year, month, day, hour, min, sec, jd: int;
+    var jt: real;
   };
 
-//typedef struct {
-//  long year, month, day, hour, min, sec, jd;
-//  double jt;
-//} DATETIME;                 /* date and time structure */
-
-  // TODO: this is a place-holder until we find out what user_data
-  // (void *) was used for in the PRMS 5 C source.
-  record UserData {
-    var x: int;
-  }
-
-  class LIST {
+  record LIST {
     var name: string;
     var size: int;
     var count: int;
     var typ: int;
-    var ot: bool;
+    var raus: bool;
     var user_data;
     var itm;
-
-    proc init(name: string, typ: int, size: int, type t) {
-      this.name = name;
-      this.size = size;
-      this.count = 0;
-      this.typ = typ;
-      this.ot = false;
-      this.user_data = new UserData(0);
-      this.itm = new LinkedList(t);
-    }
-  } // LIST
-
-  // public variable record
-  record PUBVAR {
-    var key: string;
-    var module_name: string;
-    var name: string;
-    var ndimen: int;
-    var dimen: DIMEN;
-    var size: int;
-    var typ: int;
-    var help: string;
-    var units: string;
-    var value: string;
-    var privat: int;
   };
+
+//typedef struct {
+//  char *key;
+//  char *module;
+//  char *name;
+//  long ndimen;
+//  struct dimen_t **dimen;
+//  long size;
+//  long type;
+//  char *help;
+//  char *units;
+//  char *value;
+//  int private;
+//} PUBVAR;                 /* public variable pointer structure */
 
 //typedef struct {
 //  PUBVAR *var;
@@ -124,17 +113,14 @@ module Structs {
 //typedef struct file_data_t {
 //	FILE    *fp;
 //	char    *name;
-//	char    line[MAXDATALNLEN];
 //	char    *line;
 //	char    *start_of_data;
 //	float   delta_t;
-//	char    info[MAXDATALNLEN];
 //	char    *info;
 //	DATETIME    time;
 //} FILE_DATA;
 
 //typedef struct STAT_LIST_TYPE {
-//  char key[MAXDATALNLEN];
 //	char *key;
 //	char *element;
 //    long type;
@@ -149,4 +135,5 @@ module Structs {
 //	LIST    *vars;
 //} MODULE_DATA;
 
-}
+//#endif
+} // Structs

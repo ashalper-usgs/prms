@@ -2,57 +2,81 @@
  *
  * File - Dimension.chpl
  *
- * Purpose - Initializes an entry in the dimension database.
+ * Purpose - initializes an entry in the dimension database
  *
- * Authors - Steven Markstrom, Andrew Halper.
+ * Authors - Steve Markstrom, Steve Regan, Andrew Halper
  */
 
 module Dimension {
-
-  record Type {
-    var name: string;
-    var value: int;
-    var max: int;
-    var descr: string;
-    var names: [1..0] string;
-    var notes: [1..0] string;
-    var Files: [1..0] file;
-    var column_width: int;
-    var format: string;
-    var fixed: int;
-    var got: int;
-  }
-
+//#define DECLDIM_C
+//#include <stdio.h>
+//#include <string.h>
+//#include "mms.h"
+  use Structs;
   use Globals;
+  
+//long decldim_ (char *dname, ftnint *dval, ftnint *dmax, char *ddescr, ftnlen namelen, ftnlen descrlen) {
+//	long value, max;
+//	char *name, *descr;
+//	long retval;
 
-  proc declare(name: string, value: int, max: int, descr: string): int {
-    var dim: Dimension.Type;
+/*
+* copy value & max into local long int
+*/
+
+//	value = *dval;
+//	max = *dmax;
+
+/*
+* copy args to new strings, and terminate correctly
+*/
+
+//	name = (char *) umalloc(namelen + 1);
+//	strncpy(name, dname, namelen);
+//	name[namelen] = '\0';
+
+//	descr = (char *) umalloc(descrlen + 1);
+//	strncpy(descr, ddescr, descrlen);
+//	descr[descrlen] = '\0';
+
+/*
+* call C version of decldim()
+*/
+
+//	retval = decldim(name, value, max, descr);
+
+//	return(retval);
+//}
+
+  proc decldim(name: string, value: int, max: int, descr: string): int {
+    var dim: DIMEN;
 
     // check that name does not already exist
 
-    dim = addr(name);
-    if dim != nil then {
-      // This dimension has already been declared. Set the size to the
-      // value of the last call.
-      dim.value = value;
+    dim = dim_addr(name);
+//   if (dim != NULL) {
+		// This dimension has already been declared. Set the size to the
+		// value of the last call.
+//		dim->value = value;
 
-      return 0;
-    }
+//      return(0);
+//   }
 
-    if Mdebuglevel >= M_FULLDEBUG then {
-      stderr.write("Declaring dimension '%s'\n", name);
-   }
+//   if (Mdebuglevel >= M_FULLDEBUG) {
+//      (void)fprintf(stderr, "Declaring dimension '%s'\n", name);
+//   }
 
-    // check that default value is within limits
+/*
+* check that default value is within limits
+*/
 
-    if value < 0 then {
-      stderr.write(
-	"ERROR - Dimension.declare() - default dimension value negative.\n"
-      );
-      stderr.write("Name   :   '%s'\n", name);
-      stderr.write("Default:   %ld\n", value);
-      return 1;
-    }
+//   if(value < 0) {
+//      (void)fprintf(stderr, 
+//		    "ERROR - decldim - default dimension value negative.\n");
+//      (void)fprintf(stderr, "Name   :   '%s'\n", name);
+//      (void)fprintf(stderr, "Default:   %ld\n", value);
+//      return(1);
+//   }
 
 //   if(value > max) {
 //      (void)fprintf(stderr, 
@@ -90,7 +114,7 @@ module Dimension {
 
 //   sort_dims ();
     return 0;
-}
+  }
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declfix
@@ -107,17 +131,35 @@ module Dimension {
 
 //   return (ret);
 //}
+/*--------------------------------------------------------------------*\
+ | FUNCTION     : declfix_
+ | COMMENT		: called from Fortran to declare a fixed dimension.
+ | PARAMETERS   :
+ | RETURN VALUE : 
+ | RESTRICTIONS :
+\*--------------------------------------------------------------------*/
+//long declfix_ (char *dname, ftnint *dval, ftnint *dmax, char *ddescr, ftnlen namelen, ftnlen descrlen) {
+//	long	ret;
 
-  proc addr(name: string): LIST {
-    if (dim_db.count == 0) then
-      // TODO: might be insufficient, due to incompatability with
-      // legacy code
+//	ret = decldim_ (dname, dval, dmax, ddescr, namelen, descrlen);
+//	((DIMEN *)(dim_db->itm[dim_db->count - 1]))->fixed = TRUE;
+
+//	return (ret);
+//}
+
+//#define DIM_ADDR_C
+//#include <stdio.h>
+//#include <string.h>
+//#include "mms.h"
+
+  proc dim_addr(name: string): DIMEN { 
+    if dim_db.count == 0 then
       throw new owned Error();
 
     for itm in dim_db.itm do
-      if (itm.name == name) then
+      if itm.name == name then
 	return itm;
-
+    
     throw new owned Error();
   }
 
@@ -133,6 +175,6 @@ module Dimension {
 //	}
 
 //	return (NULL);
-//  }
+//}
 
 } // Dimension
