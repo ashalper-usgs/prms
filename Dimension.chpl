@@ -52,15 +52,15 @@ module Dimension {
     var dim: DIMEN;
 
     // check that name does not already exist
-
-    dim = dim_addr(name);
-//   if (dim != NULL) {
-		// This dimension has already been declared. Set the size to the
-		// value of the last call.
-//		dim->value = value;
-
-//      return(0);
-//   }
+    try {
+      dim = dim_addr(name);
+    }
+    catch {
+      // This dimension has already been declared. Set the size to the
+      // value of the last call.
+      dim.value = value;
+      return 0;
+    }
 
 //   if (Mdebuglevel >= M_FULLDEBUG) {
 //      (void)fprintf(stderr, "Declaring dimension '%s'\n", name);
@@ -152,7 +152,7 @@ module Dimension {
 //#include <string.h>
 //#include "mms.h"
 
-  proc dim_addr(name: string): DIMEN { 
+  proc dim_addr(name: string): DIMEN throws {
     if dim_db.count == 0 then
       throw new owned Error();
 
@@ -161,6 +161,11 @@ module Dimension {
 	return itm;
     
     throw new owned Error();
+
+    // unreachable code, but needs to be here so the Chapel compiler
+    // won't stop with a return type error
+    var itm: DIMEN;
+    return itm;
   }
 
 //char *dim_notes (char *ch_ptr) {
