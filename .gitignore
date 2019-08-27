@@ -1,5 +1,6 @@
-*.project
-*.o
-*.mod
 *.a
+*.mod
+*.o
+*.project
 /prms/prms
+MMF
