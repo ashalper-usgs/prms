@@ -62,13 +62,15 @@ module Structs {
 //  long preprocess;
 //} PARAM;                 /* parameter pointer structure */
 
+  // control variable structure
   record CONTROL {
-//  char *key;
-//  long size;
-//  long type;
-//  void *start_ptr;
-//  long set_in_file;
-  };                 /* control variable pointer structure */
+    var key: string;
+    var size: int;
+    var typ: int;
+    // TODO: might not be necessary
+    var start_ptr: void;
+    var set_in_file: int;
+  };
 
   // date and time structure
   record DATETIME {
@@ -128,12 +130,12 @@ module Structs {
 //    struct STAT_LIST_TYPE *next;
 //} STAT_LIST_TYPE;   /* linked list element of stat vars */
 
-//typedef struct module_data_t {
-//	char    *name;
-//	char    *version;
-//	LIST    *params;
-//	LIST    *vars;
-//} MODULE_DATA;
+  record MODULE_DATA {
+    var name: string;
+    var version: string;
+    var params: void;		// LIST?
+    var vars: void;		// LIST?
+  };
 
 //#endif
 } // Structs
