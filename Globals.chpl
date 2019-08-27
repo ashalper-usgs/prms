@@ -26,12 +26,13 @@ module Globals {
   var preprocess_on = false; /* flag for running in preprocess mode */
 
   use Structs;
+  use LinkedLists;
 
   // TODO: "void" is a type place-holder here. See also
   // ~chapel-1.19.0/examples/primers/genericClasses.chpl
-  var cont_db: LIST(void, void);
-  var dim_db: LIST(void, DIMEN);
-  var module_db: LIST(void, void);
+  var cont_db: LIST(void, LinkedList(CONTROL));
+  var dim_db: LIST(void, LinkedList(DIMEN));
+  var module_db: LIST(void, LinkedList(MODULE_DATA));
 
 //MODULE_DATA *current_module;
 //var Mvarbase: PUBVAR;		// public variables database
