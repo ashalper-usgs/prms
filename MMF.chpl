@@ -54,7 +54,8 @@ proc main(argv: [] string): int {
     List of modules that are used by the model. This is determined by
     calls to declmodule.
   */
-  module_db = ALLOC_list("Module Data Base", 0, 100);
+  module_db =
+    ALLOC_list("Module Data Base", 0, 100, LinkedList(MODULE_DATA));
 
   // parse the command-line arguments
   set_count = 0;
