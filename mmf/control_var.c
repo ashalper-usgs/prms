@@ -8,92 +8,71 @@
  *            control_dvar - returns double *
  *            control_svar - returns char ** - string
  *            returns pointers to various control array entries
- * COMMENT  :
- *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define CONTROL_VAR_C
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "mms.h"
+#include "control_addr.h"
+#include "control_var.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_var
  | COMMENT		: returns a pointer to the start of the variable
  |			( or first element in * the array) in a CONTROL struct
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-char *control_var (char *key) {
+char *control_var (LIST *cont_db, char *key) {
  
   CONTROL *control;
 
-  if ((control = control_addr(key)) == NULL) {
+  if ((control = control_addr(cont_db, key)) == NULL) {
     (void)fprintf(stderr, 
 	    "ERROR - control_var - key '%s' not found.\n", key);
     exit(1);
   }
   return (char *) control->start_ptr;
-
 }
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_lvar
  | COMMENT		: returns a pointer to a long variable
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-long *control_lvar (char *key) {
-  return ((long *) control_var(key));
+long *control_lvar (LIST *cont_db, char *key) {
+  return ((long *) control_var(cont_db, key));
 }
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_fvar
  | COMMENT		: returns a pointer to a float variable
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-float *control_fvar (char *key) {
-  return ((float *) control_var(key));
+float *control_fvar (LIST *cont_db, char *key) {
+  return ((float *) control_var(cont_db, key));
 }
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_dvar
  | COMMENT		: returns a pointer to a double variable
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-double *control_dvar (char *key) {
-  return ((double *) control_var(key));
+double *control_dvar (LIST *cont_db, char *key) {
+  return ((double *) control_var(cont_db, key));
 }
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_svar
  | COMMENT		: returns a pointer to a string variable
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-char **control_svar (char *key) {
-  return ((char **) control_var(key));
+char **control_svar (LIST *cont_db, char *key) {
+  return ((char **) control_var(cont_db, key));
 }
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_string_
  | COMMENT		: called from fortran
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-long control_string_ (char *retval, char *tag, ftnlen len, ftnlen tlen) {
+long control_string_ (LIST *cont_db, char *retval, char *tag, ftnlen len, ftnlen tlen) {
 	char *foo;
 
 	foo = (char *) umalloc(tlen + 1);
@@ -101,18 +80,15 @@ long control_string_ (char *retval, char *tag, ftnlen len, ftnlen tlen) {
 	foo[tlen] = '\0';
 
 	memset (retval, ' ', len);
-	strncpy (retval, *control_svar(foo), len);
+	strncpy (retval, *control_svar(cont_db, foo), len);
 	return 0;
 }
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_string_array_
  | COMMENT		: called from fortran
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-long control_string_array_ (char *retval, char *tag, int *index, ftnlen len, ftnlen tlen) {
+long control_string_array_ (LIST *cont_db, char *retval, char *tag, int *index, ftnlen len, ftnlen tlen) {
 	char *foo;
     char **strings;
     int i;
@@ -121,7 +97,7 @@ long control_string_array_ (char *retval, char *tag, int *index, ftnlen len, ftn
 	strncpy(foo, tag, tlen);
 	foo[tlen] = '\0';
 
-    strings = (char **) control_var(foo);
+	strings = (char **) control_var(cont_db, foo);
     i = *index - 1;
 	strncpy (retval, *(strings+i), len);
 	return 0;
@@ -134,14 +110,14 @@ long control_string_array_ (char *retval, char *tag, int *index, ftnlen len, ftn
  | RETURN VALUE : 
  | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-long control_integer_ (int *retval, char *key, ftnlen len) {
+long control_integer_ (LIST *cont_db, int *retval, char *key, ftnlen len) {
 	char *foo;
 
 	foo = (char *) umalloc(len + 1);
 	strncpy(foo, key, len);
 	foo[len] = '\0';
 
-	*retval = *control_var(foo);
+	*retval = *control_var(cont_db, foo);
 	return 0;
 }
 
@@ -152,7 +128,7 @@ long control_integer_ (int *retval, char *key, ftnlen len) {
  | RETURN VALUE : 
  | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-long control_integer_array_ (int *retval, int *index, char *key, ftnlen tlen) {
+long control_integer_array_ (LIST *cont_db, int *retval, int *index, char *key, ftnlen tlen) {
 	char *foo;
 	long intVal;
     long *longs;
@@ -162,7 +138,7 @@ long control_integer_array_ (int *retval, int *index, char *key, ftnlen tlen) {
 	strncpy(foo, key, tlen);
 	foo[tlen] = '\0';
 
-    longs = (long *) control_var(foo);
+	longs = (long *) control_var(cont_db, foo);
     i = *index - 1;
 	intVal = *(longs+i);
 	*retval = (int)intVal;

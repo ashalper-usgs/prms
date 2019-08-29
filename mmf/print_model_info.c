@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mms.h"
+#include "print_model_info.h"
 
 #define PRINTLEN 77
 
@@ -25,7 +26,7 @@
  | RETURN VALUE :
  | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-int print_model_info (void) {
+int print_model_info (LIST *module_db) {
 
   char pathname[MAXPATHLEN];
   FILE *model_info_file;

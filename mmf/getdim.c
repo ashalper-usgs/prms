@@ -7,15 +7,16 @@
  *            returns it as a long int. Returns -1 if error.
  * COMMENT  : gets the dimension associated with a name, and
  *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define GETDIM_C
 #include <stdio.h>
 #include <string.h>
+
 #include "mms.h"
+#include "dim_addr.h"
+
+#include "getdim.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getdim_
@@ -45,13 +46,6 @@ long getdim_ (char *dname, ftnlen namelen) {
   return retval;
 }
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getdim
- | COMMENT		: is called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
 long getdim (char *name) {
 
   DIMEN *dim;
@@ -60,7 +54,7 @@ long getdim (char *name) {
    * get pointer to dimension with name
    */
 
-  dim = dim_addr(name);
+  dim = dim_addr(dim_db, name);
 
   if (dim == NULL) {
     (void)fprintf(stderr, 

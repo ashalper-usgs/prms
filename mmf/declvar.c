@@ -6,31 +6,29 @@
  *            declvar_() to be called from Fortran
  *            Returns 0 if successful, 1 otherwise.
  * COMMENT  : initializes a module variable entry in the memory database
- *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define DECLVAR_C
 #include <stdio.h>
 #include <string.h>
 #include "mms.h"
+#include "dim_addr.h"
 
 #define LONG 1
 #define FLOAT 2
 #define DOUBLE 3
 
+long declvar (char *, char *, char *, long, char *,
+	      char *, char *, char *, LIST *);
+
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declvar_
- | COMMENT		: called from Fortran, sorts out args and calls declvar()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: called from Fortran, sorts out args and calls declvar()
 \*--------------------------------------------------------------------*/
 long declvar_ (char *mname, char *vname, char *vdimen, ftnint *maxsizeptr,
-	char *vtype, char *hstr, char *ustr, char *value, ftnlen mnamelen,
-	ftnlen vnamelen, ftnlen vdimenlen, ftnlen vtypelen, ftnlen hlen, ftnlen ulen) {
+	       char *vtype, char *hstr, char *ustr, char *value, LIST *dim_db,
+	       ftnlen mnamelen,	ftnlen vnamelen, ftnlen vdimenlen,
+	       ftnlen vtypelen, ftnlen hlen, ftnlen ulen) {
 
   char *module, *name, *dimen, *type, *help, *units;
   long maxsize, retval;
@@ -69,27 +67,16 @@ long declvar_ (char *mname, char *vname, char *vdimen, ftnint *maxsizeptr,
   strncpy(units, ustr, (int)ulen);
   units[ulen] = '\0';
 
-  /*
-   * call C version of declvar()
-   */
-
-  retval = declvar(module, name, dimen, maxsize, type, help, units, value);
+  retval =
+    declvar(module, name, dimen, maxsize, type, help, units, value, dim_db);
 
   return(retval);
 
 }
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : declvar()
- | COMMENT		: is called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
 long declvar (char *module, char *name, char *dimen, long maxsize, char *type,
-	char *help, char *units, char *value) {
+	      char *help, char *units, char *value, LIST *dim_db) {
   int var_type;
-
   char *vkey;
   char *token;
   char *tmpdimen;
@@ -101,7 +88,7 @@ long declvar (char *module, char *name, char *dimen, long maxsize, char *type,
    * realloc if too large
    */
 
-  if(Mnvars >= max_vars -1) {
+  if (Mnvars >= max_vars -1) {
 	max_vars += 100;
   	Mvarbase = (PUBVAR **)urealloc ((char *)Mvarbase,
 		max_vars * sizeof(PUBVAR *));
@@ -198,7 +185,7 @@ long declvar (char *module, char *name, char *dimen, long maxsize, char *type,
   token = strtok(tmpdimen, ",");
 
   while (token != (char *) NULL) {
-    if (!(var->dimen[i] = dim_addr (token))) {
+    if (!(var->dimen[i] = dim_addr (dim_db, token))) {
       (void)fprintf(stderr, "ERROR - declvar\n");
       (void)fprintf(stderr, "Variable '%s'\n", vkey);
       (void)fprintf(stderr, "Dimension '%s' is not declared.\n", token);

@@ -4,44 +4,30 @@
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : alloc_space
  * COMMENT  : allocates space for variables
- *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define ALLOC_SPACE_C
 #include <string.h>
 #include "mms.h"
+#include "alloc_space.h"
+#include "decldim.h"
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : alloc_space
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-void alloc_space (void) {
-	static DATETIME start, end, now, next;
+void alloc_space (LIST *cont_db, LIST *dim_db) {
+  static DATETIME start, end, now, next;
 
-	cont_db = ALLOC_list ("Control Data Base", 0, 100);
+  cont_db = ALLOC_list ("Control Data Base", 0, 100);
 
   /*
-   * space for the dimension pointer  array
+   * space for the dimension pointer array
    */
 
-/*
-  max_dims = 50;
-  Mdimbase = (DIMEN **) umalloc (max_dims * sizeof(DIMEN *));
-  Mndims = 0;
-*/
-	dim_db = ALLOC_list ("Dimension Data Base", 0, 50);
+  dim_db = ALLOC_list ("Dimension Data Base", 0, 50);
 
   /*
    * default dimension "one"
    */
 
-  decldim ("one", 1, 1, "Dimension of scalar parameters and variables");
+  decldim (dim_db, "one", 1, 1, "Dimension of scalar parameters and variables");
 
   /*
    * space for the public variable pointer array
@@ -51,10 +37,6 @@ void alloc_space (void) {
   Mvarbase = (PUBVAR **) umalloc (max_vars * sizeof(PUBVAR *));
   Mnvars = 0;
 
-/*
-	var_db = ALLOC_list ("Variable data base", 0, 100);
-*/
-
   /*
    * space for the parameter pointer  array
    */
@@ -62,9 +44,6 @@ void alloc_space (void) {
   max_params = 500;
   Mparambase = (PARAM **) umalloc (max_params * sizeof(PARAM *));
   Mnparams = 0;
-/*
-	param_db = ALLOC_list ("Paraameter data base", 0, 100);
-*/
 
   /*
    * space for the read check data base

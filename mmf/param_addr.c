@@ -5,24 +5,15 @@
  * FUNCTION : param_addr
  *            returns a pointer to a PARAM struct which contains the given key
  *            returns NULL if key not found
- * COMMENT  :
- *
- * $Id$
- *
 -*/
 
 /**1************************ INCLUDE FILES ****************************/
 #define PARAM_ADDR_C
 #include <string.h>
-#include "mms.h"
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : param_addr
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
+#include "mms.h"
+#include "param_addr.h"
+
 PARAM * param_addr (char *key) { 
   PARAM **params;
   long i;

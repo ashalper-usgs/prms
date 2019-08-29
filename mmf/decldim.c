@@ -12,21 +12,20 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define DECLDIM_C
 #include <stdio.h>
 #include <string.h>
 #include "mms.h"
+#include "decldim.h"
+#include "dim_addr.h"
+#include "sort_dims.h"
 
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\
  | FUNCTION     : decldim_
  | COMMENT		: called from Fortran, sorts out args and calls decldim()
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-long decldim_ (char *dname, ftnint *dval, ftnint *dmax, char *ddescr, ftnlen namelen, ftnlen descrlen) {
+long decldim_ (LIST *dim_db, char *dname, ftnint *dval, ftnint *dmax,
+	       char *ddescr, ftnlen namelen, ftnlen descrlen) {
 	long value, max;
 	char *name, *descr;
 	long retval;
@@ -54,7 +53,7 @@ long decldim_ (char *dname, ftnint *dval, ftnint *dmax, char *ddescr, ftnlen nam
 * call C version of decldim()
 */
 
-	retval = decldim(name, value, max, descr);
+	retval = decldim(dim_db, name, value, max, descr);
 
 	return(retval);
 }
@@ -62,18 +61,15 @@ long decldim_ (char *dname, ftnint *dval, ftnint *dmax, char *ddescr, ftnlen nam
 /*--------------------------------------------------------------------*\
  | FUNCTION     : decldim
  | COMMENT		: called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-long decldim (char *name, long value, long max, char *descr) {
+long decldim (LIST *dim_db, char *name, long value, long max, char *descr) {
 	DIMEN *dim;
 
 /*
 * check that name does not already exist
 */
 
-	dim = dim_addr(name);
+	dim = dim_addr(dim_db, name);
    if (dim != NULL) {
 		// This dimension has already been declared. Set the size to the
 		// value of the last call.
@@ -132,7 +128,7 @@ long decldim (char *name, long value, long max, char *descr) {
    dim->fixed = FALSE;
    dim->got = FALSE;
 
-   sort_dims ();
+   sort_dims (dim_db);
    return(0);
 }
 
@@ -143,10 +139,10 @@ long decldim (char *name, long value, long max, char *descr) {
  | RETURN VALUE : 
  | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-long declfix (char *name, long value, long max, char *descr) {
+long declfix (LIST *dim_db, char *name, long value, long max, char *descr) {
    long ret;
 
-   ret = decldim (name, value, max, descr);
+   ret = decldim (dim_db, name, value, max, descr);
    ((DIMEN *)(dim_db->itm[dim_db->count - 1]))->fixed = TRUE;
 
    return (ret);
@@ -154,36 +150,13 @@ long declfix (char *name, long value, long max, char *descr) {
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declfix_
  | COMMENT		: called from Fortran to declare a fixed dimension.
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-long declfix_ (char *dname, ftnint *dval, ftnint *dmax, char *ddescr, ftnlen namelen, ftnlen descrlen) {
+long declfix_ (LIST *dim_db, char *dname, ftnint *dval, ftnint *dmax,
+	       char *ddescr, ftnlen namelen, ftnlen descrlen) {
 	long	ret;
 
-	ret = decldim_ (dname, dval, dmax, ddescr, namelen, descrlen);
+	ret = decldim_ (dim_db, dname, dval, dmax, ddescr, namelen, descrlen);
 	((DIMEN *)(dim_db->itm[dim_db->count - 1]))->fixed = TRUE;
 
 	return (ret);
 }
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getmodule
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-//MODULE_DATA * getmodule (char *key) { 
-//	MODULE_DATA *module;
-//	long i;
-//
-//	for (i = 0; i < module_db->count; i++) {
-//		module = (MODULE_DATA *)(module_db->itm[i]);
-//	   printf ("comparing %s to %s\n", key, module->name);
-//		if (!strcmp(module->name, key))
-//		return module;
-//	}
-//
-//	/* if no match found, return null */
-//	return NULL;
-//}

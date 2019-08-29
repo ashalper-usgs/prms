@@ -10,14 +10,15 @@
  *            These return pointers to particular elements in a control array.
  * COMMENT  : control_array routines
  *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define CONTROL_ARRAY_C
 #include <stdlib.h>
+
 #include "mms.h"
+
+#include "control_addr.h"
+#include "control_array.h"
 
 /**************************************************************************
  * control_array.c: 
@@ -28,18 +29,11 @@
  *
  **************************************************************************/
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : control_array
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-char *control_array (char *key, long ind) {
+char *control_array (LIST *cont_db, char *key, long ind) {
  
   CONTROL *control;
 
-  if ((control = control_addr(key)) == NULL) {
+  if ((control = control_addr(cont_db, key)) == NULL) {
     (void)fprintf(stderr, 
 	    "ERROR - control_array - key '%s' not found.\n", key);
     exit(1);
@@ -74,44 +68,32 @@ char *control_array (char *key, long ind) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_larray
- | COMMENT		: returns a pointer to a long entry 
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: returns a pointer to a long entry 
 \*--------------------------------------------------------------------*/
-long *control_larray (char *key, long ind) {
-  return ((long *) control_array(key, ind));
+long *control_larray (LIST *cont_db, char *key, long ind) {
+  return ((long *) control_array(cont_db, key, ind));
 }
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_farray
- | COMMENT		: returns a pointer to a float entry in control array
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: returns a pointer to a float entry in control array
 \*--------------------------------------------------------------------*/
-float *control_farray (char *key, long ind) {
-  return ((float *) control_array(key, ind));
+float *control_farray (LIST *cont_db, char *key, long ind) {
+  return ((float *) control_array(cont_db, key, ind));
 }
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_darray
- | COMMENT		: returns a pointer to a double entry in control array
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: returns a pointer to a double entry in control array
 \*--------------------------------------------------------------------*/
-double *control_darray (char *key, long ind) {
-  return ((double *) control_array(key, ind));
+double *control_darray (LIST *cont_db, char *key, long ind) {
+  return ((double *) control_array(cont_db, key, ind));
 }
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : control_sarray
- | COMMENT		: returns a pointer to a string entry in control array
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: returns a pointer to a string entry in control array
 \*--------------------------------------------------------------------*/
-char *control_sarray (char *key, long ind) {
-  return control_array(key, ind);
+char *control_sarray (LIST *cont_db, char *key, long ind) {
+  return control_array(cont_db, key, ind);
 }

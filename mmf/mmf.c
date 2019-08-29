@@ -4,12 +4,8 @@
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : xmms
  * COMMENT  : main driver for xmms
- *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define MAIN
 #define MMF_C
 
@@ -17,10 +13,20 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <string.h>
+
 #include "mms.h"
+#include "alloc_space.h"
+#include "batch_run.h"
+#include "control_addr.h"
+#include "control_var.h"
+#include "get_times.h"
+#include "print_model_info.h"
+#include "print_params.h"
+#include "print_vars.h"
+#include "read_control.h"
+#include "read_params.h"
+#include "save_params.h"
 
-
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 extern int call_modules(char *);
 extern int call_setdims(void);
 
@@ -46,30 +52,27 @@ int main (int argc, char *argv[]) {
    struct stat stbuf;
    char	buf[512];
    char	*err;
-   static int      num_param_files = 0;
-   char   **fname;
+   static int num_param_files = 0;
+   char **fname;
    char pathname[MAXPATHLEN];
    int set_size;
+   LIST *module_db, *cont_db, *dim_db;
 
+   /*
+     Maximum buffer size for reading lines from files. This used to be
+     set as a C precompiler directive. That is still the default, but
+     now users are given the option to set this on the command line,
+     otherwise size still comes from the defs.h file.
+   */
+   max_data_ln_len = MAXDATALNLEN;
 
-    /*
-	**  Maximum buffer size for reading lines from files.
-	**  This used to be set as a C precompiler directive.
-	**  That is still the default, but now users are give.
-	**  the option to set this on the command line, otherwise
-	**  size still comes from the defs.h file.
-	*/
-    max_data_ln_len = MAXDATALNLEN;
+   /*
+     List of modules that are used by the model. This is determined by
+     calls to declmodule.
+   */
+   module_db = ALLOC_list ("Module Data Base", 0, 100);
 
-	/*
-	**  List of modules that are used by the model. This is
-	**  determined by calls to declmodule
-	*/
-	module_db = ALLOC_list ("Module Data Base", 0, 100);
-
-  /*
-  **	parse the command-line arguments
-  */
+   /* Parse the command-line arguments. */
    set_count = 0;
    set_size = 100;
    set_name = (char **)malloc (set_size * sizeof (char *));
@@ -77,25 +80,29 @@ int main (int argc, char *argv[]) {
    parse_args (argc, argv, &set_count, set_name, set_value, set_size);
 
    if (MAltContFile == NULL) {
-      (void)fprintf (stderr,"Usage: Set the full path to the control file using the '-C' option.\n\n");
+      (void)fprintf (
+         stderr,
+	 "Usage: Set the full path to the control file using the '-C' "
+	 "option.\n\n"
+      );
       exit(0);
    }
 
-   alloc_space ();
+   alloc_space (cont_db, dim_db);
 
    setup_cont ();
-   	err = read_control (MAltContFile);
-	if (err) {
-       (void)fprintf (stderr,"%s\n", err);
-        exit (1);           
+   err = read_control (MAltContFile, cont_db);
+   if (err) {
+     (void)fprintf (stderr,"%s\n", err);
+     exit (1);           
    }
 
-	fname =   control_svar ("param_file");
+	fname =   control_svar (cont_db, "param_file");
     num_param_files = control_var_size ("param_file");
 
    for (i = 0; i < set_count; i++) {
-      cp = control_addr (*(set_name + i));
-      if (cp) {
+     cp = control_addr (cont_db, *(set_name + i));
+     if (cp) {
 
          (void)fprintf (stderr,"\nControl variable %s set to %s.\n\n",
                  *(set_name + i), *(set_value + i));
@@ -128,8 +135,8 @@ int main (int argc, char *argv[]) {
       }
    }
 
-	fname =   control_svar ("param_file");
-    num_param_files = control_var_size ("param_file");
+   fname = control_svar (cont_db, "param_file");
+   num_param_files = control_var_size ("param_file");
 
     if (call_setdims()) {
 	  (void)fprintf(stderr, "\nERROR: Calling function 'call_setdims'\n");
@@ -139,34 +146,33 @@ int main (int argc, char *argv[]) {
     /*
     **	read dimension info from parameter file
     */
-    if (stat (*control_svar("param_file"), &stbuf) != -1) {
+    if (stat (*control_svar(cont_db, "param_file"), &stbuf) != -1) {
        if (stbuf.st_size) {
       } else {
 	     (void)fprintf (stderr,buf, "Parameter File: %s is empty.",
-		               *control_svar("param_file"));
+			    *control_svar(cont_db, "param_file"));
         exit (1);
 	   }
     }
     
-    err = read_dims (*control_svar("param_file"));
+    err = read_dims (*control_svar(cont_db, "param_file"), dim_db);
     if (err) {
-//		(void)fprintf (stderr,"\nERROR: reading dimensions from Parameter File\n");
-		fprintf (stderr,"\n%s\n", err);
-        exit (1);
-	}
+      fprintf (stderr,"\n%s\n", err);
+      exit (1);
+    }
 
-	fname =   control_svar ("param_file");
+    fname =   control_svar (cont_db, "param_file");
     num_param_files = control_var_size ("param_file");
 
     if (call_modules("declare")) {
-		(void)fprintf(stderr, "\nERROR: in declare procedure, in function 'call_modules'\n");
-        exit (1);
-	}
+      (void)fprintf(stderr, "\nERROR: in declare procedure, in function 'call_modules'\n");
+      exit (1);
+    }
     
     /*
     **	read in parameter values from parameter file
     */
-	fname =   control_svar ("param_file");
+    fname = control_svar (cont_db, "param_file");
     num_param_files = control_var_size ("param_file");
 
 	/*
@@ -182,7 +188,7 @@ int main (int argc, char *argv[]) {
 		   }
 		}
 	    
-		err = read_params (fname[i], i, 1);
+		err = read_params (fname[i], i, 1, cont_db);
 		if (err) {
 			(void)fprintf (stderr,"\n%s\n", err);
 			exit (1);
@@ -203,7 +209,7 @@ int main (int argc, char *argv[]) {
 		   }
 		}
 	    
-		err = read_params (fname[i], i, 0);
+		err = read_params (fname[i], i, 0, cont_db);
 		if (err) {
 			(void)fprintf (stderr,"\n%s\n", err);
 			exit (1);
@@ -219,18 +225,18 @@ int main (int argc, char *argv[]) {
     /*
     **	get start and end time
     */
-    get_times ();
+    get_times (cont_db);
     
     if (print_mode) {
-      print_params();
-      print_vars();
-      print_model_info();
+      print_params(dim_db);
+      print_vars(cont_db);
+      print_model_info(module_db);
 	  (void)snprintf (pathname, MAXPATHLEN, "%s.param", MAltContFile);
-	  save_params (pathname);
+	  save_params (dim_db, pathname);
 
     } else {
 
-      BATCH_run ();
+      BATCH_run (cont_db);
       ;
     }
 

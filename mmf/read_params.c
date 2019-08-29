@@ -3,27 +3,36 @@
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : read_params
- * COMMENT  : reads the params data base from a file
+ * COMMENT  : reads the params database from a file
  *            File name is passed in as an argument
  *
- * $Id$
  * Last modified 03/27/2018 RSR modified for multiple values per line separated by spaces
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
-#define READ_PARAMS_C
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
-#include <errno.h>
 #include <ctype.h>
+#include <errno.h>
 #include <stdlib.h>
-#include "mms.h"
+#include <string.h>
 
-static char *READ_param_head (PARAM **, int);
-static char *READ_param_values (long, long, char *, char *, char[], char *, char *, int);
-static char *rp (int, int);
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+
+#include "control_var.h"
+#include "declparam.h"
+#include "dim_addr.h"
+#include "getdim.h"
+#include "getparam.h"
+#include "param_addr.h"
+#include "read_params.h"
+
+extern char *umalloc (unsigned);
+
+static char *READ_param_head (PARAM **, int, LIST *, LIST *);
+static char *READ_param_values (long, long, char *, char *, char[],
+				char *, char *,
+				LIST *, int);
+static char *rp (int, int, LIST *);
 static int checkForValidDimensions (PARAM *);
 static int isDimensionIncompatable (char *, char *);
 static void oneToAnySizedArray(PARAM *, char *);
@@ -36,8 +45,8 @@ static void close_parameter_file ();
 static char *get_next_line ();
 static char *error_string (char *);
 static char *warning_string (char *);
-static void bad_param_value_l (long, int, char *, long, long);
-static void bad_param_value (double, int, char *, double, double);
+static void bad_param_value_l (LIST *, long, int, char *, long, long);
+static void bad_param_value (LIST *, double, int, char *, double, double);
 
 static char* dimNames[] = {"nhru", "nsegment", "nrain", "ntemp", "nobs", "ngw", "nssr"};
 
@@ -57,70 +66,66 @@ static char file_name[256];
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : read_params
- | COMMENT		: This is called from within a loop for each parameter file
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: This is called from within a loop for each parameter file
 \*--------------------------------------------------------------------*/
-char *read_params (char *param_file_name, int index, int mapping_flag) {
-  	char *cptr;
+char *read_params (char *param_file_name, int index, int mapping_flag,
+		   LIST *cont_db) {
+  char *cptr;
 
-// Get the static variables ready.
-	strncpy (file_name, param_file_name, 256);
-	if (key == NULL) {
-		key = (char *) umalloc(max_data_ln_len * sizeof(char));
-	}
+  // Get the static variables ready.
+  strncpy (file_name, param_file_name, 256);
+  if (key == NULL) {
+    key = (char *) umalloc(max_data_ln_len * sizeof(char));
+  }
 
-	cptr = rp (index, mapping_flag);
-	return (cptr);
+  cptr = rp (index, mapping_flag, cont_db);
+  return (cptr);
 }
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : read_dims
  | COMMENT	: This is called once from MMF for the first parameter file
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-char *read_dims (char *param_file_name) {
-	DIMEN *dim;
-	int dim_size, i, j; 
-	static char buf[256], *bp, *line_p;
-	char *endptr;
-	char *nch;
-	int done;
-    int max_comment;
+char *read_dims (char *param_file_name, LIST *dim_db) {
+  DIMEN *dim;
+  int dim_size, i, j; 
+  static char buf[256], *bp, *line_p;
+  char *endptr;
+  char *nch;
+  int done;
+  int max_comment;
   
-/*
-* get param name, open file
-*/
-	strncpy (file_name, param_file_name, 256);
-    param_file = NULL;
-    bp = open_parameter_file (param_file_name);
-	if (bp != NULL) {
-		return bp;
-	}
-/*
-* read in run info string
-*/
-	if (!(line_p = get_next_line ())) {
-		close_parameter_file();
-		return error_string ("problems reading info");
-	}
-	Mparaminfo = strdup (line_p);
+  /*
+   * get param name, open file
+   */
+  strncpy (file_name, param_file_name, 256);
+  param_file = NULL;
+  bp = open_parameter_file (param_file_name);
+  if (bp != NULL) {
+    return bp;
+  }
 
-/*
-**	See if version number is set
-*/
-	if (!(line_p = get_next_line ())) {
-		close_parameter_file();
-		return error_string ("problems reading version number");
-	}
+  /*
+   * read in run info string
+   */
+  if (!(line_p = get_next_line ())) {
+    close_parameter_file();
+    return error_string ("problems reading info");
+  }
+  Mparaminfo = strdup (line_p);
 
-	if (!(line_p = get_next_line ())) {
-		close_parameter_file();
-		return error_string ("problems reading dimension label");
-	}
+  /*
+  **	See if version number is set
+  */
+  if (!(line_p = get_next_line ())) {
+    close_parameter_file();
+    return error_string ("problems reading version number");
+  }
+
+  if (!(line_p = get_next_line ())) {
+    close_parameter_file();
+    return error_string ("problems reading dimension label");
+  }
 
 /*
  *  Read in comments -- everything between version line and
@@ -177,7 +182,7 @@ char *read_dims (char *param_file_name) {
 		}
 
 		line[strlen(line)-1] = '\0';
-		dim = dim_addr (line);
+		dim = dim_addr (dim_db, line);
 		if (dim) {
 /*
 **	Read dimension size from parameter file.
@@ -285,12 +290,8 @@ char *read_dims (char *param_file_name) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : rp
- | COMMENT	:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-static char *rp (int index, int map_flag) {
+static char *rp (int index, int map_flag, LIST *cont_db) {
 	PARAM *param;
 	static char buf[256], *buf_ptr;
 	char *line_p;
@@ -320,7 +321,7 @@ static char *rp (int index, int map_flag) {
 **	Read in parameters.
 */
 	while (!feof (param_file)) {
-		buf_ptr = READ_param_head (&param, map_flag);
+	  buf_ptr = READ_param_head (&param, map_flag, cont_db, dim_db);
 		if (buf_ptr) {
 			if (buf_ptr == (char *)-1) {
 				close_parameter_file();
@@ -341,7 +342,7 @@ static char *rp (int index, int map_flag) {
 			// values into a temporary array that is used to remap the
 			// values into the correct size and shape for param->value.
 			if (param->pf_size == param->size) {
-				buf_ptr = READ_param_values (param->size, param->type, param->name, param->value, line, param->min_string, param->max_string, param->bound_status);
+			  buf_ptr = READ_param_values (param->size, param->type, param->name, param->value, line, param->min_string, param->max_string, cont_db, param->bound_status);
 
 			} else {
 
@@ -359,7 +360,7 @@ static char *rp (int index, int map_flag) {
 					pf_value = NULL;
 				}
 
-				buf_ptr = READ_param_values (param->pf_size, param->type, param->name, pf_value, line, param->min_string, param->max_string, param->bound_status);
+				buf_ptr = READ_param_values (param->pf_size, param->type, param->name, pf_value, line, param->min_string, param->max_string, cont_db, param->bound_status);
 
 				// The values read from the parameter file need to be resized to fit into the size
 				// of the module array for this parameter.
@@ -624,21 +625,19 @@ static char *rp (int index, int map_flag) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : READ_param_head
- | COMMENT		: Read the preliminary stuff for the parameter.  This is
- |                 the stuff between the ####s and where the data actually
- |                 starts.
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: Read the preliminary stuff for the parameter.  This is
+ |                the stuff between the ####s and where the data actually
+ |                starts.
 \*--------------------------------------------------------------------*/
-static char *READ_param_head (PARAM **param_ptr, int map_flag) {
-	char dimen[MAXDATALNLEN];
-	static char buf[256];
-	char *temp, *npos, *tempfmt;
-	int tempwidth, i, param_size, type;
-	static long silent_flag;
-	int badFlag;
-	char *line_p;
+static char *READ_param_head (PARAM **param_ptr, int map_flag,
+			      LIST *cont_db, LIST *dim_db) {
+  char dimen[MAXDATALNLEN];
+  static char buf[256];
+  char *temp, *npos, *tempfmt;
+  int tempwidth, i, param_size, type;
+  static long silent_flag;
+  int badFlag;
+  char *line_p;
   
 /*
 * space fwd to #### header
@@ -708,7 +707,7 @@ static char *READ_param_head (PARAM **param_ptr, int map_flag) {
 			*param_ptr = param_addr (key);
 
 			if (*param_ptr == NULL) {  // Didn't find this mapping parameter in the parameter DB so declare one
-				declparam ("read_params", key, NULL, "integer", NULL, NULL, NULL, NULL, NULL, NULL);
+			  declparam ("read_params", key, NULL, "integer", NULL, NULL, NULL, NULL, NULL, NULL);
 				*param_ptr = param_addr(key);
 			}
 
@@ -768,7 +767,8 @@ static char *READ_param_head (PARAM **param_ptr, int map_flag) {
 			if (map_flag) { // Need to set some values in the param structure for mapping parameter
 				(*param_ptr)->ndimen = 1;
 				(*param_ptr)->dimen = (DIMEN **)umalloc ((*param_ptr)->ndimen * sizeof (DIMEN *));
-				(*param_ptr)->dimen[0] = dim_addr((*param_ptr)->pf_dimNames[0]);
+				(*param_ptr)->dimen[0] =
+				  dim_addr(dim_db, (*param_ptr)->pf_dimNames[0]);
 			}
 
 			badFlag = checkForValidDimensions (*param_ptr);  // 0 = good;  1 = bad
@@ -827,11 +827,11 @@ static char *READ_param_head (PARAM **param_ptr, int map_flag) {
   
 	} else {
 		if (!map_flag) {
-			silent_flag = *control_lvar("print_debug");
-			if (silent_flag > -2) {
-				snprintf (buf, 256, "parameter '%s' is not required", key);
-				fprintf (stderr,"\n%s\n", warning_string (buf));
-			}
+		  silent_flag = *control_lvar(cont_db, "print_debug");
+		  if (silent_flag > -2) {
+		    snprintf (buf, 256, "parameter '%s' is not required", key);
+		    fprintf (stderr,"\n%s\n", warning_string (buf));
+		  }
 		}
 	}
 
@@ -840,18 +840,16 @@ static char *READ_param_head (PARAM **param_ptr, int map_flag) {
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : READ_param_values
- | COMMENT		: Read the values and comments for the parameter.
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
+ | COMMENT	: Read the values and comments for the parameter.
 \*--------------------------------------------------------------------*/
 static char *READ_param_values (long size, long type, char *name,
-				char *value, char *line, char *min_string, char *max_string,
-				int bound_status) {
-	int i, j;
-    int  done;
-	int	desc_count = 0;
-	int repeat_count;
+				char *value, char *line,
+				char *min_string, char *max_string,
+				LIST *cont_db, int bound_status) {
+  int i, j;
+  int  done;
+  int	desc_count = 0;
+  int repeat_count;
 	char delims[] = " ";
 	char *result = NULL;
 	char *comp_ptr = NULL;
@@ -934,7 +932,7 @@ static char *READ_param_values (long size, long type, char *name,
 								d = strtod(comp_ptr, &endp);
 
 								if (d < min_d || d > max_d) {
-									bad_param_value (d, i, name, min_d, max_d);
+								  bad_param_value (cont_db, d, i, name, min_d, max_d);
 								}
 
 								if (comp_ptr != endp && (*endp == '\n' || *endp == '\0')) {
@@ -948,7 +946,7 @@ static char *READ_param_values (long size, long type, char *name,
 								d = strtod(comp_ptr, &endp);
 
 								if (d < min_d || d > max_d) {
-									bad_param_value (d, i, name, min_d, max_d);
+								  bad_param_value (cont_db, d, i, name, min_d, max_d);
 								}
 
 								if (comp_ptr != endp && (*endp == '\n' || *endp == '\0')) {
@@ -964,7 +962,7 @@ static char *READ_param_values (long size, long type, char *name,
 // Does not check parameter ranges if bounded
 								if ((l < min_l || l > max_l) &&
 										bound_status == M_UNBOUNDED) {
-									bad_param_value_l (l, i, name, min_l, max_l);
+								  bad_param_value_l (cont_db, l, i, name, min_l, max_l);
 								}
 
 								if (comp_ptr != endp && (*endp == '\n' || *endp == '\0')) {
@@ -1316,14 +1314,11 @@ static char *warning_string (char *message) {
 /*--------------------------------------------------------------------*\
  | FUNCTION     : bad_param_value_l
  | COMMENT		: Generates the warning message when a long value is out of range.
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-static void bad_param_value_l (long l, int i, char *name, long min_l, long max_l) {
+static void bad_param_value_l (LIST *cont_db, long l, int i, char *name, long min_l, long max_l) {
 	static char buf[256];
 
-	if (*control_lvar("parameter_check_flag") > 0) {
+	if (*control_lvar(cont_db, "parameter_check_flag") > 0) {
 		snprintf (buf, 256, "%s[%d] = %d is out of range (%d to %d)", name, i, (int)l, (int)min_l, (int)max_l);
 		fprintf (stderr, "%s\n", warning_string(buf));
 	}
@@ -1336,10 +1331,10 @@ static void bad_param_value_l (long l, int i, char *name, long min_l, long max_l
  | RETURN VALUE : 
  | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-static void bad_param_value (double d, int i, char *name, double min_d, double max_d) {
+static void bad_param_value (LIST *cont_db, double d, int i, char *name, double min_d, double max_d) {
 	static char buf[256];
 
-	if (*control_lvar("parameter_check_flag") > 0) {
+	if (*control_lvar(cont_db, "parameter_check_flag") > 0) {
 		snprintf (buf, 256, "%s[%d] = %f is out of range (%f to %f)", name, i, d, min_d, max_d);
 		fprintf (stderr, "%s\n", warning_string(buf));
 	}

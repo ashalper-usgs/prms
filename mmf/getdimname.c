@@ -5,23 +5,17 @@
  * FUNCTION : getdimname
  * COMMENT  : The following are two routines to obtain the "ith" index name 
  *            of a dimension variable from either Fortran or C modules.
- *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define GETDIMNAME_C
 #include <string.h>
 #include <stdlib.h>
 #include "mms.h"
+#include "dim_addr.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : getdimname_
  | COMMENT		: called from fortran
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 void getdimname_ (char *name, ftnint *i, char *idxname, ftnlen namelen, ftnlen idxlen) {
   /*
@@ -106,7 +100,7 @@ void getdimnameint_ (char *name, ftnint *i, ftnint *idx, ftnlen namelen) {
 void getdimname (char *name, long i, char *idxname, int idxlen) {
   DIMEN *dim;
 
-  dim = dim_addr(name);
+  dim = dim_addr(dim_db, name);
   if (!dim) {
       (void)fprintf(stderr, "ERROR - getdimname, Can't find dimension named %s\n",name);
       return;
@@ -129,7 +123,7 @@ void getdimname (char *name, long i, char *idxname, int idxlen) {
 void getdimdesc (char *name, long i, char *descname, int deslen) {
 	DIMEN *dim;
 
-	dim = dim_addr(name);
+	dim = dim_addr(dim_db, name);
 	if (!dim) {
 		(void)fprintf (stderr,
 			"ERROR - getdimname, Can't find dimension named %s\n", name);

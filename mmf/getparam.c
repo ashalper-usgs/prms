@@ -12,15 +12,17 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define GETPARAM_C
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "mms.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
+#include "mms.h"
+#include "control_var.h"
+#include "getparam.h"
+
 static long paramcopy (PARAM *, double *, int);
+long getoutname (LIST *, char *, int, char *);
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : updateparam
@@ -33,7 +35,6 @@ static long paramcopy (PARAM *, double *, int);
  |                values.
  | PARAMETERS   : name is the name of the parameter to update.
  | RETURN VALUE : integer error code
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 long updateparam (char *name) {
 	PARAM *param;
@@ -145,9 +146,6 @@ long getparam (char *module, char *name, int maxsize, char *type, double *pval) 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : paramcopy
  | COMMENT		: called from C
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
 static long paramcopy (PARAM *param, double *pval, int maxsize) {
 	DIMEN *dim1, *dim2;
@@ -264,49 +262,30 @@ long getdatainfo (char *dinfo, ftnlen len) {
 	return(0);
 }
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getoutname_
- | COMMENT		: called from Fortran
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-long getoutname_ (char *dinfo, char *ext, ftnlen len, ftnlen elen) {
+// designed to be called from Fortran
+long getoutname_ (LIST *cont_db, char *dinfo, char *ext, ftnlen len, ftnlen elen) {
   char *foo;
   long ret;
 
-	foo = (char *) umalloc(elen + 1);
-	strncpy(foo, ext, elen);
-	foo[elen] = '\0';
+  foo = (char *) umalloc(elen + 1);
+  strncpy(foo, ext, elen);
+  foo[elen] = '\0';
 
-	ret = getoutname (dinfo, len, foo);
+  ret = getoutname (cont_db, dinfo, len, foo);
 
-    if (strlen (dinfo) >= (size_t)len) {
-		printf ("getoutname:  path name is too long for your buffer!\n");
-        ret = 1;
-	}
-    return(ret);
+  if (strlen (dinfo) >= (size_t)len) {
+    printf ("getoutname: path name is too long for your buffer!\n");
+    ret = 1;
+  }
+  return(ret);
 }
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getoutname
- | COMMENT		: called from C
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-long getoutname (char *dinfo, int dinlen, char *ext) {
-	snprintf(dinfo, dinlen, "%s\\%s", *control_svar("model_output_file"), ext);
-	return(0);
+long getoutname (LIST *cont_db, char *dinfo, int dinlen, char *ext) {
+  snprintf(dinfo, dinlen, "%s\\%s", *control_svar(cont_db, "model_output_file"), ext);
+  return(0);
 }
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getdataname_
- | COMMENT		: called from Fortran
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
+// designed to be called from Fortran
 long getdataname_ (char *dinfo, char *ext, ftnlen len, ftnlen elen) {
 	char *foo;
 	long retval;
@@ -319,115 +298,27 @@ long getdataname_ (char *dinfo, char *ext, ftnlen len, ftnlen elen) {
 	return(retval);
 }
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getdataname
- | COMMENT		: called from C
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
 long getdataname (char *dinfo, int dinlen, char *ext) {
-	snprintf(dinfo, dinlen, "%s%s", *control_svar("data_file"), ext);
-	return(0);
+  snprintf(dinfo, dinlen, "%s%s", *control_svar(cont_db, "data_file"), ext);
+  return(0);
 }
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getoutdirfile_
- | COMMENT		: called from Fortran
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-/*long getoutdirfile_ (char *dinfo, char *ext, ftnlen len, ftnlen elen) {
-	char *foo;
-	long retval;
-
-	foo = (char *) umalloc(elen + 1);
-	strncpy(foo, ext, elen);
-	foo[elen] = '\0';
-
-   retval = getoutdirfile (dinfo, foo);
-   return(retval);
-}
-*/
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getoutdirfile
- | COMMENT      : called from C
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-/*long getoutdirfile (char *dinfo, int dinlen, char *foo) {
-   snprintf(dinfo, dinlen, "%s%s", *control_svar("mms_user_out_dir"), foo);
-   return(0);
-}
-*/
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getuserdirfile_
- | COMMENT		: called from Fortran
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-/*long getuserdirfile_ (char *dinfo, char *ext, ftnlen len, ftnlen elen) {
-	char *foo;
-	long retval;
-
-	foo = (char *) umalloc(elen + 1);
-	strncpy(foo, ext, elen);
-	foo[elen] = '\0';
-
-   retval = getuserdirfile (dinfo, len, foo);
-   return(retval);
-}
-*/
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getuserdirfile
- | COMMENT      : called from C
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-/*long getuserdirfile (char *dinfo, int dinlen, char *foo) {
-   snprintf(dinfo, dinlen, "%s%s", *control_svar("mms_user_dir"), foo);
-   return (0);
-}
-*/
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getparamfile
- | COMMENT		: called from C
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-long getparamfile (char *dinfo, int dinlen) {
-	snprintf(dinfo, dinlen, "%s", *control_svar("param_file"));
-	return (0);
+long getparamfile (LIST *cont_db, char *dinfo, int dinlen) {
+  snprintf(dinfo, dinlen, "%s", *control_svar(cont_db, "param_file"));
+  return (0);
 }
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getparamfile_
- | COMMENT		: called from Fortran
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-long getparamfile_ (char *dinfo, ftnlen len) {
-	long retval;
-	retval = getparamfile (dinfo, len);
-	return(retval);
+// designed to be called from Fortran
+long getparamfile_ (LIST *cont_db, char *dinfo, ftnlen len) {
+  long retval;
+
+  retval = getparamfile (cont_db, dinfo, len);
+  return(retval);
 }
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : getparamstring_
- | COMMENT		: called from Fortran
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-
+// designed to be called from Fortran
 long getparamstring_ (char *mname, char *pname, ftnint *pmaxsize, char *ptype, ftnint *pindex, char *pstring,
-	       ftnlen mnamelen, ftnlen pnamelen, ftnlen ptypelen, ftnlen pslen) {
+		      ftnlen mnamelen, ftnlen pnamelen, ftnlen ptypelen, ftnlen pslen) {
 
   char *module, *name, *type;
   int maxsize;

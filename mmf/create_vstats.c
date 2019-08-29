@@ -4,26 +4,17 @@
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : create_vstats
  * COMMENT  : create linked list for stats variables
- *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define CREATE_VSTATS_C
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "mms.h"
+#include "control_var.h"
+#include "create_vstats.h"
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : create_vstats
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-void create_vstats (void) {
+void create_vstats (LIST *cont_db) {
 
   long *nstatVars, i;
   char **statVar_names;
@@ -36,19 +27,19 @@ void create_vstats (void) {
    * get number of statVars
    */
 
-  nstatVars = (long *) control_var("nstatVars");
+  nstatVars = (long *) control_var(cont_db, "nstatVars");
 
   /*
    * get address of statVar names array 
    */
   
-  statVar_names = (char **) control_var("statVar_names");
+  statVar_names = (char **) control_var(cont_db, "statVar_names");
   
   /*
    * get address of statVar element  array 
    */
   
-  statVar_element = (char **) control_svar("statVar_element");
+  statVar_element = (char **) control_svar(cont_db, "statVar_element");
   
 /*
 *	Make_linked_list;

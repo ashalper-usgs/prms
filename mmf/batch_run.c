@@ -4,20 +4,16 @@
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : batch_run
  * COMMENT  : runs the MMS time loop
- *
- * $Id$
- *
 -*/
-
-/**1************************ INCLUDE FILES ****************************/
 
 #define BATCH_RUN_C
 
 #include <string.h>
 #include <errno.h>
 #include "mms.h"
+#include "read_line.h"
+#include "batch_run.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 extern int call_modules (char *);
 extern char *single_run_pre_init (void);
 extern char *single_run_post_init (void);
@@ -32,7 +28,7 @@ extern char *single_run_post_cleanup (void);
  | RETURN VALUE : char * - error message if there is one.
  | RESTRICTIONS : None
 \*--------------------------------------------------------------------*/
-int BATCH_run (void) {
+int BATCH_run (LIST *cont_db) {
    char *ret;
    long endofdata = 0;
 
@@ -59,7 +55,7 @@ int BATCH_run (void) {
    Mprevjt = -1.0;
 
    while(!endofdata) {
-      if(!(endofdata = read_line ())) {
+     if(!(endofdata = read_line (cont_db))) {
          ret = single_run_pre_run ();
          if (ret) return(1);
 

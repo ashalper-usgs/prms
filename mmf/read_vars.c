@@ -5,30 +5,18 @@
  * FUNCTION : read_vars
  * COMMENT  : reads the vars data base from a file.
  *            File name is passed in as an argument
- *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define READ_VARS_C
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include "mms.h"
+#include "dim_addr.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static int read_var_line (char *, char *, FILE *, char *);
 
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
-/*--------------------------------------------------------------------*\
- | FUNCTION     : read_vars
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
 int read_vars (char *var_file_name) {
 
 	FILE *var_file;
@@ -131,7 +119,7 @@ int read_vars (char *var_file_name) {
       }
       key[strlen(key)-1] = '\0';
 
-      if ((dim = dim_addr(key)) == NULL) {
+      if ((dim = dim_addr(dim_db, key)) == NULL) {
          (void)fprintf(stderr, "WARNING - read_vars.\n");
          (void)fprintf(stderr, "Using var file '%s'\n", pathname);
          (void)fprintf(stderr, "Dimension '%s' not declared.\n", key);

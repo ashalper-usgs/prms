@@ -29,9 +29,6 @@ int run_period_of_record = FALSE;   /* flag for running entire period of
 int print_mode = FALSE;
 int runtime_graph_on = FALSE;
 int preprocess_on = FALSE;         /* flag for running in preprocess mode */
-LIST *cont_db;
-LIST *dim_db;
-LIST *module_db;
 MODULE_DATA *current_module;
 PUBVAR **Mvarbase = NULL;           /* pointer to public variables data base */
 long Mnvars = 0;                    /* no of public variables in data base */

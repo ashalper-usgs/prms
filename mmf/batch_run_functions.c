@@ -3,22 +3,25 @@
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : batch_run_functions
- * COMMENT  :
- *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
+
 #include "mms.h"
 
-/**5*********************** LOCAL VARIABLES ***************************/
+#include "check_vars.h"
+#include "control_var.h"
+#include "create_vstats.h"
+#include "dim_addr.h"
+#include "free_vstats.h"
+#include "graph_single_run.h"
+#include "save_params.h"
+
   static FILE *statvar_file;
   static FILE **ani_out_files;
   static long nstatVars, naniVars;
@@ -38,30 +41,22 @@
   static int num_ani_dims, found, k;
   static DATETIME start_of_data, end_of_data;
 
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
-/*--------------------------------------------------------------------*\
- | FUNCTION     : single_run_pre_init
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : char *
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-char *single_run_pre_init () {
+char *single_run_pre_init (LIST *cont_db) {
 
-  stats_flag = *control_lvar ("statsON_OFF");
+  stats_flag = *control_lvar (cont_db, "statsON_OFF");
   if (stats_flag == 1)
-     nstatVars = *control_lvar("nstatVars");
+    nstatVars = *control_lvar(cont_db, "nstatVars");
   else
      nstatVars = 0;
 
   if (!nstatVars)
     stats_flag = 0;
 
-  ani_out_flag = *control_lvar ("aniOutON_OFF");
+  ani_out_flag = *control_lvar (cont_db, "aniOutON_OFF");
   if (ani_out_flag == 1)
-     naniVars = *control_lvar("naniOutVars");
+    naniVars = *control_lvar(cont_db, "naniOutVars");
   else
-     naniVars = 0;
+    naniVars = 0;
 
   if (!naniVars)
     ani_out_flag = 0;
@@ -71,12 +66,12 @@ char *single_run_pre_init () {
 **  before a run is attempted.
 */
   if (stats_flag) {
-    err_message = CHECK_stat_vars();
+    err_message = CHECK_stat_vars(cont_db);
     if (err_message) return (err_message);
   }
 
   if (ani_out_flag) {
-    err_message = CHECK_ani_vars ();
+    err_message = CHECK_ani_vars (cont_db);
     if (err_message) return (err_message);
   }
 
@@ -84,7 +79,7 @@ char *single_run_pre_init () {
 * create stats vars linked list
 */
   if (stats_flag)
-    create_vstats();
+    create_vstats(cont_db);
 
 /*
 * open data file
@@ -127,7 +122,10 @@ char *single_run_pre_init () {
 * Open statvar file, and store number of variables and variable names
 */
   if (stats_flag) {
-    (void)snprintf(statvar_path, MAXPATHLEN, "%s", *((char **) control_var("stat_var_file")));
+    (void)snprintf(
+       statvar_path, MAXPATHLEN, "%s",
+       *((char **) control_var(cont_db, "stat_var_file"))
+    );
 
     if ((statvar_file = fopen(statvar_path, "w")) == NULL) {
       (void)snprintf (err, 256, "ERROR - single_run: Could not open statvar file '%s'\n",
@@ -135,8 +133,8 @@ char *single_run_pre_init () {
       return (err);
     }
 
-    statVar_names = (char **) control_var("statVar_names");
-    statVar_element = (char **) control_var("statVar_element");
+    statVar_names = (char **) control_var(cont_db, "statVar_names");
+    statVar_element = (char **) control_var(cont_db, "statVar_element");
 
 /*
 * write number of variables and statVars names to stats data file.
@@ -151,8 +149,8 @@ char *single_run_pre_init () {
 * Open ani output files.
 */
   if (ani_out_flag) {
-    aniVar_names = (char **) control_var("aniOutVar_names");
-    (void)snprintf(ani_path, MAXPATHLEN, "%s", *((char **) control_var("ani_output_file")));
+    aniVar_names = (char **) control_var(cont_db, "aniOutVar_names");
+    (void)snprintf(ani_path, MAXPATHLEN, "%s", *((char **) control_var(cont_db, "ani_output_file")));
 
     ani_out_dims = (DIMEN **)malloc (naniVars * sizeof (DIMEN *));
     ani_var_files = (FILE **)malloc (naniVars * sizeof (FILE *));
@@ -179,9 +177,9 @@ char *single_run_pre_init () {
 **  List of unique ANIMATION dimensions.
 */
     num_ani_dims = 0;
-    nhrudim = dim_addr("nhru");
-    ngwdim = dim_addr("ngw");
-    nssrdim = dim_addr("nssr");
+    nhrudim = dim_addr(dim_db, "nhru");
+    ngwdim = dim_addr(dim_db, "ngw");
+    nssrdim = dim_addr(dim_db, "nssr");
     for (i = 0; i < naniVars; i++) {
        found = FALSE;
        
@@ -291,16 +289,9 @@ char *single_run_pre_init () {
   return(NULL);
 }
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : single_run_post_init
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : char *
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-char *single_run_post_init () {
+char *single_run_post_init (LIST *cont_db) {
 
-  initializeRuntimeGraphs();
+  initializeRuntimeGraphs(cont_db);
 
 /*
 **  set initial values of nsteps global variable if they
@@ -429,13 +420,13 @@ char *single_run_pre_cleanup () {
  | RETURN VALUE : char *
  | RESTRICTIONS :
 \*--------------------------------------------------------------------*/
-char *single_run_post_cleanup () {
+char *single_run_post_cleanup (LIST *cont_db) {
 
 /*
 * free up stats vars linked list
 */
   if (stats_flag)
-    free_vstats();
+    free_vstats(cont_db);
 
 /*
 * close files and tidy up
@@ -465,7 +456,7 @@ char *single_run_post_cleanup () {
 * if required, save vars to file
 */
   if (preprocess_on) {
-    write_preprocess_params ();
+    write_preprocess_params (cont_db);
   }
 
    return (NULL);

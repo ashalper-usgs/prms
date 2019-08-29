@@ -10,12 +10,8 @@
  *            is within start and end limits.
  *            Otherwise reads lines until within limits or the
  *            end of file is encountered.
- *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define READ_LINE_C
 
 #include <sys/stat.h>
@@ -25,26 +21,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include "mms.h"
+#include "control_addr.h"
+#include "control_var.h"
+#include "read_line.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static void INSERT_time (char *, DATETIME *);
 
-/**5*********************** LOCAL VARIABLES ***************************/
-/*
-static double   prevjt = -1.0;
-*/
-
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
-/*--------------------------------------------------------------------*\
- | FUNCTION     : read_line
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE : void
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-long read_line (void) {
-
-   /*static char err[80];*/
+long read_line (LIST *cont_db) {
 
    char   *start_point, *end_point;
    float   initial_deltat;
@@ -63,8 +46,8 @@ long read_line (void) {
 /*
 **   get initial delta-t from control data base
 */
-   initial_deltat = *control_fvar("initial_deltat");
-   data_eof_flag = *control_lvar ("ignore_data_file_end");
+   initial_deltat = *control_fvar(cont_db, "initial_deltat");
+   data_eof_flag = *control_lvar (cont_db, "ignore_data_file_end");
 
    if (Mnsteps == 0) {
       start_of_data = TRUE;
@@ -330,7 +313,7 @@ char *DATA_read_init (void) {
             }
    }
 
-   fname =   control_svar ("data_file");
+   fname = control_svar (cont_db, "data_file");
    num_data_files = control_var_size ("data_file");
 
    fd = (FILE_DATA **)malloc (num_data_files * sizeof (FILE_DATA *));
@@ -394,7 +377,7 @@ char *READ_data_info (void) {
    lfd.info = (char *) umalloc(max_data_ln_len * sizeof(char));
    lfd.line = (char *) umalloc(max_data_ln_len * sizeof(char));
 
-   fname =   (char **) control_var ("data_file");
+   fname = (char **) control_var (cont_db, "data_file");
    num_data_files = control_var_size ("data_file");
 
 /*
@@ -485,7 +468,7 @@ void DATA_close (void) {
 int control_var_size (char *key) {
    CONTROL *control;
 
-   if (!(control = control_addr(key))) {
+   if (!(control = control_addr(cont_db, key))) {
       (void)fprintf (stderr, 
          "control_var_size - key '%s' not found.\n", key);
       return (1);

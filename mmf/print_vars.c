@@ -4,28 +4,19 @@
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : print_vars
  * COMMENT  : prints the var data base to a file
- *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define PRINT_VARS_C
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "mms.h"
+#include "control_var.h"
+#include "print_vars.h"
 
 #define PRINTLEN 77
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : print_vars
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-int print_vars (void) {
+int print_vars (LIST *cont_db) {
 
   char pathname[MAXPATHLEN], *infostr;
   FILE *var_file;
@@ -60,8 +51,10 @@ int print_vars (void) {
    * write file names
    */
 
-  (void)fprintf(var_file, "Parameter file: %s\n", *control_svar("param_file"));
-  (void)fprintf(var_file, "Data file     : %s\n", *control_svar("data_file"));
+  (void)fprintf(var_file, "Parameter file: %s\n",
+		*control_svar(cont_db, "param_file"));
+  (void)fprintf(var_file, "Data file     : %s\n",
+		*control_svar(cont_db, "data_file"));
   (void)fprintf(var_file, "\n");
 
   /*

@@ -3,63 +3,45 @@
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : save_params
- * COMMENT  : saves the param data base to a file. File name is passed in.
- *
- * $Id$
- *
+ * COMMENT  : Saves the parameter database to a file. File name is passed in.
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define SAVE_PARAMS_C
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "mms.h"
+#include "save_params.h"
+#include "control_var.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static void write_parameters (FILE *, int);
-static void write_dimensions (FILE *);
+static void write_dimensions (LIST *dim_db, FILE *);
 static void write_header (FILE *, char *);
 
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
-/*--------------------------------------------------------------------*\
- | FUNCTION     : save_params
- | COMMENT		:
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-int save_params (char *param_file_name) {
-	FILE *param_file;
-	//PARAM *param;
-	//DIMEN *dim;
-	//char *ptr;
-	//long i,j;
-	//double	*dvalptr;
-	//float	*fvalptr;
-	//long	*lvalptr;
+int save_params (LIST *dim_db, char *param_file_name) {
+  FILE *param_file;
 
-	if ((param_file = fopen (param_file_name, "w")) == NULL) {
-		(void)fprintf(stderr, "ERROR - save_params - creating file '%s'\n", param_file_name);
-		return(1);
-	}
+  if ((param_file = fopen (param_file_name, "w")) == NULL) {
+    (void)fprintf(stderr, "ERROR - save_params - creating file '%s'\n", param_file_name);
+    return(1);
+  }
 
-	write_header (param_file, "Default Parameter File generated based on active modules and any specified Parameter File(s)\n");
-	write_dimensions (param_file);
-	write_parameters (param_file, TRUE);
+  write_header (param_file,
+		"Default Parameter File generated based on active modules and any specified Parameter File(s)\n");
+  write_dimensions (dim_db, param_file);
+  write_parameters (param_file, TRUE);
 	
-	fclose(param_file);
-	return(0);
+  fclose(param_file);
+  return(0);
 }
 
-int write_preprocess_params () {
+int write_preprocess_params (LIST *cont_db) {
 	FILE *param_file;
 	char param_file_name[512];
 	char   **fname;
-	/*char *extension, *ptr, *ptr1;*/
 	char *ptr, *ptr1;
 
-	fname =   control_svar ("param_file");
+	fname = control_svar (cont_db, "param_file");
 	strncpy (param_file_name, fname[0], 512);
 
 // Isolate the file name from the path
@@ -94,25 +76,25 @@ static void write_header (FILE *param_file, char *desc) {
 	(void)fprintf (param_file, "PRMS version 4\n");
 }
 
-static void write_dimensions (FILE *param_file) {
-	DIMEN *dim;
-	long i,j;
-	(void)fprintf(param_file, "** Dimensions **\n");
+static void write_dimensions (LIST *dim_db, FILE *param_file) {
+  DIMEN *dim;
+  long i,j;
+  (void)fprintf(param_file, "** Dimensions **\n");
 
-	for (i = 0; i < dim_db->count; i++) {
+  for (i = 0; i < dim_db->count; i++) {
 
-		dim = (DIMEN *)(dim_db->itm[i]);
+    dim = (DIMEN *)(dim_db->itm[i]);
 
-		(void)fprintf(param_file, "####\n");
-		(void)fprintf(param_file, "%s\n", dim->name);
-		(void)fprintf(param_file, "%ld\n", dim->value);
-		for (j = 0; j < dim->value; j++) {
-			if (dim->names && dim->names[j])
-				(void)fprintf (param_file, "%s\n", dim->names[j]);
-			if (dim->notes && dim->notes[j])
-				(void)fprintf (param_file, "@%s\n", dim->notes[j]);
-		}
-	}
+    (void)fprintf(param_file, "####\n");
+    (void)fprintf(param_file, "%s\n", dim->name);
+    (void)fprintf(param_file, "%ld\n", dim->value);
+    for (j = 0; j < dim->value; j++) {
+      if (dim->names && dim->names[j])
+	(void)fprintf (param_file, "%s\n", dim->names[j]);
+      if (dim->notes && dim->notes[j])
+	(void)fprintf (param_file, "@%s\n", dim->notes[j]);
+    }
+  }
 }
 
 
@@ -247,13 +229,6 @@ static void write_parameters (FILE *param_file, int writeAllParams) {
 			}
 		}
 					break;
-//                    					if (writeAllParams) {
-//						lvalptr = (long *) param->value;
-//						lvalptr = (int *) param->value;
-//					} else {
-//						lvalptr = (long *) (param->references[0]);
-//						lvalptr = (int *) (param->references[0]);
-//					}
 	}
 }
 	}

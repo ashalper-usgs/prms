@@ -5,33 +5,24 @@
  *
  * PROJECT  : Modular Modeling System (MMS)
  * FUNCTION : read_control
- * COMMENT  : reads the control data base from a file
+ * COMMENT  : reads the control database from a file
  *            File name is obtained from the environment variable "mms_control_file"
- *
- * $Id$
- *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define READ_CONTROL_C
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
 #include "mms.h"
+#include "control_addr.h"
+#include "decl_control.h"
+#include "read_control.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
-static char *rc (char *);
+static char *rc (char *, LIST *);
 char *fgets_rc (char *, int , FILE *);
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : read_control
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-char *read_control (char *control_name) {
+char *read_control (char *control_name, LIST *cont_db) {
    static char *foo = NULL;
    char old[256], *cptr;
 
@@ -44,26 +35,19 @@ char *read_control (char *control_name) {
       foo = strdup (control_name);
    }
 
-   cptr = rc (control_name);
+   cptr = rc (control_name, cont_db);
 
    if (cptr) {
-      rc (old);
+     rc (old, cont_db);
 
-      free (foo);
-      foo = strdup (old);
+     free (foo);
+     foo = strdup (old);
    }
 
    return (cptr);
 }
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : rc
- | COMMENT      :
- | PARAMETERS   :
- | RETURN VALUE :
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
-static char *rc (char *control_name) {
+static char *rc (char *control_name, LIST *cont_db) {
    FILE   *control_file;
    CONTROL *cp;
    long   type, size, i;
@@ -149,9 +133,9 @@ static char *rc (char *control_name) {
          return (buf);
       }
 
-      cp = control_addr (key);
+      cp = control_addr (cont_db, key);
       if (!cp) {
-         cp = add_control (key, type, size); // This is if the control variable was not set in the setupcont function
+	cp = add_control (cont_db, key, type, size); // This is if the control variable was not set in the setupcont function
 //	  printf ("   read_control E %s NOT FOUND in SETUPCONT\n", key);
      }
      

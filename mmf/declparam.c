@@ -11,22 +11,21 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define DECLPARAM_C
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
-#include "mms.h"
 
-/**4***************** DECLARATION LOCAL FUNCTIONS *********************/
+#include "mms.h"
+#include "dim_addr.h"
+
+#include "declparam.h"
+
 static int CHECK_param_in_db (char *, char *, char *, int,
  	char *, char *, char *, char *, char *, char *);
 static int VAR_type (char *);
 
-/**5*********************** LOCAL VARIABLES ***************************/
 static char *types[] = {"long (or integer)", "real (or float)", "double", "string"};
-
-/**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : declparam_
@@ -214,13 +213,6 @@ long declparam_ (char *mname, char *pname, char *pdimen, char *ptype,
 	return(retval);
 }
 
-/*--------------------------------------------------------------------*\
- | FUNCTION     : declparam
- | COMMENT		: declparam is called from C
- | PARAMETERS   :
- | RETURN VALUE : 
- | RESTRICTIONS :
-\*--------------------------------------------------------------------*/
 long declparam (char *module, char *name, char *dimen, char *type, char *value,
 	char *minimum, char *maximum, char *descr, char *help, char *units) {
 
@@ -322,8 +314,8 @@ long declparam (char *module, char *name, char *dimen, char *type, char *value,
 
 	i = 0;
 	while (token != (char *) NULL) {
-		param->dimen[i++] = dim_addr (token);
-		token = strtok ((char *) NULL, ",");
+	  param->dimen[i++] = dim_addr (dim_db, token);
+	  token = strtok ((char *) NULL, ",");
 	}
 
 /*
@@ -345,7 +337,7 @@ long declparam (char *module, char *name, char *dimen, char *type, char *value,
 			return(1);
 		}
 
-		if (!(param->bound_dimen = dim_addr (maximum))) {
+		if (!(param->bound_dimen = dim_addr (dim_db, maximum))) {
 			(void)fprintf(stderr, "ERROR - declparam\n");
 			(void)fprintf(stderr, "Parameter '%s'\n", pkey);
 			(void)fprintf(stderr, "Attempt to bound with dimension name '%s' %s\n",
