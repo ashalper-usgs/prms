@@ -91,7 +91,8 @@ record PARAM {
   var max_string: string;
   var def_string: string;
   var read_in: int;
-  var references;
+  // TODO: needs a type
+  var references: void;
   var num_references: int;
   var size_references: int;
   var preprocess: int;
@@ -102,7 +103,8 @@ record CONTROL {
   var key: string;
   var size: int;
   var typ: int;
-  var start_ptr;
+  // TODO: needs a not-void type:
+  var start_ptr: void;
   var set_in_file: int;
 }
 
@@ -113,15 +115,14 @@ record DATETIME {
 }
 
 record LIST {
-  type UserDataType;
-  type ItmType;
   var name: string;
   var size: int;
   var count: int;
   var typ: int;
   var ut: int;
-  var user_data: UserDataType;
-  var itm: LinkedList(ItmType);
+  // TODO: "void" is a place-holder here; need actual types
+  var user_data: void;
+  var itm: void;
 }
 
 // public variable structure
@@ -130,7 +131,8 @@ record PUBVAR {
   var mod: string;
   var name: string;
   var ndimen: int;
-  var dimen;
+  // TODO: needs a type
+  var dimen: void;
   var size: int;
   var typ: int;
   var help: string;
@@ -166,7 +168,9 @@ record STAT_LIST_TYPE {
   var element: string;
   var typ: int;
   var value: string;
-  var next: STAT_LIST_TYPE;
+  /* TODO: Chapel compiler cannot digest the recursive reference, and
+     may be obsolete anyway: */
+   //var next: STAT_LIST_TYPE;
 }
 
 record MODULE_DATA {
@@ -186,7 +190,7 @@ var run_period_of_record: int;
 var print_mode: int;
 var runtime_graph_on: int;
 var preprocess_on: int;
-var cont_db: LIST(string, CONTROL);
+var cont_db: LIST;
 var dim_db: LIST;
 var module_db: LIST;
 var current_module: MODULE_DATA;
@@ -226,7 +230,8 @@ proc main (argv: [] string): int {
   var model_name: string = "";
   var executable_model: string = "";
   var batch_run_mode: bool = false; // flag for running in batch mode
-  var run_period_of_record: bool = false; // flag for running entire period of record in batch mode
+  // flag for running entire period of record in batch mode
+  var run_period_of_record: bool = false;
   var print_mode: bool = false;
   var runtime_graph_on: bool = false;
   var preprocess_on: bool = false; // flag for running in preprocess mode
@@ -254,8 +259,8 @@ proc main (argv: [] string): int {
   var Minpptr: string = ""; // pointer to current position in data input line
   var Mdeltanext: real = 0.0; // the latest next time step in hours
   var M_stop_run: int = 0;    // Run switch 0 -or 1
-  var Mfirst_stat_list: STAT_LIST_TYPE;	// pointer to first entry in
-					// stats linked list
+  // pointer to first entry in stats linked list
+  var Mfirst_stat_list: STAT_LIST_TYPE;
   var Mtypes = ["", "long", "float", "double", "string", "", "","", "", ""];
   var ParamBaseIsDirty: bool = false;
   var max_vars: int;
@@ -300,7 +305,9 @@ proc main (argv: [] string): int {
   parse_args (argv, set_count, set_name, set_value, set_size);
 
   if (MAltContFile == "") {
-    stderr.write("Usage: Set the full path to the control file using the '-C' option.\n\n");
+    stderr.write(
+      "Usage: Set the full path to the control file using the '-C' option.\n\n"
+    );
     exit(0);
   }
 
@@ -357,7 +364,7 @@ proc main (argv: [] string): int {
     exit (1);
   }
 
-  // read dimension info from parameter file
+  // read dimension info. from parameter file
   // TODO: need to find out original purpose of buf here
   try {
     if getFileSize(control_svar("param_file")) == 0 then {
@@ -423,7 +430,9 @@ proc main (argv: [] string): int {
       }
     }
     catch {
-	stderr.write(buf, "ERROR: could not open parameter file: %s", fname[i]);
+	stderr.write(
+	   buf, "ERROR: could not open parameter file: %s", fname[i]
+	);
 	exit (1);
     }
 	    
@@ -450,7 +459,6 @@ proc main (argv: [] string): int {
   }
   else {
     BATCH_run ();
-    ;
   }
 
   exit (0);
