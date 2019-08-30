@@ -113,13 +113,15 @@ record DATETIME {
 }
 
 record LIST {
+  type UserDataType;
+  type ItmType;
   var name: string;
   var size: int;
   var count: int;
   var typ: int;
   var ut: int;
-  var user_data;
-  var itm;
+  var user_data: UserDataType;
+  var itm: LinkedList(ItmType);
 }
 
 // public variable structure
@@ -184,7 +186,7 @@ var run_period_of_record: int;
 var print_mode: int;
 var runtime_graph_on: int;
 var preprocess_on: int;
-var cont_db: LIST;
+var cont_db: LIST(string, CONTROL);
 var dim_db: LIST;
 var module_db: LIST;
 var current_module: MODULE_DATA;
@@ -262,23 +264,23 @@ proc main (argv: [] string): int {
   var max_dims: int;
   var max_controls: int;
 
-  var set_count: int;
-  var i, j: int;
+  var set_count: int = 0;
+  var set_size: int = 100;
   var set_name, set_value: [1..set_size] string;
   var cp: CONTROL;
+
+  // TODO: these are all pointers in PRMS 5
   var cptr: string;
-  ref dptr: real;
-  ref fptr: real;
-  ref lptr: int;
-  ref cpt: string;
-  /* TODO: */
-  //struct stat stbuf;
+  var dptr: real;
+  var fptr: real;
+  var lptr: int;
+  var cpt: string;
+  
   var buf: string;
   var err: string;
   var num_param_files: int = 0;
   var fname: [1..0] string;
   var pathname: string;
-  var set_size: int;
 
   /*
     Maximum buffer size for reading lines from files. This used to be
@@ -295,8 +297,6 @@ proc main (argv: [] string): int {
   module_db = ALLOC_list ("Module Data Base", 0, 100);
 
   // parse the command-line arguments
-  set_count = 0;
-  set_size = 100;
   parse_args (argv, set_count, set_name, set_value, set_size);
 
   if (MAltContFile == "") {
@@ -324,7 +324,7 @@ proc main (argv: [] string): int {
       stderr.write("\nControl variable %s set to %s.\n\n",
 		   set_name[i], set_value[i]);
 
-      j = 0;
+      var j: int = 0;
       for cptr in split(set_value[i], ",") do {
 	if (cp.typ == M_DOUBLE) {
 	  dptr = cp.start_ptr;
@@ -344,7 +344,8 @@ proc main (argv: [] string): int {
       }
 
     } else {
-      stderr.write("\nControl variable %s not found -- ignored.\n\n", set_name[i]);
+      stderr.write("\nControl variable %s not found -- ignored.\n\n",
+		   set_name[i]);
     }
   }
 
@@ -357,18 +358,23 @@ proc main (argv: [] string): int {
   }
 
   // read dimension info from parameter file
-  if (stat (*control_svar("param_file"), &stbuf) != -1) {
-    if (stbuf.st_size) {
-    } else {
-      stderr.write(buf, "Parameter File: %s is empty.",
-		   *control_svar("param_file"));
+  // TODO: need to find out original purpose of buf here
+  try {
+    if getFileSize(control_svar("param_file")) == 0 then {
+      stderr.write(buf, "parameter file: %s is empty.",
+		   control_svar("param_file"));
       exit (1);
     }
   }
+  catch {
+    stderr.write(buf, "could not open parameter file: %s",
+		 control_svar("param_file"));
+    exit (1);
+  }
     
-  err = read_dims (*control_svar("param_file"));
-  if (err) {
-    fprintf (stderr,"\n%s\n", err);
+  err = read_dims (control_svar("param_file"));
+  if (0 < err.length) {
+    stderr.write("\n%s\n", err);
     exit (1);
   }
 
@@ -376,7 +382,9 @@ proc main (argv: [] string): int {
   num_param_files = control_var_size ("param_file");
 
   if (call_modules("declare")) {
-    (void)fprintf(stderr, "\nERROR: in declare procedure, in function 'call_modules'\n");
+    stderr.write(
+       "\nERROR: in declare procedure, in function 'call_modules'\n"
+    );
     exit (1);
   }
     
@@ -388,60 +396,62 @@ proc main (argv: [] string): int {
     Look for, declare and read in mapping parameters before any of
     the "module" parameters.
   */
-  for (i = 0; i < num_param_files; i++) {
-    if (stat (fname[i], &stbuf) != -1) {
-      if (stbuf.st_size) {
-      } else {
-	(void)fprintf (stderr,buf, "ERROR: Parameter file: %s is empty.",
-		       fname[i]);
+  for i in 0..num_param_files do {
+    try {
+      if (getFileSize(fname[i]) == 0) then {
+	stderr.write(buf, "ERROR: Parameter file: %s is empty.", fname[i]);
 	exit (1);
       }
+    } catch {
+      stderr.write(buf, "ERROR: could not open parameter file: %s", fname[i]);
+      exit (1);
     }
 	    
     err = read_params (fname[i], i, 1);
-    if (err) {
-      (void)fprintf (stderr,"\n%s\n", err);
+    if (0 < err.length) {
+      stderr.write("\n%s\n", err);
       exit (1);
     }
   }
 
   // Read in the parameters declared by the modules.
-  for (i = 0; i < num_param_files; i++) {
-    if (stat (fname[i], &stbuf) != -1) {
-      if (stbuf.st_size) {
-      } else {
-	(void)fprintf (stderr,buf, "ERROR: Parameter file: %s is empty.",
-		       fname[i]);
+  for i in 0..num_param_files do {
+    try {
+      if (getFileSize(fname[i]) == 0) then {
+	stderr.write(buf, "ERROR: Parameter file: %s is empty.", fname[i]);
 	exit (1);
       }
     }
+    catch {
+	stderr.write(buf, "ERROR: could not open parameter file: %s", fname[i]);
+	exit (1);
+    }
 	    
     err = read_params (fname[i], i, 0);
-    if (err) {
-      (void)fprintf (stderr,"\n%s\n", err);
+    if (0 < err.length) then {
+      stderr.write("\n%s\n", err);
       exit (1);
     }
   }
     
   // get data info string into the global
   err = READ_data_info ();
-  if (err) (void)fprintf (stderr,"\nMMS - Warning: %s", err);
+  if (0 < err.length) then
+    stderr.write("\nPRMS - Warning: %s", err);
 
   // get start and end time
   get_times ();
     
-  if (print_mode) {
+  if (print_mode) then {
     print_params();
     print_vars();
     print_model_info();
-    (void)snprintf (pathname, MAXPATHLEN, "%s.param", MAltContFile);
-    save_params (pathname);
-
-  } else {
-
+    save_params (MAltContFile + ".param");
+  }
+  else {
     BATCH_run ();
     ;
   }
 
   exit (0);
-}
+} // main
