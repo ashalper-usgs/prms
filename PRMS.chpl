@@ -102,13 +102,21 @@ module PRMS {
   }
 
   // control variable structure
-  record CONTROL {
+  class CONTROL {
     var key: string;
     var size: int;
     var typ: int;
-    // TODO: needs a not-void type:
-    var start_ptr: void;
+    // TODO: place-holder; this will need a record or class type
+    var start_ptr: int;
     var set_in_file: int;
+
+    // is this instantiated? (artifact of legacy code)
+    proc instance(): bool {
+      if 0 < this.key.length then
+	return true;
+      else
+	return false;
+    }
   }
 
   // datetime structure
@@ -264,14 +272,12 @@ module PRMS {
     var set_count: int = 0;
     var set_size: int = 100;
     var set_name, set_value: [1..set_size] string;
-    var cp: CONTROL;
 
     // TODO: these are all pointers in PRMS 5
-    var cptr: string;
-    var dptr: real;
-    var fptr: real;
-    var lptr: int;
-    var cpt: string;
+    var dptr: [1..0] real;
+    var fptr: [1..0] real;
+    var lptr: [1..0] int;
+    var cpt: [1..0] string;
   
     var buf: string;
     var err: string;
@@ -296,46 +302,83 @@ module PRMS {
     // parse the command-line arguments
     parse(argv, set_count, set_name, set_value, set_size);
 
-    if (MAltContFile == "") {
-      stderr.write(
-       "Usage: Set the full path to the control file using the '-C' option.\n\n"
-      );
+    if MAltContFile == "" then {
+      try {
+	stderr.write("Usage: Set the full path to the control file " +
+		     "using the '-C' option.\n\n");
+      }
+      catch {
+      }
       exit(0);
     }
 
     alloc_space ();
 
-    setup_cont ();
-    err = read_control (MAltContFile);
-    if (err) {
-      stderr.write("%s\n", err);
+    writeln("setup_cont () is called here.");
+    writeln("err = read_control (MAltContFile) is called here.");
+    if 0 < err.length then {
+      try {
+	stderr.write("%s\n", err);
+      }
+      catch {
+      }
       exit (1);           
     }
 
-    fname = control_svar ("param_file");
-    num_param_files = control_var_size ("param_file");
+    writeln("fname = control_svar (\"param_file\") is called here.");
+    writeln(
+	"num_param_files = control_var_size (\"param_file\") is called here."
+    );
 
     /* TODO: parsing loop here probably needs work */
     for i in 0..set_count do {
-      cp = control_addr (set_name[i]);
-      if (0 < cp.length) {
-
-	stderr.write("\nControl variable %s set to %s.\n\n",
-		     set_name[i], set_value[i]);
+      // TODO: initialize constructor from:
+      //
+      // cp = control_addr (set_name[i]);
+      var cp: CONTROL = new CONTROL("", 0, 0, 0);
+      if cp.instance() then {
+	try {
+	  stderr.write("\nControl variable %s set to %s.\n\n",
+		       set_name[i], set_value[i]);
+	}
+	catch {
+	}
 
 	var j: int = 0;
-	for cptr in split(set_value[i], ",") do {
-	  if (cp.typ == M_DOUBLE) {
+	for cptr in set_value[i].split(",") do {
+	  if cp.typ == M_DOUBLE then {
 	    dptr = cp.start_ptr;
-	    dptr[j] = atof(cptr);
-	  } else if (cp.typ == M_FLOAT) {
+	    try {
+	      dptr[j] = cptr:real;
+	    }
+	    catch {
+	      // TODO: error msg.
+	      exit(1);
+	    }
+	  }
+	  else if cp.typ == M_FLOAT then {
 	    fptr = cp.start_ptr;
-	    fptr[j] = cptr:real;
-	  } else if (cp.typ == M_LONG) {
+	    try {
+	      fptr[j] = cptr:real;
+	    }
+	    catch {
+	      // TODO: error msg.
+	      exit(1);
+	    }
+	  }
+	  else if cp.typ == M_LONG then {
 	    lptr = cp.start_ptr;
-	    lptr[j] =  cptr:int;
-	  } else if (cp.typ == M_STRING) {
-	    cpt = cp.start_ptr;
+	    try {
+	      lptr[j] =  cptr:int;
+	    }
+	    catch {
+	      // TODO: error msg.
+	      exit(1);
+	    }
+	  }
+	  else if cp.typ == M_STRING then {
+            // TODO: start_ptr type needs to be resolved
+	    //cpt = cp.start_ptr;
 	    cpt[j].init(cptr, true);
 	  }
 
@@ -343,53 +386,75 @@ module PRMS {
 	}
 
       } else {
-	stderr.write("\nControl variable %s not found -- ignored.\n\n",
-		     set_name[i]);
+	try {
+	  stderr.write("\nControl variable %s not found -- ignored.\n\n",
+		       set_name[i]);
+	}
+	catch {
+	}
       }
     }
 
-    fname = control_svar ("param_file");
-    num_param_files = control_var_size ("param_file");
+    writeln("fname = control_svar (\"param_file\") is called here.");
+    writeln(
+       "num_param_files = control_var_size (\"param_file\") is called here."
+    );
 
+    /* TODO:
     if (call_setdims()) {
       stderr.write("\nERROR: Calling function 'call_setdims'\n");
       exit (1);
     }
-
+    */
+    
     // read dimension info. from parameter file
     // TODO: need to find out original purpose of buf here
     try {
+      /* TODO:
       if (getFileSize(control_svar("param_file")) == 0) then {
 	stderr.write(buf, "parameter file: %s is empty.",
 		     control_svar("param_file"));
 	exit (1);
       }
+      */
     }
     catch {
+      /* TODO:
       stderr.write(buf, "could not open parameter file: %s",
 		   control_svar("param_file"));
+      */
       exit (1);
     }
     
-    err = read_dims (control_svar("param_file"));
-    if (0 < err.length) {
-      stderr.write("\n%s\n", err);
+    writeln("err = read_dims (control_svar(\"param_file\")) is called here.");
+    if 0 < err.length then {
+      try {
+	stderr.write("\n%s\n", err);
+      }
+      catch {
+      }
       exit (1);
     }
 
-    fname = control_svar ("param_file");
-    num_param_files = control_var_size ("param_file");
+    writeln("fname = control_svar (\"param_file\")");
+    writeln(
+       "num_param_files = control_var_size (\"param_file\") is called here."
+    );
 
+    /* TODO:
     if (call_modules("declare")) {
       stderr.write(
          "\nERROR: in declare procedure, in function 'call_modules'\n"
       );
       exit (1);
     }
+    */
     
     // read in parameter values from parameter file
-    fname = control_svar ("param_file");
-    num_param_files = control_var_size ("param_file");
+    writeln("fname = control_svar (\"param_file\") is called here.");
+    writeln(
+       "num_param_files = control_var_size (\"param_file\") is called here."
+    );
 
     /*
       Look for, declare and read in mapping parameters before any of
@@ -397,18 +462,29 @@ module PRMS {
     */
     for i in 0..num_param_files do {
       try {
+	/* TODO:
 	if (getFileSize(fname[i]) == 0) then {
 	  stderr.write(buf, "ERROR: Parameter file: %s is empty.", fname[i]);
 	  exit (1);
 	}
+	*/
       } catch {
-	stderr.write(buf, "ERROR: could not open parameter file: %s", fname[i]);
+	try {
+	  stderr.write(buf, "ERROR: could not open parameter file: %s",
+		       fname[i]);
+	}
+	catch {
+	}
 	exit (1);
       }
 	    
-      err = read_params (fname[i], i, 1);
-      if (0 < err.length) {
-	stderr.write("\n%s\n", err);
+      writeln("err = read_params (fname[i], i, 1) is called here.");
+      if 0 < err.length {
+	try {
+	  stderr.write("\n%s\n", err);
+	}
+	catch {
+	}
 	exit (1);
       }
     }
@@ -416,41 +492,55 @@ module PRMS {
     // Read in the parameters declared by the modules.
     for i in 0..num_param_files do {
       try {
+	/* TODO:
 	if (getFileSize(fname[i]) == 0) then {
 	  stderr.write(buf, "ERROR: Parameter file: %s is empty.", fname[i]);
 	  exit (1);
 	}
+	*/
       }
       catch {
-	stderr.write(
-		     buf, "ERROR: could not open parameter file: %s", fname[i]
-		     );
+	try {
+	  stderr.write(buf, "ERROR: could not open parameter file: %s",
+		       fname[i]);
+	}
+	catch {
+	}
 	exit (1);
       }
 	    
-      err = read_params (fname[i], i, 0);
-      if (0 < err.length) then {
-	stderr.write("\n%s\n", err);
+      writeln("err = read_params (fname[i], i, 0) is called here.");
+      if 0 < err.length then {
+	try {
+	  stderr.write("\n%s\n", err);
+	}
+	catch {
+	}
 	exit (1);
       }
     }
     
     // get data info string into the global
-    err = READ_data_info ();
-    if (0 < err.length) then
-      stderr.write("\nPRMS - Warning: %s", err);
-
-    // get start and end time
-    get_times ();
+    writeln("err = READ_data_info () is called here.");
+    if 0 < err.length then {
+      try {
+	stderr.write("\nPRMS - Warning: %s", err);
+      }
+      catch {
+      }
+    }
     
-    if (print_mode) then {
-      print_params();
-      print_vars();
-      print_model_info();
-      save_params (MAltContFile + ".param");
+    // get start and end time
+    writeln("get_times () is called here.");
+    
+    if print_mode then {
+      writeln("print_params() is called here.");
+      writeln("print_vars() is called here.");
+      writeln("print_model_info() is called here.");
+      writeln("save_params (MAltContFile + \".param\")");
     }
     else {
-      BATCH_run ();
+      writeln("BATCH_run () is called here.");
     }
 
     exit (0);
@@ -463,11 +553,11 @@ module PRMS {
 
     // get the model name
     ptr = argv[0].find("/");
-    if (ptr == 0) then
+    if ptr == 0 then
       ptr = argv[0].find("\\");
     ptr += 1;
 
-    if (argv.size >= 2) then {
+    if argv.size >= 2 then {
       for i in 1..argv.size - 1 do {
 	select (argv[i]) {
 	when "-debug" do {
@@ -485,7 +575,7 @@ module PRMS {
 	when "-rtg" do runtime_graph_on = true;
 	when "-preprocess" do preprocess_on = true;
 	when "-set" do {
-	  if (set_count >= set_size) then {
+	  if set_count >= set_size then {
 	    writeln("Args.parse: Overflow. Too many command line " +
 		    "arguments set with -set flag.\n\n\n");
 	    exit(1);
