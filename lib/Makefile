@@ -1,6 +1,4 @@
-#
-# Makefile for mmf
-#
+# Makefile for libprms.
 
 include ../makelist
 
@@ -33,9 +31,9 @@ MMFOBJS = ${SRCS:.c=.o}
 all: $(MMFLIB)
 
 $(MMFLIB): $(MMFOBJS)
-# Create lib directory, if necessary
-	@if [ ! -d $(LIBDIR) ]   ; then        \
-   	   mkdir $(LIBDIR) ;                   \
+	# Create lib directory, if necessary
+	@if [ ! -d $(LIBDIR) ] ; then          \
+	   mkdir $(LIBDIR) ;                   \
 	   echo  Created directory $(LIBDIR) ; \
 	fi
 	$(AR) $(MMFLIB) $(MMFOBJS)
