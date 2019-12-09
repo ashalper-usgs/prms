@@ -2,8 +2,8 @@
 
 include ../makelist
 TARGET 	= ./prms
-MMFDIR	= ../mmf
-MMFLIB	= ../mmf/libmmf.a
+MMFDIR	= ../lib
+MMFLIB	= ../lib/libmmf.a
 
 ####################################################
 # Rules for targets
@@ -89,7 +89,6 @@ $(LIBS):
 	cd $(MMFDIR);make SHA_PRMS=$(SHA_PRMS) ORIGIN_PRMS=$(ORIGIN_PRMS) TAG_PRMS=$(TAG_PRMS) COMMITDATE_PRMS=$(COMMITDATE_PRMS) FFLAGS="$(FFLAGS)" LDFLAGS="$(LDFLAGS)"; cd -
 
 clean:
-	cd $(MMFDIR);make clean; cd -
 	$(RM) $(TARGET)
 	$(RM) *.o *.mod *~
 
