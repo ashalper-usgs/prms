@@ -1,22 +1,12 @@
-#
-# Makefile --
-#
-# Top-level makefile for the PRMS
-#
+# Makefile -- Top-level makefile for PRMS.
 
 include ./makelist
 
-#
-# Standard Targets for Users
-#
-
-all: standard
-
-standard:
-	cd ./mmf; $(MAKE);
-	cd ./prms; $(MAKE);
+all:
+	cd lib && $(MAKE)
+	cd src && $(MAKE)
 
 clean:
-	cd ./mmf; $(MAKE) clean;
-	cd ./prms; $(MAKE) clean;
-
+	cd lib && $(MAKE) clean
+	cd src && $(MAKE) clean
+	rm -f *~
