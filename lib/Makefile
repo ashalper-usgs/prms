@@ -2,8 +2,6 @@
 
 include ../makelist
 
-MMFLIB	= ./libmmf.a
-
 SRCS = 	mmf.c parse_args.c alloc_space.c build_lists.c \
 	setup_cont.c decl_control.c control_addr.c \
 	control_var.c read_params.c sort_dims.c sort_params.c sort_vars.c \
@@ -20,7 +18,7 @@ SRCS = 	mmf.c parse_args.c alloc_space.c build_lists.c \
 	control_array.c call_setdims.c call_modules.c
 
 
-MMFOBJS = ${SRCS:.c=.o}
+PRMSOBJS = ${SRCS:.c=.o}
 
 .c.o:
 	$(CC) $(CFLAGS) -c $<
@@ -28,16 +26,16 @@ MMFOBJS = ${SRCS:.c=.o}
 #
 # Standard Targets for Users
 #
-all: $(MMFLIB)
+all: libprms.a
 
-$(MMFLIB): $(MMFOBJS)
+libprms.a: $(PRMSOBJS)
 	# Create lib directory, if necessary
 	@if [ ! -d $(LIBDIR) ] ; then          \
 	   mkdir $(LIBDIR) ;                   \
 	   echo  Created directory $(LIBDIR) ; \
 	fi
-	$(AR) $(MMFLIB) $(MMFOBJS)
-	$(RANLIB) $(MMFLIB)
+	$(AR) $@ $(PRMSOBJS)
+	$(RANLIB) $@
 
 clean:
-	$(RM) $(MMFLIB) $(MMFOBJS) *~
+	$(RM) libprms.a $(PRMSOBJS) *~
