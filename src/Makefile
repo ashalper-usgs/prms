@@ -1,21 +1,17 @@
-# PRMS V makefile
+# PRMS Makefile
 
 include ../makelist
-TARGET 	= ./prms
-MMFDIR	= ../lib
-MMFLIB	= ../lib/libmmf.a
 
-####################################################
-# Rules for targets
-####################################################
+TARGET = ./prms
+LIBPRMSDIR = ../lib
+LIBPRMS = $(LIBPRMSDIR)/libmmf.a
+
+# rules for targets
 all: $(TARGET)
 
-#
-# Define all object files which make up the library
-#
+# Define all object files which make up the library.
 
-
-# Archive properties
+# archive properties
 SHA_PRMS = "$(shell git rev-parse HEAD)"
 ORIGIN_PRMS = "$(shell git config --get remote.origin.url)"
 TAG_PRMS = "$(shell git tag)"
@@ -77,16 +73,16 @@ OBJS = \
 
 $(TARGET): $(OBJS)
 	$(RM) $(TARGET)
-	$(FC) $(LDFLAGS) -o $(TARGET) $(OBJS) $(MMFLIB) $(FLIBS)
+	$(FC) $(LDFLAGS) -o $(TARGET) $(OBJS) $(LIBPRMS) $(FLIBS)
 
 #
 # Define all object files which make up the library
 #
 print:
-	cd $(MMFDIR);make SHA_PRMS=$(SHA_PRMS) ORIGIN_PRMS=$(ORIGIN_PRMS) TAG_PRMS=$(TAG_PRMS) COMMITDATE_PRMS=$(COMMITDATE_PRMS) FFLAGS="$(FFLAGS)" LDFLAGS="$(LDFLAGS)" print; cd -
+	cd $(LIBPRMSDIR);make SHA_PRMS=$(SHA_PRMS) ORIGIN_PRMS=$(ORIGIN_PRMS) TAG_PRMS=$(TAG_PRMS) COMMITDATE_PRMS=$(COMMITDATE_PRMS) FFLAGS="$(FFLAGS)" LDFLAGS="$(LDFLAGS)" print; cd -
 
 $(LIBS):
-	cd $(MMFDIR);make SHA_PRMS=$(SHA_PRMS) ORIGIN_PRMS=$(ORIGIN_PRMS) TAG_PRMS=$(TAG_PRMS) COMMITDATE_PRMS=$(COMMITDATE_PRMS) FFLAGS="$(FFLAGS)" LDFLAGS="$(LDFLAGS)"; cd -
+	cd $(LIBPRMSDIR);make SHA_PRMS=$(SHA_PRMS) ORIGIN_PRMS=$(ORIGIN_PRMS) TAG_PRMS=$(TAG_PRMS) COMMITDATE_PRMS=$(COMMITDATE_PRMS) FFLAGS="$(FFLAGS)" LDFLAGS="$(LDFLAGS)"; cd -
 
 clean:
 	$(RM) $(TARGET)
