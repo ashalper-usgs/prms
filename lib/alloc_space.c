@@ -11,8 +11,12 @@
 
 /**1************************ INCLUDE FILES ****************************/
 #define ALLOC_SPACE_C
+
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : alloc_space

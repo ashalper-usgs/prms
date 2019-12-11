@@ -10,15 +10,19 @@
  *
 -*/
 
+#define SORT_VARS_C
+
 /**1************************ INCLUDE FILES ****************************/
 #ifdef MALLOC_FUNC_CHECK
 #include <malloc_dbg.h>
 #endif
 
-#define SORT_VARS_C
 #include <stdio.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : sort_vars

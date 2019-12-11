@@ -10,10 +10,14 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define WRITE_VSTATS_C
+
+/**1************************ INCLUDE FILES ****************************/
 #include <stdio.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : write_vstats

@@ -12,13 +12,18 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define READ_CONTROL_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static char *rc (char *);

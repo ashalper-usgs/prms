@@ -10,13 +10,17 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define READ_VARS_C
+
+/**1************************ INCLUDE FILES ****************************/
 #include <stdio.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static int read_var_line (char *, char *, FILE *, char *);

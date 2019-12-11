@@ -9,13 +9,16 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
-
 #define BATCH_RUN_C
+
+/**1************************ INCLUDE FILES ****************************/
 
 #include <string.h>
 #include <errno.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 extern int call_modules (char *);

@@ -9,12 +9,17 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define PARSE_ARGS_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <math.h> 
 #include <string.h> 
 #include <stdlib.h> 
-#include "mms.h" 
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : parse_args

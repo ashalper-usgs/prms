@@ -12,11 +12,16 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define LOAD_PARAM_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <stdio.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : load_param

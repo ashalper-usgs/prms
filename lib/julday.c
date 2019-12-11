@@ -10,10 +10,16 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define JULDAY_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <math.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
+
 #define IGREG (15+31L*(10+12L*1582))
 
 /*--------------------------------------------------------------------*\

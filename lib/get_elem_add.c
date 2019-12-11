@@ -9,12 +9,17 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define GET_ELEM_ADD_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\

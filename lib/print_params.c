@@ -9,13 +9,19 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define PRINT_PARAMS_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
+
 //
 //#define PRINTLEN 77
 

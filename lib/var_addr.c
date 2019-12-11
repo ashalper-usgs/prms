@@ -10,11 +10,15 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define VAR_ADDR_C
+
+/**1************************ INCLUDE FILES ****************************/
 #include <stdio.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : var_addr

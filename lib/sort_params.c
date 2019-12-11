@@ -10,12 +10,16 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define SORT_PARAMS_C
+
+/**1************************ INCLUDE FILES ****************************/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\

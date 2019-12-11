@@ -10,12 +10,17 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define READ_DATAINFO_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : read_datainfo

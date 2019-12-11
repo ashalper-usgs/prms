@@ -9,10 +9,15 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define CHECK_VARS_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : CHECK_stat_vars

@@ -9,12 +9,16 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define SAVE_PARAMS_C
+
+/**1************************ INCLUDE FILES ****************************/
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static void write_parameters (FILE *, int);

@@ -11,11 +11,16 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define DECLVAR_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <stdio.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 #define LONG 1
 #define FLOAT 2

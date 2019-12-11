@@ -14,10 +14,15 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define CONTROL_ARRAY_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**************************************************************************
  * control_array.c: 

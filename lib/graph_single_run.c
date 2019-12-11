@@ -9,12 +9,17 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define GRAPH_SINGLE_RUN_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 #define         MAXNUMBEROFGRAPHS               4
 

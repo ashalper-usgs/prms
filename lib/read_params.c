@@ -11,15 +11,20 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define READ_PARAMS_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
 #include <errno.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 static char *READ_param_head (PARAM **, int);
 static char *READ_param_values (long, long, char *, char *, char[], char *, char *, int);

@@ -12,13 +12,18 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define READVAR_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <stdio.h>
 #include <math.h>
 #include <errno.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**2************************* LOCAL MACROS ****************************/
 #define MISSING_VAR -999

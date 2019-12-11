@@ -9,16 +9,19 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define RESET_DIM_C 0
 #define VALUE_CASE 0
 #define MIN_CASE 1
 #define MAX_CASE 2
 #define NCASES 3
 
+/**1************************ INCLUDE FILES ****************************/
 #include <stdio.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static void resize_param (PARAM *, long, long, long, long);

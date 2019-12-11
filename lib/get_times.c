@@ -9,10 +9,15 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define GET_TIMES_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <stdio.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**6**************** EXPORTED FUNCTION DEFINITIONS ********************/
 /*--------------------------------------------------------------------*\

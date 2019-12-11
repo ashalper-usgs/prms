@@ -9,12 +9,17 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define PRINT_VARS_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 #define PRINTLEN 77
 

@@ -15,8 +15,9 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define READ_LINE_C
+
+/**1************************ INCLUDE FILES ****************************/
 
 #include <sys/stat.h>
 #include <stdio.h>
@@ -24,7 +25,10 @@
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static void INSERT_time (char *, DATETIME *);

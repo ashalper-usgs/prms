@@ -9,15 +9,18 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define SETUP_CONT_C
 
+/**1************************ INCLUDE FILES ****************************/
 #include <stdio.h>
 #include <math.h>
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**5*********************** LOCAL VARIABLES ***************************/
 extern void decl_control_string (char *key, char *valstr);

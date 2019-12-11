@@ -10,13 +10,17 @@
 -*/
 
 /**1************************ INCLUDE FILES ****************************/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**5*********************** LOCAL VARIABLES ***************************/
   static FILE *statvar_file;

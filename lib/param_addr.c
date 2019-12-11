@@ -11,10 +11,15 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define PARAM_ADDR_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : param_addr

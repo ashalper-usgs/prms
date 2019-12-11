@@ -19,17 +19,20 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define STR_TO_VALS_C
+#define S2V_ERROR 1l
+#define S2V_SUCCESS 0l
+
+/**1************************ INCLUDE FILES ****************************/
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
 #include <errno.h>
 #include <stdlib.h>
-#include "mms.h"
-
-#define S2V_ERROR 1l
-#define S2V_SUCCESS 0l
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /*--------------------------------------------------------------------*\
  | FUNCTION     : str_to_vals

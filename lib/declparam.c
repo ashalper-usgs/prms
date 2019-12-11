@@ -11,12 +11,17 @@
  *
 -*/
 
-/**1************************ INCLUDE FILES ****************************/
 #define DECLPARAM_C
+
+/**1************************ INCLUDE FILES ****************************/
+
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
-#include "mms.h"
+#include "defs.h"
+#include "structs.h"
+#include "globals.h"
+#include "protos.h"
 
 /**4***************** DECLARATION LOCAL FUNCTIONS *********************/
 static int CHECK_param_in_db (char *, char *, char *, int,
