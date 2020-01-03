@@ -18,7 +18,7 @@ all: $(TARGET)
 # Archive properties
 SHA_PRMS = "$(shell git rev-parse HEAD)"
 ORIGIN_PRMS = "$(shell git config --get remote.origin.url)"
-TAG_PRMS = "(shell git tag)"
+TAG_PRMS = "$(shell git tag)"
 COMMITDATE_PRMS = "$(shell git log -1 --format=%cd)"
 
 
