@@ -18,11 +18,8 @@ contains
     integer(i32) :: numfiles, ppos
       !! Number of parameter filenames in the control file
 
-    ! --------------------------------------------------------------------------
-    ! if (print_debug > -2) then
-      ! Output module and version information
-      call print_module_info(MODNAME, MODDESC, MODVERSION)
-    ! endif
+    ! Output module and version information
+    call print_module_info(MODNAME, MODDESC, MODVERSION)
 
     ! Initialize defaults for some control file parameters
     this%prms_warmup = iScalar(0)
