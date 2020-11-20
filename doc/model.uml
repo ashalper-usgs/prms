@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_CwQ8ECtaEeuAgIUXMZbSnw" name="model">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_C6pAECtaEeuAgIUXMZbSnw">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_PcFHYCtaEeuAgIUXMZbSnw" name="TimeSeries" isAbstract="true"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_VQNpMCtaEeuAgIUXMZbSnw" name="Parameter" isAbstract="true"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_Wnb60CtaEeuAgIUXMZbSnw" name="DynamicParameter" isAbstract="true"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_a3jsMCtaEeuAgIUXMZbSnw" name="HRU" isAbstract="true">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_DwWDkCtbEeuAgIUXMZbSnw" name="landscape"/>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_IQKd0CtbEeuAgIUXMZbSnw" name="climate"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_eRWSgCtaEeuAgIUXMZbSnw" name="Basin" isAbstract="true"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_jpsQMCtaEeuAgIUXMZbSnw" name="Stream" isAbstract="true"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_krRB8CtaEeuAgIUXMZbSnw" name="Lake" isAbstract="true"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_7peqICtaEeuAgIUXMZbSnw" name="WaterUse" isAbstract="true"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_lxKKoCtoEeuJA__OFT9ozA" name="PlantCanopy" isAbstract="true">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_9hS_ACtoEeuJA__OFT9ozA" name="airTemperatureIn"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_BlqzYCtpEeuJA__OFT9ozA" name="solarRadiationIn"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_P1GtkCtpEeuJA__OFT9ozA" name="precipitationIn"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_8Bh_8CtpEeuJA__OFT9ozA" name="sublimationOut"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_BT4qYCtqEeuJA__OFT9ozA" name="rainOut"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_XhAM0CtqEeuJA__OFT9ozA" name="snowOut"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_cnio0CtqEeuJA__OFT9ozA" name="evapotranspirationOut"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_k_YdgCtqEeuJA__OFT9ozA" name="SoilZone" isAbstract="true">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_Te0UUCtrEeuJA__OFT9ozA" name="depressionStorage">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_adeIgCtrEeuJA__OFT9ozA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aeI24CtrEeuJA__OFT9ozA" value="*"/>
+    </ownedAttribute>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_09XkMCtqEeuJA__OFT9ozA" name="runoffIn"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_4ahAgCtqEeuJA__OFT9ozA" name="interflowIn"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_Cu7PkCtrEeuJA__OFT9ozA" name="rainIn"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_Ek_ZUCtrEeuJA__OFT9ozA" name="snowmeltIn"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_m_A9gCtrEeuJA__OFT9ozA" name="dunnianRunoffOut"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_ujFy8CtrEeuJA__OFT9ozA" name="interflowOut"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_lndCwCttEeuJA__OFT9ozA" name="Groundwater" isAbstract="true">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_rcBpcCttEeuJA__OFT9ozA" name="rechargeIn"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_uI8isCttEeuJA__OFT9ozA" name="sinkOut"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_4C-tcCtuEeuJA__OFT9ozA" name="flowOut"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_0qPFcCttEeuJA__OFT9ozA" name="Snowpack" isAbstract="true">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_-bXoUCttEeuJA__OFT9ozA" name="rainIn"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_AD5sYCtuEeuJA__OFT9ozA" name="snowIn"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_EY9oICtuEeuJA__OFT9ozA" name="snowmeltOut"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="__xeDICtuEeuJA__OFT9ozA" name="evapotranspirationOut"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_EVdLsCtvEeuJA__OFT9ozA" name="sublimationOut"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_OXpe0CtuEeuJA__OFT9ozA" name="ImperviousLayer" isAbstract="true">
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_nEtOcCtuEeuJA__OFT9ozA" name="rainIn"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_pUFQECtuEeuJA__OFT9ozA" name="snowmeltIn"/>
+    <ownedOperation xmi:type="uml:Operation" xmi:id="_rjvs8CtrEeuJA__OFT9ozA" name="hortonianRunoffOut"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_Ty60sCtuEeuJA__OFT9ozA" memberEnd="_Ty7bwituEeuJA__OFT9ozA _Ty8p4StuEeuJA__OFT9ozA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Ty7bwCtuEeuJA__OFT9ozA" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Ty7bwStuEeuJA__OFT9ozA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_Ty8p4StuEeuJA__OFT9ozA" name="soilzone" type="_k_YdgCtqEeuJA__OFT9ozA" association="_Ty60sCtuEeuJA__OFT9ozA"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_Ty7bwituEeuJA__OFT9ozA" name="imperviouslayer" type="_OXpe0CtuEeuJA__OFT9ozA" aggregation="composite" association="_Ty60sCtuEeuJA__OFT9ozA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Ty8C0CtuEeuJA__OFT9ozA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Ty8p4CtuEeuJA__OFT9ozA" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_UmYcgCtvEeuJA__OFT9ozA" memberEnd="_UmZqoitvEeuJA__OFT9ozA _UmaRsitvEeuJA__OFT9ozA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_UmZqoCtvEeuJA__OFT9ozA" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_UmZqoStvEeuJA__OFT9ozA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_UmaRsitvEeuJA__OFT9ozA" name="soilzone" type="_k_YdgCtqEeuJA__OFT9ozA" association="_UmYcgCtvEeuJA__OFT9ozA"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_UmZqoitvEeuJA__OFT9ozA" name="plantcanopy" type="_lxKKoCtoEeuJA__OFT9ozA" aggregation="composite" association="_UmYcgCtvEeuJA__OFT9ozA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_UmaRsCtvEeuJA__OFT9ozA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_UmaRsStvEeuJA__OFT9ozA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</uml:Model>
